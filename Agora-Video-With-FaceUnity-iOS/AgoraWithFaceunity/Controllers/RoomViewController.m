@@ -10,35 +10,44 @@
 #import "FUCamera.h"
 #import "FUManager.h"
 #import "FUOpenGLView.h"
+#import "FULiveCell.h"
+#import "FULiveModel.h"
+#import "FUItemsView.h"
+#import "FUMusicPlayer.h"
 #import "KeyCenter.h"
 #import <FUAPIDemoBar/FUAPIDemoBar.h>
 #import <AgoraRtcEngineKit/AgoraRtcEngineKit.h>
 
-@interface RoomViewController ()<FUAPIDemoBarDelegate, FUCameraDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol>
+@interface RoomViewController ()<FUAPIDemoBarDelegate, FUCameraDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate> {
+    BOOL faceBeautyMode;
+}
 
 @property (nonatomic, strong) FUCamera *mCamera;   //Faceunity Camera
 
 @property (weak, nonatomic) IBOutlet UIView *containView;
 
 @property (weak, nonatomic) IBOutlet FUAPIDemoBar *demoBar;    //Tool Bar
+@property (strong, nonatomic) IBOutlet FUItemsView *itemsView;
 
 @property (weak, nonatomic) IBOutlet UILabel *noTrackLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *calibrateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *alertLabel;
+@property (weak, nonatomic) IBOutlet UILabel *buglyLabel;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegment;
 
+@property (weak, nonatomic) IBOutlet UIButton *performanceBtn;
 @property (weak, nonatomic) IBOutlet UIButton *barBtn;
 
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *muteBtn;
-
 @property (weak, nonatomic) IBOutlet UIButton *cameraSwitchBtn;
 
+@property (weak, nonatomic) IBOutlet UITableView *modelTableView;
+
 @property (nonatomic, weak) FUOpenGLView *localRenderView;
+@property (nonatomic, strong) FULiveModel *model;
 
 #pragma Agora
 @property (nonatomic, strong) AgoraRtcEngineKit *agoraKit;    //Agora Engine
@@ -57,8 +66,7 @@
 
 @synthesize consumer;
 
-- (BOOL)prefersStatusBarHidden
-{
+- (BOOL)prefersStatusBarHidden {
     return YES;
 }
 
@@ -67,31 +75,139 @@
     
     [self addObserver];
     
-    [[FUManager shareManager] loadItems];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *hint = [[FUManager shareManager] hintForItem:[FUManager shareManager].selectedItem];
-        self.tipLabel.hidden = hint == nil;
-        self.tipLabel.text = hint;
-
-        [RoomViewController cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismissTipLabel) object:nil];
-        [self performSelector:@selector(dismissTipLabel) withObject:nil afterDelay:5];
-    });
+    CGRect frame = self.itemsView.frame ;
+    frame.origin = CGPointMake(0, self.view.frame.size.height) ;
+    frame.size = CGSizeMake(self.view.frame.size.width, frame.size.height) ;
+    self.itemsView.frame = frame;
+    self.itemsView.delegate = self ;
+    [self.view addSubview:self.itemsView];
     
     [self loadAgoraKit];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [self.mCamera stopCapture];
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     
-    [super viewWillDisappear:animated];
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortrait];
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+            break;
+            
+        default:
+            break;
+    }
 }
 
-- (void)addObserver{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive) name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    if (faceBeautyMode) {
+        CGRect tipFrame = self.tipLabel.frame ;
+        tipFrame.origin = CGPointMake(tipFrame.origin.x, [UIScreen mainScreen].bounds.size.height - 164 - tipFrame.size.height - 10) ;
+        self.tipLabel.frame = tipFrame ;
+        self.tipLabel.textColor = [UIColor whiteColor];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (self.model.type == FULiveModelTypeAnimoji) {
+        [[FUManager shareManager] setCalibrating];
+        [[FUManager shareManager] loadAnimojiFaxxBundle];
+    }
+    
+    [self.mCamera startCapture];
+    
+    if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
+        [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (self.model.type == FULiveModelTypeMusicFilter) {
+        
+        [self.mCamera removeAudio ];
+        [[FUMusicPlayer sharePlayer] stop];
+    }else if (self.model.type == FULiveModelTypeAnimoji) {
+        
+        [[FUManager shareManager] destoryAnimojiFaxxBundle];
+    }
+}
+
+- (void)updateToolBarWith:(FULiveModel *)model {
+    faceBeautyMode = self.model.type == FULiveModelTypeBeautifyFace ;
+
+    if (faceBeautyMode) {
+        [self hiddenModelTableView:YES];
+        [self hiddenButtonsWith:YES];
+        [self hiddenItemsView:YES];
+        
+        [[FUManager shareManager] loadFilter];
+        
+        [self hiddenToolBarWith:NO];
+        
+    } else {
+        [self hiddenModelTableView:YES];
+        [self hiddenButtonsWith:YES];
+        [self hiddenToolBarWith:YES];
+        
+        self.itemsView.itemsArray = self.model.items;
+        
+        NSString *selectItem = self.model.items.count > 0 ? self.model.items[0] : @"noitem" ;
+        
+        self.itemsView.selectedItem = selectItem ;
+        
+        [[FUManager shareManager] loadItem: selectItem];
+        [[FUManager shareManager] loadFilter];
+        
+        if (self.model.type == FULiveModelTypePortraitDrive) {
+            
+            [[FUManager shareManager] set3DFlipH];
+        }else if (self.model.type == FULiveModelTypeGestureRecognition) {
+            
+            [[FUManager shareManager] setLoc_xy_flip];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            NSString *alertString = [[FUManager shareManager] alertForItem:selectItem];
+            self.alertLabel.hidden = alertString == nil ;
+            self.alertLabel.text = NSLocalizedString(alertString, nil);
+            
+            [RoomViewController cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismissAlertLabel) object:nil];
+            [self performSelector:@selector(dismissAlertLabel) withObject:nil afterDelay:3];
+            
+            NSString *hint = [[FUManager shareManager] hintForItem:selectItem];
+            self.tipLabel.hidden = hint == nil;
+            self.tipLabel.text = NSLocalizedString(hint, nil);
+            
+            [RoomViewController cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismissTipLabel) object:nil];
+            [self performSelector:@selector(dismissTipLabel) withObject:nil afterDelay:5 ];
+        });
+        
+        [self hiddenItemsView:NO];
+    }
+}
+
+- (void)setModel:(FULiveModel *)model {
+    _model = model;
+    [self updateToolBarWith:model];
+}
+
+- (void)dealloc {
+    NSLog(@"dealloc");
 }
 
 #pragma mark - Agora Engine
@@ -101,15 +217,16 @@
 - (void)loadAgoraKit {
     self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:[KeyCenter AppId] delegate:self];
     [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
-    [self.agoraKit setVideoProfile:AgoraVideoProfilePortrait360P swapWidthAndHeight:NO];
-    
+    [self.agoraKit setVideoEncoderConfiguration:[[AgoraVideoEncoderConfiguration alloc]initWithSize:AgoraVideoDimension640x360
+                                                                                          frameRate:AgoraVideoFrameRateFps15
+                                                                                            bitrate:AgoraVideoBitrateStandard
+                                                                                    orientationMode:AgoraVideoOutputOrientationModeAdaptative]];
+
     [self.agoraKit setClientRole:AgoraClientRoleBroadcaster];
     [self.agoraKit enableVideo];
     [self.agoraKit setVideoSource:self];
     
-    // workaround for the big head issue
-    [self.agoraKit setParameters:@"{\"che.video.keep_prerotation\":false}"];
-    [self.agoraKit setParameters:@"{\"che.video.local.camera_index\":1025}"];
+    [self.agoraKit enableWebSdkInteroperability:YES];
     
     self.count = 0;
     self.isMuted = false;
@@ -145,7 +262,6 @@
 }
 
 #pragma mark - Agora Engine Delegate
-
 - (void)rtcEngine:(AgoraRtcEngineKit *)engine didJoinChannel:(NSString*)channel withUid:(NSUInteger)uid elapsed:(NSInteger) elapsed {
     NSLog(@"Join Channel Success");
 }
@@ -185,25 +301,12 @@
     }
 }
 
-
-- (void)willResignActive
-{
-    [self.mCamera stopCapture];
-}
-
-- (void)willEnterForeground
-{
-    [self.mCamera startCapture];
-}
-
-- (void)didBecomeActive
-{
-    [self.mCamera startCapture];
-}
-
-- (void)dismissTipLabel
-{
+- (void)dismissTipLabel {
     self.tipLabel.hidden = YES;
+}
+
+- (void)dismissAlertLabel {
+    self.alertLabel.hidden = YES ;
 }
 
 /**
@@ -211,8 +314,7 @@
  *
  *  @return FUCamera
  */
-- (FUCamera *)mCamera
-{
+- (FUCamera *)mCamera {
     if (!_mCamera) {
         _mCamera = [[FUCamera alloc] init];
         _mCamera.delegate = self;
@@ -224,41 +326,88 @@
  *  Faceunity Tool Bar
  *  Init FUAPIDemoBar，Set beauty parameters
  */
-- (void)setDemoBar:(FUAPIDemoBar *)demoBar
-{
+-(void)setDemoBar:(FUAPIDemoBar *)demoBar {
+    
     _demoBar = demoBar;
+    
+    _demoBar.performance = [FUManager shareManager].performance;
+    
+    [self demoBarSetBeautyDefultParams];
+}
+
+- (void)demoBarSetBeautyDefultParams {
+    _demoBar.delegate = nil ;
+    _demoBar.skinDetect = [FUManager shareManager].skinDetectEnable;
+    _demoBar.heavyBlur = [FUManager shareManager].blurShape ;
+    _demoBar.blurLevel = [FUManager shareManager].blurLevel ;
+    _demoBar.colorLevel = [FUManager shareManager].whiteLevel ;
+    _demoBar.redLevel = [FUManager shareManager].redLevel;
+    _demoBar.eyeBrightLevel = [FUManager shareManager].eyelightingLevel ;
+    _demoBar.toothWhitenLevel = [FUManager shareManager].beautyToothLevel ;
+    _demoBar.faceShape = [FUManager shareManager].faceShape ;
+    _demoBar.enlargingLevel = [FUManager shareManager].enlargingLevel ;
+    _demoBar.thinningLevel = [FUManager shareManager].thinningLevel ;
+    _demoBar.enlargingLevel_new = [FUManager shareManager].enlargingLevel_new ;
+    _demoBar.thinningLevel_new = [FUManager shareManager].thinningLevel_new ;
+    _demoBar.chinLevel = [FUManager shareManager].jewLevel ;
+    _demoBar.foreheadLevel = [FUManager shareManager].foreheadLevel ;
+    _demoBar.noseLevel = [FUManager shareManager].noseLevel ;
+    _demoBar.mouthLevel = [FUManager shareManager].mouthLevel ;
+    
+    _demoBar.filtersDataSource = [FUManager shareManager].filtersDataSource ;
+    _demoBar.beautyFiltersDataSource = [FUManager shareManager].beautyFiltersDataSource ;
+    _demoBar.filtersCHName = [FUManager shareManager].filtersCHName ;
+    _demoBar.selectedFilter = [FUManager shareManager].selectedFilter ;
+    _demoBar.selectedFilterLevel = [FUManager shareManager].selectedFilterLevel;
+    
     _demoBar.delegate = self;
-    
-    _demoBar.itemsDataSource =  [FUManager shareManager].itemsDataSource;
-    _demoBar.filtersDataSource = [FUManager shareManager].filtersDataSource;
-    _demoBar.filtersCHName = [FUManager shareManager].filtersCHName;
-    _demoBar.beautyFiltersDataSource = [FUManager shareManager].beautyFiltersDataSource;
-    
-    _demoBar.selectedItem = [FUManager shareManager].selectedItem;      // selected item
-    _demoBar.selectedFilter = [FUManager shareManager].selectedFilter;  // selected filter
-    _demoBar.whiteLevel = [FUManager shareManager].beautyLevel;         // beauty level (0~1)
-    _demoBar.redLevel = [FUManager shareManager].redLevel;              // red level (0~1)
-    _demoBar.selectedBlur = [FUManager shareManager].selectedBlur;      // blur (0、1、2、3、4、5、6)
-    _demoBar.skinDetectEnable = [FUManager shareManager].skinDetectEnable;// skin detect enabled (YES/NO)
-    _demoBar.faceShape = [FUManager shareManager].faceShape;            // face shape (0、1、2、3)
-    _demoBar.faceShapeLevel = [FUManager shareManager].faceShapeLevel;  // face shape level (0~1)
-    _demoBar.enlargingLevel = [FUManager shareManager].enlargingLevel;  // eye large level (0~1)*/
-    _demoBar.thinningLevel = [FUManager shareManager].thinningLevel;    // face thining level (0~1)
+}
+
+/**
+* UI amiate
+*/
+- (void)hiddenButtonsWith:(BOOL)hidden {
+    self.barBtn.hidden = hidden;
+    self.cameraSwitchBtn.hidden = hidden;
+    self.muteBtn.hidden = hidden;
+}
+
+- (void)hiddenToolBarWith:(BOOL)hidden {
+    self.demoBar.alpha = hidden ? 1.0 : 0.0;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.performanceBtn.hidden = hidden;
+        self.demoBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.demoBar.frame.size.height);
+        self.demoBar.alpha = hidden ? 0.0 : 1.0;
+    }];
+}
+
+- (void)hiddenModelTableView:(BOOL)hidden {
+    self.modelTableView.alpha = hidden ? 1.0 : 0.0;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.modelTableView.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(-90, 0);
+        self.modelTableView.alpha = hidden ? 0.0 : 1.0;
+    }];
+}
+
+- (void)hiddenItemsView:(BOOL)hidden {
+    self.itemsView.alpha = hidden ? 1.0 : 0.0;
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect frame = self.itemsView.frame ;
+        frame.origin = hidden ? CGPointMake(0, self.view.frame.size.height) : CGPointMake(0, self.view.frame.size.height - ([[[FUManager shareManager] getPlatformtype] isEqualToString:@"iPhone X"] ? 108 : 74));
+        
+        self.itemsView.frame = frame;
+        self.itemsView.alpha = hidden ? 0.0 : 1.0;
+    }];
 }
 
 /**
 * Show the tool bar
 */
 - (IBAction)filterBtnClick:(UIButton *)sender {
-    self.barBtn.hidden = YES;
-    self.cameraSwitchBtn.hidden = YES;
-    self.muteBtn.hidden = YES;
-    
-    self.demoBar.alpha = 0.0 ;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.demoBar.transform = CGAffineTransformMakeTranslation(0, -self.demoBar.frame.size.height);
-        self.demoBar.alpha = 1.0 ;
-    }];
+    [self hiddenButtonsWith:YES];
+    [self hiddenToolBarWith:YES];
+    [self hiddenItemsView:YES];
+    [self hiddenModelTableView:NO];
 }
 
 /**
@@ -267,24 +416,21 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches allObjects].firstObject;
-    if (touch.view == self.demoBar || !self.barBtn.hidden) {
+    if (touch.view == self.demoBar || touch.view == self.modelTableView || touch.view == self.itemsView || !self.barBtn.hidden) {
         return;
     }
-    self.demoBar.alpha = 1.0 ;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.demoBar.transform = CGAffineTransformIdentity;
-        self.demoBar.alpha = 0.0 ;
-    } completion:^(BOOL finished) {
-        self.barBtn.hidden = NO;
-        self.cameraSwitchBtn.hidden = NO;
-        self.muteBtn.hidden = NO;
-    }];
+    [self hiddenButtonsWith:NO];
+    [self hiddenToolBarWith:YES];
+    [self hiddenModelTableView:YES];
+    [self hiddenItemsView:YES];
 }
 
 - (IBAction)leaveBtnClick:(UIButton *)sender {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.mCamera stopCapture];
-    [[FUManager shareManager] destoryItems];
+    dispatch_async(self.mCamera.videoCaptureQueue, ^{
+        [[FUManager shareManager] destoryItems];
+    });
     [self.agoraKit setVideoSource:nil];
     [self.agoraKit leaveChannel:nil];
     [self.localRenderView removeFromSuperview];
@@ -311,6 +457,60 @@
     [self.muteBtn setImage:[UIImage imageNamed: self.isMuted ? @"microphone-mute" : @"microphone"] forState:UIControlStateNormal];
 }
 
+- (IBAction)buglyBtnClick:(UIButton *)sender {
+    self.buglyLabel.hidden = !self.buglyLabel.hidden;
+}
+
+#pragma mark --- FUItemsViewDelegate
+- (void)itemsViewDidSelectedItem:(NSString *)item {
+    [[FUManager shareManager] loadItem:item];
+    
+    [self.itemsView stopAnimation];
+    
+    
+    if (self.model.type == FULiveModelTypeAnimoji) {
+        if ([item isEqualToString:@"noitem"]) {
+            
+            [[FUManager shareManager] removeCalibrating];
+        }else {
+            
+            [[FUManager shareManager] setCalibrating];
+        }
+    }
+    
+    if (self.model.type == FULiveModelTypeMusicFilter) {
+        [[FUMusicPlayer sharePlayer] stop];
+        if (![item isEqualToString:@"noitem"]) {
+            [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"];
+        }
+    }
+    
+    
+    if (self.model.type == FULiveModelTypeGestureRecognition) {
+        
+        [[FUManager shareManager] setLoc_xy_flip];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        NSString *alertString = [[FUManager shareManager] alertForItem:item];
+        self.alertLabel.hidden = alertString == nil ;
+        self.alertLabel.text = NSLocalizedString(alertString, nil) ;
+        
+        [RoomViewController cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismissAlertLabel) object:nil];
+        [self performSelector:@selector(dismissAlertLabel) withObject:nil afterDelay:3];
+        
+        NSString *hint = [[FUManager shareManager] hintForItem:item];
+        self.tipLabel.hidden = hint == nil;
+        self.tipLabel.text = NSLocalizedString(hint, nil);
+        
+        [RoomViewController cancelPreviousPerformRequestsWithTarget:self selector:@selector(dismissTipLabel) object:nil];
+        [self performSelector:@selector(dismissTipLabel) withObject:nil afterDelay:5 ];
+        
+    });
+}
+
+
 #pragma mark - FUAPIDemoBar Delegate
 - (void)demoBarDidSelectedItem:(NSString *)item
 {
@@ -331,35 +531,80 @@
 /**
  * Reset beauty parameters when the parameters changed
  */
-- (void)demoBarBeautyParamChanged
-{
+- (void)demoBarBeautyParamChanged {
     [self syncBeautyParams];
 }
 
-- (void)syncBeautyParams
-{
-    [FUManager shareManager].selectedFilter = _demoBar.selectedFilter;
-    [FUManager shareManager].selectedFilterLevel = _demoBar.selectedFilterLevel;
-    [FUManager shareManager].selectedBlur = _demoBar.selectedBlur;
-    [FUManager shareManager].skinDetectEnable = _demoBar.skinDetectEnable;
-    [FUManager shareManager].beautyLevel = _demoBar.whiteLevel;
+- (void)syncBeautyParams {
+    [FUManager shareManager].skinDetectEnable = _demoBar.skinDetect;
+    [FUManager shareManager].blurShape = _demoBar.heavyBlur;
+    [FUManager shareManager].blurLevel = _demoBar.blurLevel ;
+    [FUManager shareManager].whiteLevel = _demoBar.colorLevel;
     [FUManager shareManager].redLevel = _demoBar.redLevel;
+    [FUManager shareManager].eyelightingLevel = _demoBar.eyeBrightLevel;
+    [FUManager shareManager].beautyToothLevel = _demoBar.toothWhitenLevel;
     [FUManager shareManager].faceShape = _demoBar.faceShape;
-    [FUManager shareManager].faceShapeLevel = _demoBar.faceShapeLevel;
-    [FUManager shareManager].thinningLevel = _demoBar.thinningLevel;
     [FUManager shareManager].enlargingLevel = _demoBar.enlargingLevel;
+    [FUManager shareManager].thinningLevel = _demoBar.thinningLevel;
+    [FUManager shareManager].enlargingLevel_new = _demoBar.enlargingLevel_new;
+    [FUManager shareManager].thinningLevel_new = _demoBar.thinningLevel_new;
+    [FUManager shareManager].jewLevel = _demoBar.chinLevel;
+    [FUManager shareManager].foreheadLevel = _demoBar.foreheadLevel;
+    [FUManager shareManager].noseLevel = _demoBar.noseLevel;
+    [FUManager shareManager].mouthLevel = _demoBar.mouthLevel;
+    
+    [FUManager shareManager].selectedFilter = _demoBar.selectedFilter ;
+    [FUManager shareManager].selectedFilterLevel = _demoBar.selectedFilterLevel;
+}
+
+- (IBAction)performanceBtnClicked:(UIButton *)sender {
+    sender.selected = !sender.selected ;
+    
+    self.demoBar.performance = sender.selected ;
+    
+    [FUManager shareManager].performance = sender.selected;
+    
+    [[FUManager shareManager] setBeautyDefaultParameters];
+    
+    [FUManager shareManager].blurShape = sender.selected ? 1 : 0 ;
+    [FUManager shareManager].faceShape = sender.selected ? 3 : 4;;
+    
+    [self demoBarSetBeautyDefultParams];
 }
 
 #pragma mark - FUCameraDelegate
+bool isNeeded = YES;
+- (void)didOutputVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+    if (isNeeded) {
+        isNeeded = !isNeeded;
+        return;
+    }
 
-- (void)didOutputVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer { 
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    isNeeded = !isNeeded;
+    
+    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+    
+    CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer) ;
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    
+    CFAbsoluteTime startRenderTime = CFAbsoluteTimeGetCurrent();
     
     //render the items to pixelbuffer
     [[FUManager shareManager] renderItemsToPixelBuffer:pixelBuffer];
     
+    CFAbsoluteTime renderTime = (CFAbsoluteTimeGetCurrent() - startRenderTime);
+    
     //render the pixelbuffer to screen
     [self.localRenderView displayPixelBuffer:pixelBuffer];
+    
+    if (self.model.type == FULiveModelTypeMusicFilter) {
+        [[FUManager shareManager] musicFilterSetMusicTime];
+    }
+    
+    CFAbsoluteTime frameTime = (CFAbsoluteTimeGetCurrent() - startTime);
+    
+    int frameWidth = (int)CVPixelBufferGetWidth(pixelBuffer);
+    int frameHeight = (int)CVPixelBufferGetHeight(pixelBuffer);
     
     CGSize frameSize;
     if (CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_32BGRA) {
@@ -368,55 +613,73 @@
         frameSize = CGSizeMake(CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
     }
     
+    NSString *ratioStr = [NSString stringWithFormat:@"%dX%d", frameWidth, frameHeight];
     dispatch_async(dispatch_get_main_queue(), ^{
-        //determine if faces are detected
+        /**判断是否检测到人脸*/
         self.noTrackLabel.hidden = [[FUManager shareManager] isTracking];
         
-        //display the error info
-        self.errorLabel.text = [[FUManager shareManager] getError];
+        CGFloat fps = 1.0 / frameTime ;
+        if (fps > 30) {
+            fps = 30 ;
+        }
+        self.buglyLabel.text = [NSString stringWithFormat:@"resolution:\n %@\nfps: %.0f \nrender time:\n %.0fms", ratioStr, fps, renderTime * 1000.0];
         
-        //adjust the camera exposure parameters and focus parameters in real time according to the center of the face
+        // 根据人脸中心点实时调节摄像头曝光参数及聚焦参数
         CGPoint center = [[FUManager shareManager] getFaceCenterInFrameSize:frameSize];;
         self.mCamera.exposurePoint = CGPointMake(center.y,self.mCamera.isFrontCamera ? center.x:1-center.x);
-        
-        //expression calibration tips
-        BOOL isCalibrating = [[FUManager shareManager] isCalibrating];
-        if (isCalibrating) {
-            
-            if (self.calibrateLabel.hidden) {
-                pointCount = -1;
-                self.calibrateLabel.alpha = 0.5;
-                [UIView animateWithDuration:0.5 animations:^{
-                    self.calibrateLabel.hidden = NO;
-                    self.calibrateLabel.alpha = 1.0;
-                }];
-                [self calibratingLabelAnimation];
-            }
-        }else{
-            pointCount = -1;
-            self.calibrateLabel.hidden = YES;
-        }
     });
     
     // push video frame to agora
     [self.consumer consumePixelBuffer:pixelBuffer withTimestamp:CMSampleBufferGetPresentationTimeStamp(sampleBuffer) rotation:AgoraVideoRotationNone];
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 }
 
-static int pointCount = 0;
-- (void)calibratingLabelAnimation{
-    if (self.calibrateLabel.hidden == NO) {
-        pointCount += 1;
-        pointCount = pointCount % 6;
-        
-        NSString *text = @"Calibrating";
-        for (int i = 0; i<= pointCount; i++) {
-            text = [text stringByAppendingString:@"."];
-        }
-        self.calibrateLabel.text = text;
-        
-        [self performSelector:@selector(calibratingLabelAnimation) withObject:nil afterDelay:0.5];
-    }else{
-        pointCount = 0;
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    FULiveCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FULiveCell" forIndexPath:indexPath];
+    cell.model = (FULiveModel *)[[FUManager shareManager].dataSource objectAtIndex:indexPath.row];
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [FUManager shareManager].dataSource.count;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    FULiveModel *model = (FULiveModel *)[[FUManager shareManager].dataSource objectAtIndex:indexPath.row];
+    if (model.enble) {
+        self.model = model;
+    } else {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
+
+#pragma mark --- Observer
+
+- (void)addObserver{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)willResignActive {
+    [_mCamera stopCapture];
+    if (self.model.type == FULiveModelTypeMusicFilter) {
+        [[FUMusicPlayer sharePlayer] pause] ;
+    }
+}
+
+- (void)willEnterForeground {
+    [_mCamera startCapture];
+    if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
+        [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"] ;
+    }
+}
+
+- (void)didBecomeActive {
+    [_mCamera startCapture];
+    if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
+        [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"] ;
     }
 }
 
