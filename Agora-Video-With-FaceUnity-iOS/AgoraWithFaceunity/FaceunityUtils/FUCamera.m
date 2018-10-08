@@ -9,8 +9,18 @@
 #import "FUCamera.h"
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    CommonMode,
+    PhotoTakeMode,
+    VideoRecordMode,
+    VideoRecordEndMode,
+} RunMode;
+
+
 @interface FUCamera()<AVCaptureVideoDataOutputSampleBufferDelegate,AVCaptureAudioDataOutputSampleBufferDelegate>
 {
+    RunMode runMode;
+    
     BOOL hasStarted;
 }
 @property (nonatomic, strong) AVCaptureSession *captureSession;
@@ -22,6 +32,8 @@
 
 @property (assign, nonatomic) AVCaptureDevicePosition cameraPosition;
 
+@property (nonatomic, strong) AVCaptureDeviceInput      *audioMicInput;//麦克风输入
+@property (nonatomic, strong) AVCaptureAudioDataOutput  *audioOutput;//音频输出
 
 @end
 
@@ -46,9 +58,12 @@
 }
 
 - (void)startCapture{
+    
     if (![self.captureSession isRunning] && !hasStarted) {
         hasStarted = YES;
         [self.captureSession startRunning];
+        self.exposurePoint = CGPointMake(0.49, 0.5);
+        self.focusPoint = CGPointMake(0.49, 0.5);
     }
 }
 
@@ -59,11 +74,21 @@
     }
 }
 
+- (void)addAudio    {
+    if ([_captureSession canAddOutput:self.audioOutput]) {
+        [_captureSession addOutput:self.audioOutput];
+    }
+}
+
+- (void)removeAudio {
+    [_captureSession removeOutput:self.audioOutput];
+}
+
 - (AVCaptureSession *)captureSession
 {
     if (!_captureSession) {
         _captureSession = [[AVCaptureSession alloc] init];
-        _captureSession.sessionPreset = AVCaptureSessionPresetHigh;
+        _captureSession.sessionPreset = AVCaptureSessionPreset640x480;
         
         AVCaptureDeviceInput *deviceInput = self.isFrontCamera ? self.frontCameraInput:self.backCameraInput;
         
@@ -74,6 +99,12 @@
         if ([_captureSession canAddOutput:self.videoOutput]) {
             [_captureSession addOutput:self.videoOutput];
         }
+        
+        if ([_captureSession canAddInput:self.audioMicInput]) {
+            [_captureSession addInput:self.audioMicInput];
+        }
+        
+        [self addAudio];
         
         [self.videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
         if (self.videoConnection.supportsVideoMirroring && self.isFrontCamera) {
@@ -116,6 +147,33 @@
     return _frontCameraInput;
 }
 
+- (AVCaptureDeviceInput *)audioMicInput
+{
+    if (!_audioMicInput) {
+        //添加后置麦克风的输出
+        
+        AVCaptureDevice *mic = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
+        NSError *error;
+        _audioMicInput = [AVCaptureDeviceInput deviceInputWithDevice:mic error:&error];
+        if (error) {
+            NSLog(@"获取麦克风失败~");
+        }
+    }
+    return _audioMicInput;
+}
+
+- (AVCaptureAudioDataOutput *)audioOutput
+{
+    if (!_audioOutput) {
+        //添加音频输出
+        _audioOutput = [[AVCaptureAudioDataOutput alloc] init];
+        [_audioOutput setSampleBufferDelegate:self queue:self.audioCaptureQueue];
+    }
+    
+    return _audioOutput;
+}
+
+
 //返回前置摄像头
 - (AVCaptureDevice *)frontCamera {
     return [self cameraWithPosition:AVCaptureDevicePositionFront];
@@ -129,15 +187,14 @@
 //切换前后置摄像头
 - (void)changeCameraInputDeviceisFront:(BOOL)isFront {
     
+    [self.captureSession stopRunning];
     if (isFront) {
-        [self.captureSession stopRunning];
         [self.captureSession removeInput:self.backCameraInput];
         if ([self.captureSession canAddInput:self.frontCameraInput]) {
             [self.captureSession addInput:self.frontCameraInput];
         }
         self.cameraPosition = AVCaptureDevicePositionFront;
     }else {
-        [self.captureSession stopRunning];
         [self.captureSession removeInput:self.frontCameraInput];
         if ([self.captureSession canAddInput:self.backCameraInput]) {
             [self.captureSession addInput:self.backCameraInput];
@@ -195,17 +252,25 @@
         _videoOutput = [[AVCaptureVideoDataOutput alloc] init];
         [_videoOutput setAlwaysDiscardsLateVideoFrames:YES];
         [_videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:_captureFormat] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
-        [_videoOutput setSampleBufferDelegate:self queue:self.captureQueue];
+        [_videoOutput setSampleBufferDelegate:self queue:self.videoCaptureQueue];
     }
     return _videoOutput;
 }
 
-//录制的队列
-- (dispatch_queue_t)captureQueue {
-    if (_captureQueue == nil) {
-        _captureQueue = dispatch_queue_create("com.faceunity.captureQueue", DISPATCH_QUEUE_SERIAL);
+//视频采集队列
+- (dispatch_queue_t)videoCaptureQueue {
+    if (_videoCaptureQueue == nil) {
+        _videoCaptureQueue = dispatch_queue_create("com.faceunity.videoCaptureQueue", NULL);
     }
-    return _captureQueue;
+    return _videoCaptureQueue;
+}
+
+//音频采集队列
+- (dispatch_queue_t)audioCaptureQueue {
+    if (_audioCaptureQueue == nil) {
+        _audioCaptureQueue = dispatch_queue_create("com.faceunity.audioCaptureQueue", NULL);
+    }
+    return _audioCaptureQueue;
 }
 
 //视频连接
@@ -285,11 +350,44 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    if (captureOutput == self.audioOutput) {
+        return ;
+    }
+    
     if([self.delegate respondsToSelector:@selector(didOutputVideoSampleBuffer:)])
     {
         [self.delegate didOutputVideoSampleBuffer:sampleBuffer];
     }
     
+    switch (runMode) {
+        case CommonMode:
+            break;
+        case PhotoTakeMode:
+            break;
+        case VideoRecordMode:
+            break;
+        case VideoRecordEndMode:
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)takePhotoAndSave
+{
+    runMode = PhotoTakeMode;
+}
+
+//开始录像
+- (void)startRecord
+{
+    runMode = VideoRecordMode;
+}
+
+//停止录像
+- (void)stopRecord
+{
+    runMode = VideoRecordEndMode;
 }
 
 - (UIImage *)imageFromPixelBuffer:(CVPixelBufferRef)pixelBufferRef {
@@ -331,6 +429,11 @@
     CGImageRelease(videoImage);
     CVPixelBufferUnlockBaseAddress(pixelBufferRef, 0);
     return image;
+}
+
+- (void)setCaptureVideoOrientation:(AVCaptureVideoOrientation) orientation {
+    
+    [self.videoConnection setVideoOrientation:orientation];
 }
 
 @end

@@ -216,7 +216,7 @@ enum
         
         boundsSizeAtFrameBufferEpoch = self.bounds.size;
         
-        dispatch_sync(_contextQueue, ^{
+        dispatch_async(_contextQueue, ^{
             [self destroyDisplayFramebuffer];
             [self createDisplayFramebuffer];
             [self updateVertices];
@@ -231,6 +231,7 @@ enum
         [self destoryProgram];
         
         if(videoTextureCache) {
+            CVOpenGLESTextureCacheFlush(videoTextureCache, 0);
             CFRelease(videoTextureCache);
             videoTextureCache = NULL;
         }
@@ -317,6 +318,8 @@ enum
 {
     glBindRenderbuffer(GL_RENDERBUFFER, renderBufferHandle);
     [self.glContext presentRenderbuffer:GL_RENDERBUFFER];
+    
+    glFinish() ;
 }
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
@@ -873,4 +876,5 @@ enum
     
     return YES;
 }
+
 @end

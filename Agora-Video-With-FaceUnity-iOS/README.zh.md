@@ -1,4 +1,6 @@
+# Agora Video With Faceunity
 
+*Read this in other languages: [English](README.md)*
 
 这个开源示例项目演示了如果快速集成 [Agora](www.agora.io) 视频 SDK 和 [Faceunity](http://www.faceunity.com) 美颜 SDK，实现一对一视频聊天。
 
@@ -12,7 +14,7 @@ Agora
 
 Faceunity
 
-- 贴纸，滤镜，美颜滤镜，美肤，美型功能
+- 美颜，贴纸，AR面具，换脸，表情识别，背景分割，手势识别等功能
 - 切换采集模式
 - 切换前置摄像头和后置摄像头
 
@@ -42,6 +44,11 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/2.1.2/
 * XCode 8.0 +
 * iOS 真机设备
 * 不支持模拟器
+
+## FAQ
+- 请尽量不要使用声网提供的裸数据接口集成美颜功能
+- videosource内部是强引用，不用时必须置nil，不然会造成循环引用
+- 如果遇到大头问题请联系技术支持
 
 ## 联系我们
 

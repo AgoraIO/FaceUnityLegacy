@@ -2,6 +2,7 @@ xcuserdata
 .DS_Store
 *.xcscmblueprint
 libs
+*.framework
 
 # Xcode
 #

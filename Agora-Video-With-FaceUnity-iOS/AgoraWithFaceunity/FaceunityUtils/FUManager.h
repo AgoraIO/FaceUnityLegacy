@@ -2,72 +2,119 @@
 //  FUManager.h
 //  FULiveDemo
 //
-//  Created by 刘洋 on 2017/8/18.
-//  Copyright © 2017年 刘洋. All rights reserved.
+//  Created by yangliu on 2017/8/18.
+//  Copyright © 2017年 yangliu. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+@class FULiveModel ;
 @interface FUManager : NSObject
 
-@property (nonatomic, assign)               BOOL enableGesture;         /**设置是否开启手势识别，默认未开启*/
-@property (nonatomic, assign)               BOOL enableMaxFaces;        /**设置人脸识别个数，默认为单人模式*/
+@property (nonatomic, assign)               BOOL enableGesture;/** gesture recognition, default is NO*/
+@property (nonatomic, assign)               BOOL enableMaxFaces;/** max recognition faces, NO for 1, Yes for 4*/
 
-@property (nonatomic, assign)               NSInteger selectedBlur;     /**磨皮(0、1、2、3、4、5、6)*/
-@property (nonatomic, assign)               BOOL skinDetectEnable;      /**是否开启皮肤检测(YES/NO)*/
-@property (nonatomic, assign)               double redLevel;            /**红润 (0~1)*/
-@property (nonatomic, assign)               double faceShapeLevel;      /**美型等级 (0~1)*/
-@property (nonatomic, assign)               NSInteger faceShape;        /**美型类型 (0、1、2、3) 默认：3，女神：0，网红：1，自然：2*/
-@property (nonatomic, assign)               double beautyLevel;         /**美白 (0~1)*/
-@property (nonatomic, assign)               double thinningLevel;       /**瘦脸 (0~1)*/
-@property (nonatomic, assign)               double enlargingLevel;      /**大眼 (0~1)*/
-@property (nonatomic, strong)               NSString *selectedFilter;   /**选中的滤镜名称*/
-@property (nonatomic, assign)               double selectedFilterLevel; /**选中滤镜的程度*/
-@property (nonatomic, strong)               NSString *selectedItem;     /**选中的道具名称*/
-@property (nonatomic, strong)               NSArray<NSString *> *itemsDataSource;       /**道具名称数组*/
-@property (nonatomic, strong)               NSArray<NSString *> *filtersDataSource;     /**滤镜名称数组*/
-@property (nonatomic, strong)               NSArray<NSString *> *beautyFiltersDataSource;     /**美颜滤镜名称数组*/
-@property (nonatomic, strong) NSDictionary<NSString *,NSString *> *filtersCHName;       /**滤镜中文名称数组*/
+@property (nonatomic, assign) BOOL skinDetectEnable ;   // skin detect
+@property (nonatomic, assign) NSInteger blurShape;      // blur type (0、1、) clear：0，not clear：1
+@property (nonatomic, assign) double blurLevel;         // blur (0.0 - 6.0)
+@property (nonatomic, assign) double whiteLevel;        // skin whiten
+@property (nonatomic, assign) double redLevel;          // skin red
+@property (nonatomic, assign) double eyelightingLevel;  // eye bright
+@property (nonatomic, assign) double beautyToothLevel;  // tooth whiten
 
+@property (nonatomic, assign) NSInteger faceShape;        //face type (0、1、2、3、4)girlish：0，model：1，origin：2，default：3，custom：4
+@property (nonatomic, assign) double enlargingLevel;      /** eye enlarging (0~1)*/
+@property (nonatomic, assign) double thinningLevel;       /** cheek thinning (0~1)*/
+@property (nonatomic, assign) double enlargingLevel_new;  /** new version of eye enlarging (0~1)*/
+@property (nonatomic, assign) double thinningLevel_new;   /** new version of cheek thinning (0~1)*/
+
+@property (nonatomic, assign) double jewLevel;            /** chin (0~1)*/
+@property (nonatomic, assign) double foreheadLevel;       /** forehead (0~1)*/
+@property (nonatomic, assign) double noseLevel;           /** nose (0~1)*/
+@property (nonatomic, assign) double mouthLevel;          /** mouth (0~1)*/
+
+@property (nonatomic, strong) NSArray<NSString *> *filtersDataSource;     /** filter array */
+@property (nonatomic, strong) NSArray<NSString *> *beautyFiltersDataSource;     /** beauty filter array */
+@property (nonatomic, strong) NSDictionary<NSString *,NSString *> *filtersCHName;       /** Chinese character of filter array */
+@property (nonatomic, strong) NSString *selectedFilter; /* current filter */
+@property (nonatomic, assign) double selectedFilterLevel; /* level of current filter */
+
+@property (nonatomic, strong)               NSMutableArray<FULiveModel *> *dataSource;  /** items array */
+@property (nonatomic, strong)               NSString *selectedItem;     /**current item name */
+
+@property (nonatomic, assign) BOOL performance ;
 + (FUManager *)shareManager;
 
-/**初始化Faceunity,加载道具*/
+// set default beauty params
+- (void)setBeautyDefaultParameters ;
+
+/** load default items */
 - (void)loadItems;
 
-/**销毁全部道具*/
+/** load beauty face item */
+- (void)loadFilter ;
+
+/** destroy all items */
 - (void)destoryItems;
 
-/**加载普通道具*/
+/** load common item with name */
 - (void)loadItem:(NSString *)itemName;
 
-/**获取item的提示语*/
+// load Bundle of @"fxaa.bundle"
+- (void)loadAnimojiFaxxBundle ;
+
+// destroy bundle of @"fxaa.bundle"
+- (void)destoryAnimojiFaxxBundle ;
+
+// set music time for items with music
+- (void)musicFilterSetMusicTime ;
+
+/** set  Facial calibration **/
+- (void)setCalibrating ;
+
+/** remove  Facial calibration **/
+- (void)removeCalibrating ;
+
+/** is  Facial calibration now?**/
+- (BOOL)isCalibrating ;
+
+/** get hint of current item */
 - (NSString *)hintForItem:(NSString *)item;
 
-/**将道具绘制到pixelBuffer*/
+/** get alert of current item */
+- (NSString *)alertForItem:(NSString *)item ;
+
+/** render items effect to pixelBuffer */
 - (CVPixelBufferRef)renderItemsToPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
-/**获取75个人脸特征点*/
+// set 3D flip
+- (void)set3DFlipH ;
+
+// set flip
+- (void)setLoc_xy_flip ;
+
+/** get 75 landmarks of current face*/
 - (void)getLandmarks:(float *)landmarks;
 
-/**
- 获取图像中人脸中心点位置
-
- @param frameSize 图像的尺寸，该尺寸要与视频处理接口或人脸信息跟踪接口中传入的图像宽高相一致
- @return 返回一个以图像左上角为原点的中心点
- */
+/** get center point of current face rectangle*/
 - (CGPoint)getFaceCenterInFrameSize:(CGSize)frameSize;
 
-/**判断是否检测到人脸*/
+/** is there human face in current image */
 - (BOOL)isTracking;
 
-/**切换摄像头要调用此函数*/
+/** change camera to back/front camera */
 - (void)onCameraChange;
 
-/**获取错误信息*/
+/** get error string*/
 - (NSString *)getError;
-    
-- (BOOL)isCalibrating;
-    
+
+/** is the SDK lite version **/
+- (BOOL)isLiteSDK ;
+
+/** get current device platforma**/
+- (NSString *)getPlatformtype ;
+
+
 @end
