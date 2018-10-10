@@ -29,13 +29,13 @@
 		0F29C6E420527DF4000F8159 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E320527DF4000F8159 /* SystemConfiguration.framework */; };
 		0F29C6F220527E46000F8159 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6F120527E45000F8159 /* libc++.1.tbd */; };
 		0F29C6F420527E50000F8159 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6F320527E50000F8159 /* libresolv.tbd */; };
+		0F308540216DB831002A1D28 /* FUAPIDemoBar.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0FD4E20D2105CA53006E46A1 /* FUAPIDemoBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0F308541216DCED6002A1D28 /* FUAPIDemoBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FD4E20D2105CA53006E46A1 /* FUAPIDemoBar.framework */; };
 		0F7FAAFB20E09DC400EF49FD /* FUItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAAFA20E09DC400EF49FD /* FUItemsView.m */; };
 		0F7FAAFE20E09E1200EF49FD /* FUItemsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAAFD20E09E1200EF49FD /* FUItemsViewCell.m */; };
 		0F7FAB0120E0A4A000EF49FD /* FUCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAB0020E0A49F00EF49FD /* FUCamera.m */; };
 		0F7FAB0420E0D61E00EF49FD /* FUManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAB0320E0D61D00EF49FD /* FUManager.m */; };
 		0FD4E2052105C747006E46A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0FD4E2072105C747006E46A1 /* Localizable.strings */; };
-		0FD4E20E2105CA53006E46A1 /* FUAPIDemoBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FD4E20D2105CA53006E46A1 /* FUAPIDemoBar.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		0FD4E20F2105CCC7006E46A1 /* FUAPIDemoBar.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0FD4E20D2105CA53006E46A1 /* FUAPIDemoBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0FDB800620DA3C8E005D9C58 /* touhua_ztt_fu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8020DA3C8E005D9C58 /* touhua_ztt_fu.bundle */; };
 		0FDB800720DA3C8E005D9C58 /* yazui.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8120DA3C8E005D9C58 /* yazui.bundle */; };
 		0FDB800820DA3C8E005D9C58 /* yuguan.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8220DA3C8E005D9C58 /* yuguan.bundle */; };
@@ -188,7 +188,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0FD4E20F2105CCC7006E46A1 /* FUAPIDemoBar.framework in CopyFiles */,
+				0F308540216DB831002A1D28 /* FUAPIDemoBar.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +380,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F308541216DCED6002A1D28 /* FUAPIDemoBar.framework in Frameworks */,
 				0F02C1FB20561D1B006EF198 /* AudioToolbox.framework in Frameworks */,
 				0F02C1FA20561D14006EF198 /* VideoToolbox.framework in Frameworks */,
 				0F02C1F920561D0D006EF198 /* AVFoundation.framework in Frameworks */,
@@ -393,7 +394,6 @@
 				0F29C6E220527D4A000F8159 /* AgoraRtcEngineKit.framework in Frameworks */,
 				0F29C6DE205272B4000F8159 /* libstdc++.tbd in Frameworks */,
 				0F29C6DA205271C1000F8159 /* Accelerate.framework in Frameworks */,
-				0FD4E20E2105CA53006E46A1 /* FUAPIDemoBar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
