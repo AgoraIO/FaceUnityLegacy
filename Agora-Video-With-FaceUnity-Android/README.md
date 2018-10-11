@@ -15,7 +15,7 @@ This tutorial enables you to quickly get started in your development efforts to 
 ## Quick Start
 This section shows you how to prepare, build, and run the sample application.
 
-##### In order to build and run agora sample application you must obtain an agora App ID: 
+#### In order to build and run agora sample application you must obtain an agora App ID: 
 
 1. Create a developer account at [agora.io](https://dashboard.agora.io/signin/). Once you finish the signup process, you will be redirected to the Dashboard.
 2. Navigate in the Dashboard tree on the left to **Projects** > **Project List**. Create a new project if needed.
@@ -24,7 +24,7 @@ This section shows you how to prepare, build, and run the sample application.
 <string name="agora_app_id"><#YOUR APP ID#></string>
 ```
 
-##### Prepare agora SDK
+#### Prepare agora SDK
 1. Download agora SDK from the official download page: https://www.agora.io/en/download/.
 2. Unpack the zip file, copy all .so libraries to their corresponding abi folders (app\src\main\jniLibs). The folder structure of jniLibs should be like this:
 
@@ -48,7 +48,7 @@ jniLibs
 
 4. Besides, copy agora-rtc-sdk.jar into "app/libs" folder.
 
-##### FaceUnity needs an authentication file to validate its functions
+#### FaceUnity needs an authentication file to validate its functions
 1 . Contact sales@agora.io and get authpack.java for Faceunity SDK, then copy authpack.java to folder **faceunity/src/main/java/com/faceunity/**.
 
 
