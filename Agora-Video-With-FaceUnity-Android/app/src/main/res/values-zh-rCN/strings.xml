@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">FU&amp;Agora</string>
-    <string name="fu_live_demo">FU Live Demo</string>
-    <string name="agora_app_id">85a5102fa13341f4bb06be1a0e109080</string>
+    <string name="agora_app_id"><#APP_ID#></string>
 
     <string name="home_function_name_beauty">美颜</string>
     <string name="home_function_name_animoji">Animoji</string>
@@ -14,12 +13,13 @@
     <string name="home_function_name_gesture">手势识别</string>
     <string name="home_function_name_face_warp">哈哈镜</string>
     <string name="home_function_name_portrait_drive">人像驱动</string>
-    <string name="home_function_name_makeup">美妆</string>
     <string name="sorry_no_permission">抱歉，你所使用的证书权限或SDK不包括该功能。</string>
     <string name="camera_dialog_title">警告</string>
     <string name="camera_dialog_message">相机权限被禁用或者相机被别的应用占用！</string>
     <string name="camera_dialog_open">重试</string>
     <string name="camera_dialog_back">退出</string>
+
+    <string name="expression_calibrating">表情校准中</string>
 
     <string name="fu_base_debug">Resolution:\n\t%dX%d\nFPS:%d\nRender time:\n\t\t\t\t\t%dms</string>
     <string name="save_photo_success">保存照片成功！</string>
@@ -57,13 +57,6 @@
     <string name="beauty_radio_face_shape">美型</string>
     <string name="beauty_radio_beauty_filter">美颜滤镜</string>
     <string name="beauty_radio_filter">滤镜</string>
-    <string name="makeup_radio_lipstick">口红</string>
-    <string name="makeup_radio_blusher">腮红</string>
-    <string name="makeup_radio_eyebrow">眉毛</string>
-    <string name="makeup_radio_eye_shadow">眼影</string>
-    <string name="makeup_radio_eye_liner">眼线</string>
-    <string name="makeup_radio_eyelash">睫毛</string>
-    <string name="makeup_radio_contact_lens">美瞳</string>
 
     <string name="select_data_photo">选择图片</string>
     <string name="select_data_video">选择视频</string>
@@ -79,7 +72,7 @@
     <string name="qingqing_ztt_fu">嘟嘴试试</string>
     <string name="xiaobianzi_zh_fu">微笑触发</string>
     <string name="xiaoxueshen_ztt_fu">吹气触发</string>
-    <string name="hez_ztt_fu">张嘴试试</string>
+    <string name="hez_ztt_fu">转头触发</string>
     <string name="fu_lm_koreaheart">单手手指比心</string>
     <string name="fu_zh_baoquan">双手抱拳</string>
     <string name="fu_zh_hezxiong">双手合十</string>
@@ -108,6 +101,4 @@
 
     <string name="msg_permission_granted">已拥有权限，请再次点击</string>
     <string name="msg_permission_rejected">一定要有权限才可以继续哦</string>
-
-    <string name="expression_calibrating">表情校准中</string>
 </resources>
