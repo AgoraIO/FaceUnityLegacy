@@ -2,18 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '27.0.3'
+    buildToolsVersion "27.0.3"
     defaultConfig {
-        applicationId "io.agora.rtcwithfu"
+        applicationId "io.agora.FUDemo"
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 8
-        versionName "1.6.2"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        ndk {
-            abiFilters "armeabi-v7a" // DO NOT MODIFY THIS LINE, IT'S UPDATED BY BUILD MACHINE AUTOMATICALLY.
-        }
+        versionCode 10
+        versionName "5.4"
     }
     buildTypes {
         release {
@@ -23,24 +18,19 @@ android {
     }
 
     sourceSets {
-        main.assets.srcDirs += ['src/main/assets', 'src/main/effects/bundle']
-        main.res.srcDirs += ['src/mian/res', 'src/main/effects/res', 'src/main/filters/res']
+        main.assets.srcDirs += ['src/main/assets', 'src/main/effects/bundle', 'src/main/makeup/bundle']
+        main.res.srcDirs += ['src/mian/res', 'src/main/effects/res', 'src/main/filters/res', 'src/main/makeup/res']
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     implementation project(':faceunity')
-
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:appcompat-v7:25.4.0'
     implementation 'com.android.support:recyclerview-v7:25.4.0'
-
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
+    implementation files('libs/agora-rtc-sdk.jar')
 
-    testImplementation 'junit:junit:4.12'
+    compileOnly files('libs/nama.jar')
 }
