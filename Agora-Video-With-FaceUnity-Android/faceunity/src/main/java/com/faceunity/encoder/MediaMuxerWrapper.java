@@ -9,15 +9,86 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class MediaMuxerWrapper {
-    private static final boolean VERBOSE = true;
-    private static final String TAG = "MediaMuxerWrapper";
+    private static final String TAG = MediaMuxerWrapper.class.getSimpleName();
+    private static final boolean DEBUG = false;
 
+    private String mOutputPath;
     private final MediaMuxer mMediaMuxer;    // API >= 18
-    private int mEncoderCount = 2, mStatredCount = 0;
-    private boolean mIsStarted = false;
+    private int mEncoderCount, mStatredCount;
+    private boolean mIsStarted;
+    private MediaEncoder mVideoEncoder, mAudioEncoder, mAudioFileEncoder;
 
-    public MediaMuxerWrapper(String outputPath) throws IOException {
-        mMediaMuxer = new MediaMuxer(outputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+    /**
+     * Constructor
+     *
+     * @throws IOException
+     */
+    public MediaMuxerWrapper(String filePath) throws IOException {
+        mOutputPath = filePath;
+        mMediaMuxer = new MediaMuxer(mOutputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+        mEncoderCount = mStatredCount = 0;
+        mIsStarted = false;
+    }
+
+    public String getOutputPath() {
+        return mOutputPath;
+    }
+
+    public void prepare() throws IOException {
+        if (mVideoEncoder != null)
+            mVideoEncoder.prepare();
+        if (mAudioEncoder != null)
+            mAudioEncoder.prepare();
+        if (mAudioFileEncoder != null)
+            mAudioFileEncoder.prepare();
+    }
+
+    public void startRecording() {
+        if (mVideoEncoder != null)
+            mVideoEncoder.startRecording();
+        if (mAudioEncoder != null)
+            mAudioEncoder.startRecording();
+        if (mAudioFileEncoder != null)
+            mAudioFileEncoder.startRecording();
+    }
+
+    public void stopRecording() {
+        if (mVideoEncoder != null)
+            mVideoEncoder.stopRecording();
+        mVideoEncoder = null;
+        if (mAudioEncoder != null)
+            mAudioEncoder.stopRecording();
+        mAudioEncoder = null;
+        if (mAudioFileEncoder != null)
+            mAudioFileEncoder.stopRecording();
+        mAudioFileEncoder = null;
+    }
+
+    public synchronized boolean isStarted() {
+        return mIsStarted;
+    }
+
+    /**
+     * assign encoder to this calss. this is called from encoder.
+     *
+     * @param encoder instance of MediaVideoEncoder or MediaAudioEncoder
+     */
+    /*package*/ void addEncoder(final MediaEncoder encoder) {
+        if (encoder instanceof MediaVideoEncoder) {
+            if (mVideoEncoder != null)
+                throw new IllegalArgumentException("Video encoder already added.");
+            mVideoEncoder = encoder;
+        } else if (encoder instanceof MediaAudioEncoder) {
+            if (mAudioEncoder != null)
+                throw new IllegalArgumentException("Video encoder already added.");
+            mAudioEncoder = encoder;
+        } else if (encoder instanceof MediaAudioFileEncoder) {
+            if (mAudioFileEncoder != null)
+                throw new IllegalArgumentException("Video file encoder already added.");
+            mAudioFileEncoder = encoder;
+        } else
+            throw new IllegalArgumentException("unsupported encoder");
+        mEncoderCount = (mVideoEncoder != null ? 1 : 0) + (mAudioEncoder != null ? 1 : 0) + (mAudioFileEncoder != null ? 1 : 0);
     }
 
     /**
@@ -27,13 +98,13 @@ public class MediaMuxerWrapper {
      */
     /*package*/
     synchronized boolean start() {
-        if (VERBOSE) Log.v(TAG, "start:");
+        if (DEBUG) Log.e(TAG, "start:");
         mStatredCount++;
         if ((mEncoderCount > 0) && (mStatredCount == mEncoderCount)) {
             mMediaMuxer.start();
             mIsStarted = true;
             notifyAll();
-            if (VERBOSE) Log.v(TAG, "MediaMuxer started:");
+            if (DEBUG) Log.e(TAG, "MediaMuxer started:");
         }
         return mIsStarted;
     }
@@ -41,15 +112,15 @@ public class MediaMuxerWrapper {
     /**
      * request stop recording from encoder when encoder received EOS
      */
-	/*package*/
+    /*package*/
     synchronized void stop() {
-        if (VERBOSE) Log.v(TAG, "stop:mStatredCount=" + mStatredCount);
+        if (DEBUG) Log.e(TAG, "stop:mStatredCount=" + mStatredCount);
         mStatredCount--;
         if ((mEncoderCount > 0) && (mStatredCount <= 0)) {
             mMediaMuxer.stop();
             mMediaMuxer.release();
             mIsStarted = false;
-            if (VERBOSE) Log.v(TAG, "MediaMuxer stopped:");
+            if (DEBUG) Log.e(TAG, "MediaMuxer stopped:");
         }
     }
 
@@ -59,12 +130,12 @@ public class MediaMuxerWrapper {
      * @param format
      * @return minus value indicate error
      */
-	/*package*/
+    /*package*/
     synchronized int addTrack(final MediaFormat format) {
         if (mIsStarted)
             throw new IllegalStateException("muxer already started");
         final int trackIx = mMediaMuxer.addTrack(format);
-        if (VERBOSE)
+        if (DEBUG)
             Log.i(TAG, "addTrack:trackNum=" + mEncoderCount + ",trackIx=" + trackIx + ",format=" + format);
         return trackIx;
     }
@@ -76,19 +147,9 @@ public class MediaMuxerWrapper {
      * @param byteBuf
      * @param bufferInfo
      */
-	/*package*/
+    /*package*/
     synchronized void writeSampleData(final int trackIndex, final ByteBuffer byteBuf, final MediaCodec.BufferInfo bufferInfo) {
         if (mStatredCount > 0)
             mMediaMuxer.writeSampleData(trackIndex, byteBuf, bufferInfo);
-    }
-
-    /*synchronized void release() {
-        if (mStatredCount > 0 && mIsStarted) {
-            mMediaMuxer.release();
-        }
-    }*/
-
-    synchronized boolean isStarted() {
-        return mIsStarted;
     }
 }
