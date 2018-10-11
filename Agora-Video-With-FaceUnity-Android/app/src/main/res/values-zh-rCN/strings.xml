@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">FU&amp;Agora</string>
-    <string name="agora_app_id"><#APP_ID#></string>
 
     <string name="home_function_name_beauty">美颜</string>
     <string name="home_function_name_animoji">Animoji</string>
