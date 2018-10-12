@@ -66,11 +66,11 @@ public class Effect {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Effect effect = (Effect) o;
-        return !TextUtils.isEmpty(bundleName) && bundleName.equals(effect.bundleName());
+        return !TextUtils.isEmpty(path) && path.equals(effect.path());
     }
 
     @Override
     public int hashCode() {
-        return !TextUtils.isEmpty(bundleName) ? bundleName.hashCode() : 0;
+        return !TextUtils.isEmpty(path) ? path.hashCode() : 0;
     }
 }

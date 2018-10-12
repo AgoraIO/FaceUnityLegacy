@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorTranslucent">#00000000</color>
-    <color name="colorWhite">#ffffffff</color>
-
-    <color name="faceunityYellow">#ffcb15</color>
-    <color name="faceunityGreen">#2ddbb1</color>
-    <color name="unselect_gray">#48ffffff</color>
-
-    <color name="camera_line_gray">#4dffffff</color>
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="transparent">#00000000</color>
     <color name="percent15translucentBlack">#26000000</color>
     <color name="percent30translucentBlack">#4D000000</color>
-    <color name="percent40translucentBlack">#66000000</color><!--40%-->
-    <color name="percent50translucentBlack">#80000000</color> <!--50%-->
+    <color name="percent40translucentBlack">#66000000</color>
+    <color name="percent50translucentBlack">#80000000</color>
     <color name="percent60translucentBlack">#99000000</color>
 
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="main_color">#FF5EC7FE</color>
+    <color name="main_color_79CDF9">#FF79CDF9</color>
+    <color name="main_color_gray">#FFA8A8A8</color>
+    <color name="main_color_c5c5c5">#FFC5C5C5</color>
+    <color name="main_color_090017">#FF090017</color>
 
-    <color name="infoBlueColor">#2f70e1</color>
-    <color name="successColor">#53d76a</color>
-    <color name="warningColor">#ddaa3b</color>
-    <color name="dangerColor">#e5000f</color>
+    <color name="line_302D33">#FF302D33</color>
+
+    <color name="faceUnityYellow">#ffcb15</color>
+    <color name="faceUnityGreen">#2ddbb1</color>
+    <color name="unselect_gray">#48ffffff</color>
 
     <!-- Whites -->
     <color name="white">#ffffff</color>
@@ -139,15 +139,4 @@
     <color name="mudColor">#462d1d</color>
     <color name="siennaColor">#a0522d</color>
     <color name="dustColor">#ecd6c5</color>
-
-
-    <color name="transparent">#00000000</color>
-
-    <color name="main_color">#FF5EC7FE</color>
-    <color name="main_color_79CDF9">#FF79CDF9</color>
-    <color name="main_color_gray">#FFA8A8A8</color>
-    <color name="main_color_c5c5c5">#FFC5C5C5</color>
-    <color name="main_color_090017">#FF090017</color>
-
-    <color name="line_302D33">#FF302D33</color>
 </resources>
