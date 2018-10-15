@@ -46,7 +46,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *modelTableView;
 
-@property (nonatomic, weak) FUOpenGLView *localRenderView;
 @property (nonatomic, strong) FULiveModel *model;
 
 #pragma Agora
@@ -55,6 +54,10 @@
 @property (nonatomic, strong) AgoraRtcVideoCanvas *remoteCanvas;
 
 @property (nonatomic, weak)   UIView *remoteRenderView;
+
+@property (nonatomic, strong) AgoraRtcVideoCanvas *localCanvas;
+
+@property (nonatomic, weak)   UIView *localRenderView;
 
 @property (nonatomic, assign) NSInteger count;
 
@@ -88,7 +91,7 @@
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    
+
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
             [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortrait];
@@ -102,7 +105,7 @@
         case UIInterfaceOrientationLandscapeRight:
             [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
             break;
-            
+
         default:
             break;
     }
@@ -232,11 +235,6 @@
     self.isMuted = false;
     
     [self.agoraKit joinChannelByToken:nil channelId:self.channelName info:nil uid:0 joinSuccess:nil];
-
-    FUOpenGLView *renderView = [[FUOpenGLView alloc] init];
-    renderView.frame = self.view.frame;
-    [self.containView addSubview:renderView];
-    self.localRenderView = renderView;
 }
 
 #pragma mark - Agora Video Source Protocol
@@ -263,6 +261,17 @@
 
 #pragma mark - Agora Engine Delegate
 - (void)rtcEngine:(AgoraRtcEngineKit *)engine didJoinChannel:(NSString*)channel withUid:(NSUInteger)uid elapsed:(NSInteger) elapsed {
+    UIView *renderView = [[UIView alloc] initWithFrame:self.view.frame];
+    [self.containView insertSubview:renderView atIndex:0];
+    if (self.localCanvas == nil) {
+        self.localCanvas = [[AgoraRtcVideoCanvas alloc] init];
+    }
+    self.localCanvas.uid = uid;
+    self.localCanvas.view = renderView;
+    self.localCanvas.renderMode = AgoraVideoRenderModeHidden;
+    [self.agoraKit setupLocalVideo:self.localCanvas];
+    self.localRenderView = renderView;
+    
     NSLog(@"Join Channel Success");
 }
 
@@ -448,6 +457,7 @@
     [_mCamera changeCameraInputDeviceisFront:!_mCamera.isFrontCamera];
     
     //Change camera need to call below function
+    [self.agoraKit switchCamera];
     [[FUManager shareManager] onCameraChange];
 }
 
@@ -593,9 +603,6 @@ bool isNeeded = YES;
     [[FUManager shareManager] renderItemsToPixelBuffer:pixelBuffer];
     
     CFAbsoluteTime renderTime = (CFAbsoluteTimeGetCurrent() - startRenderTime);
-    
-    //render the pixelbuffer to screen
-    [self.localRenderView displayPixelBuffer:pixelBuffer];
     
     if (self.model.type == FULiveModelTypeMusicFilter) {
         [[FUManager shareManager] musicFilterSetMusicTime];
