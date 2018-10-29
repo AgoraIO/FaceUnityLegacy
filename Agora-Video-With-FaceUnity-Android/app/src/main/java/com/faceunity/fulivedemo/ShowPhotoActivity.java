@@ -32,7 +32,7 @@ import java.io.File;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 public class ShowPhotoActivity extends AppCompatActivity
         implements PhotoRenderer.OnRendererStatusListener,

@@ -1,10 +1,10 @@
-package io.agora.FUDemo;
+package io.agora.rtcwithfu;
 
 import android.app.Application;
 
 import com.faceunity.FURenderer;
 
-public class RTCApplication extends Application {
+public class MyApplication extends Application {
     private WorkerThread mWorkerThread;
 
     @Override

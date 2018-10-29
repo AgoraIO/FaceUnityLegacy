@@ -1,4 +1,4 @@
-package io.agora.FUDemo.view;
+package io.agora.rtcwithfu.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.Arrays;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 /**
  * Created by lirui on 2017/1/20.

@@ -1,4 +1,4 @@
-package io.agora.FUDemo;
+package io.agora.rtcwithfu;
 
 import android.content.Context;
 import android.os.Environment;

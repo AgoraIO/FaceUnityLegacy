@@ -1,4 +1,4 @@
-package io.agora.FUDemo.view;
+package io.agora.rtcwithfu.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
-import static io.agora.FUDemo.view.EffectAndFilterSelectAdapter.RECYCLEVIEW_TYPE_EFFECT;
+import static io.agora.rtcwithfu.view.EffectAndFilterSelectAdapter.RECYCLEVIEW_TYPE_EFFECT;
 
 /**
  * Created by lirui on 2017/1/20.

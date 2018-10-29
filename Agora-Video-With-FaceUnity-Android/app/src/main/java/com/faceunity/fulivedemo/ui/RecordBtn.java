@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 
 /**

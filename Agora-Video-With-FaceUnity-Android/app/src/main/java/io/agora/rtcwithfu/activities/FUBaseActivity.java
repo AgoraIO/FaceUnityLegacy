@@ -1,32 +1,23 @@
-package io.agora.FUDemo.activities;
+package io.agora.rtcwithfu.activities;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-
-import com.faceunity.fulivedemo.ui.seekbar.DiscreteSeekBar;
 
 import java.util.HashMap;
 
-import io.agora.FUDemo.R;
-import io.agora.FUDemo.view.EffectAndFilterSelectAdapter;
-import io.agora.FUDemo.view.EffectPanel;
+import io.agora.rtcwithfu.R;
+import io.agora.rtcwithfu.view.EffectPanel;
 
 /**
  * Abstract activity which has FU UI, waiting sub activities
  * to implements how to deal with FU rendering parameters.
  */
 public abstract class FUBaseActivity extends RTCBaseActivity
-                implements View.OnClickListener, View.OnTouchListener {
+        implements View.OnClickListener, View.OnTouchListener {
     private final String TAG = "FUBaseUIActivity";
 
     protected Button mRecordingBtn;
@@ -88,25 +79,30 @@ public abstract class FUBaseActivity extends RTCBaseActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_choose_camera:
-                onCameraChange();
+                onCameraChangeRequested();
                 break;
             case R.id.btn_recording:
                 if (mRecordStatus == 0) {
                     mRecordingBtn.setText(R.string.btn_stop_recording);
-                    onStartRecording();
+                    onStartRecordingRequested();
                     mRecordStatus ^= 1;
                 } else {
                     mRecordingBtn.setText(R.string.btn_start_recording);
-                    onStopRecording();
+                    onStopRecordingRequested();
                     mRecordStatus ^= 1;
                 }
+                break;
+            case R.id.btn_switch_view:
+                onViewSwitchRequested();
                 break;
         }
     }
 
-    abstract protected void onCameraChange();
+    abstract protected void onCameraChangeRequested();
 
-    abstract protected void onStartRecording();
+    abstract protected void onViewSwitchRequested();
 
-    abstract protected void onStopRecording();
+    abstract protected void onStartRecordingRequested();
+
+    abstract protected void onStopRecordingRequested();
 }

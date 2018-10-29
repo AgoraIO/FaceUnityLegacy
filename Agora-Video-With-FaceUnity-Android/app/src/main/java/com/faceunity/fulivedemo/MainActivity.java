@@ -23,7 +23,8 @@ import com.faceunity.utils.MiscUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
+
 /**
  * 主页面，区分了SDK各个功能，并且获取权限码验证证书是否能够使用该功能
  */

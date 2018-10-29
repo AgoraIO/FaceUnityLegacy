@@ -1,4 +1,4 @@
-package io.agora.FUDemo.view;
+package io.agora.rtcwithfu.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -13,14 +13,13 @@ import android.widget.ImageView;
 
 import com.faceunity.FURenderer;
 import com.faceunity.entity.Makeup;
-import com.faceunity.fulivedemo.FUMakeupActivity;
 import com.faceunity.fulivedemo.entity.MakeupEnum;
 import com.faceunity.fulivedemo.ui.CheckGroup;
 import com.faceunity.fulivedemo.ui.seekbar.DiscreteSeekBar;
 
 import java.util.List;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 import static com.faceunity.fulivedemo.entity.BeautyParameterModel.sMakeupLevel;
 import static com.faceunity.fulivedemo.entity.BeautyParameterModel.sMakeups;

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.faceunity.OnFUControlListener;
 import com.faceunity.entity.Effect;
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 import com.faceunity.fulivedemo.entity.EffectEnum;
 
 import java.io.IOException;
@@ -41,7 +41,6 @@ public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAd
     }
 
     @Override
-
     public HomeRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new HomeRecyclerHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_effect_recycler, parent, false));
     }

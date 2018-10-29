@@ -1,4 +1,4 @@
-package io.agora.FUDemo.activities;
+package io.agora.rtcwithfu.activities;
 
 import android.content.Intent;
 import android.hardware.Camera;
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,10 +33,10 @@ import java.io.IOException;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import io.agora.FUDemo.Constants;
-import io.agora.FUDemo.R;
-import io.agora.FUDemo.RtcEngineEventHandler;
-import io.agora.FUDemo.view.EffectPanel;
+import io.agora.rtcwithfu.Constants;
+import io.agora.rtcwithfu.R;
+import io.agora.rtcwithfu.RtcEngineEventHandler;
+import io.agora.rtcwithfu.view.EffectPanel;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.mediaio.IVideoFrameConsumer;
 import io.agora.rtc.mediaio.IVideoSource;
@@ -55,12 +56,19 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         EffectRecyclerAdapter.OnDescriptionChangeListener {
 
     private final static String TAG = FUChatActivity.class.getSimpleName();
+
     private final static int DESC_SHOW_LENGTH = 1500;
 
     private GLSurfaceView mGLSurfaceView;
     private FURenderer mFURenderer;
     private CameraRenderer mGLRenderer;
-    private RelativeLayout mRemoteViewContainer;
+
+    private FrameLayout mLocalViewContainer;
+
+    private FrameLayout mRemoteViewContainer;
+
+    private SurfaceView mGLRemoteSurfaceView;
+
     private TextView mDescriptionText;
     private TextView mTrackingText;
 
@@ -105,7 +113,9 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         mDescriptionText = (TextView) findViewById(R.id.effect_desc_text);
         mTrackingText = (TextView) findViewById(R.id.iv_face_detect);
 
-        mRemoteViewContainer = (RelativeLayout) findViewById(R.id.remote_video_view_container);
+        mLocalViewContainer = (FrameLayout) findViewById(R.id.local_video_view_container);
+
+        mRemoteViewContainer = (FrameLayout) findViewById(R.id.remote_video_view_container);
         mRemoteViewContainer.setOnTouchListener(this);
 
         mEffectPanel = new EffectPanel(findViewById(R.id.effect_container), mFURenderer, this);
@@ -125,10 +135,74 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         getWorker().joinChannel(roomName, getConfig().mUid);
     }
 
+    private void switchVideoView() {
+        if (mRemoteViewContainer.getChildCount() == 0) {
+            return;
+        }
+
+        // TODO Support switch view
+        if (mLocalViewContainer.getTag(97839220) != null) {
+
+            RelativeLayout.LayoutParams rParams = (RelativeLayout.LayoutParams) mRemoteViewContainer.getLayoutParams();
+            RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) mLocalViewContainer.getLayoutParams();
+
+//        mRemoteViewContainer.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
+//        mRemoteViewContainer.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
+//        mRemoteViewContainer.requestLayout();
+
+            mLocalViewContainer.setOnTouchListener(null);
+            mRemoteViewContainer.setOnTouchListener(this);
+
+            mRemoteViewContainer.setLayoutParams(rParams);
+            mLocalViewContainer.setLayoutParams(lParams);
+
+            mRemoteViewContainer.requestLayout();
+            mLocalViewContainer.requestLayout();
+
+            mGLRemoteSurfaceView.setZOrderMediaOverlay(true);
+            mGLRemoteSurfaceView.setZOrderOnTop(true);
+            mGLRemoteSurfaceView.bringToFront();
+
+//            mRemoteViewContainer.bringChildToFront(mGLSurfaceView);
+//            mRemoteViewContainer.bringToFront();
+
+            mLocalViewContainer.setTag(97839220, null);
+        } else {
+            RelativeLayout.LayoutParams rParams = (RelativeLayout.LayoutParams) mRemoteViewContainer.getLayoutParams();
+            RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) mLocalViewContainer.getLayoutParams();
+
+//        mRemoteViewContainer.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
+//        mRemoteViewContainer.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
+//        mRemoteViewContainer.requestLayout();
+
+            mRemoteViewContainer.setOnTouchListener(null);
+            mLocalViewContainer.setOnTouchListener(this);
+
+            RelativeLayout.LayoutParams tmpParams = new RelativeLayout.LayoutParams(rParams.width, rParams.height);
+            mLocalViewContainer.setLayoutParams(tmpParams);
+            mRemoteViewContainer.setLayoutParams(lParams);
+
+            mLocalViewContainer.getParent().requestLayout();
+            mRemoteViewContainer.getParent().requestLayout();
+
+            mLocalViewContainer.bringToFront();
+            mLocalViewContainer.bringChildToFront(mGLSurfaceView);
+
+            mGLRemoteSurfaceView.setZOrderMediaOverlay(false);
+            mGLRemoteSurfaceView.setZOrderOnTop(false);
+
+            mGLSurfaceView.setZOrderMediaOverlay(true);
+            mGLSurfaceView.setZOrderOnTop(true);
+
+            mLocalViewContainer.setTag(97839220, 8888);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         setRtcVideos();
+
         mGLRenderer.onCreate();
         mGLRenderer.onResume();
     }
@@ -218,17 +292,27 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
             return;
         }
 
-        SurfaceView surfaceView = RtcEngine.CreateRendererView(getBaseContext());
-        surfaceView.setZOrderMediaOverlay(true);
-        mRemoteViewContainer.addView(surfaceView);
-        getRtcEngine().setupRemoteVideo(new VideoCanvas(surfaceView,
+        mGLRemoteSurfaceView = RtcEngine.CreateRendererView(getBaseContext());
+        mGLRemoteSurfaceView.setZOrderMediaOverlay(true);
+
+        mRemoteViewContainer.addView(mGLRemoteSurfaceView);
+
+        getRtcEngine().setupRemoteVideo(new VideoCanvas(mGLRemoteSurfaceView,
                 VideoCanvas.RENDER_MODE_HIDDEN, uid));
 
         // for mark purpose
-        surfaceView.setTag(uid);
+        mGLRemoteSurfaceView.setTag(uid);
     }
 
     private void onRemoteUserLeft() {
+        // TODO Support switch view
+        if (mRemoteViewContainer.getChildCount() > 0
+                && mGLSurfaceView == mRemoteViewContainer.getChildAt(0)) { // switch back if switched view before
+            mLocalViewContainer.removeAllViews();
+            mGLSurfaceView.setZOrderMediaOverlay(false);
+            mLocalViewContainer.addView(mGLSurfaceView);
+        }
+
         mRemoteViewContainer.removeAllViews();
     }
 
@@ -244,12 +328,14 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        Log.i(TAG, "onSurfaceCreated: " + gl + " " + config);
+
         mFURenderer.onSurfaceCreated();
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-
+        Log.i(TAG, "onSurfaceChanged: " + gl + " " + width + " " + height);
     }
 
     @Override
@@ -281,6 +367,7 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
 
     @Override
     public void onSurfaceDestroy() {
+        Log.i(TAG, "onSurfaceDestroy");
         mFURenderer.onSurfaceDestroyed();
     }
 
@@ -339,17 +426,22 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     };
 
     @Override
-    protected void onCameraChange() {
+    protected void onViewSwitchRequested() {
+        switchVideoView();
+    }
+
+    @Override
+    protected void onCameraChangeRequested() {
         mGLRenderer.changeCamera();
     }
 
     @Override
-    protected void onStartRecording() {
+    protected void onStartRecordingRequested() {
         startRecording();
     }
 
     @Override
-    protected void onStopRecording() {
+    protected void onStopRecordingRequested() {
         stopRecording();
     }
 

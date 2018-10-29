@@ -4,7 +4,7 @@ import com.faceunity.entity.Effect;
 
 import java.util.ArrayList;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 /**
  * Created by tujh on 2018/1/30.

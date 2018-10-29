@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FU&amp;Agora</string>
+    <string name="app_name">Agora with FU</string>
 
     <string name="home_function_name_beauty">美颜</string>
     <string name="home_function_name_animoji">Animoji</string>
@@ -97,6 +97,8 @@
 
     <string name="btn_start_recording">开始录制</string>
     <string name="btn_stop_recording">停止录制</string>
+
+    <string name="btn_switch_video_view">切换视图</string>
 
     <string name="msg_permission_granted">已拥有权限，请再次点击</string>
     <string name="msg_permission_rejected">一定要有权限才可以继续哦</string>

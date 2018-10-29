@@ -1,7 +1,7 @@
 package com.faceunity.fulivedemo.entity;
 
 import com.faceunity.entity.Filter;
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 import java.util.ArrayList;
 

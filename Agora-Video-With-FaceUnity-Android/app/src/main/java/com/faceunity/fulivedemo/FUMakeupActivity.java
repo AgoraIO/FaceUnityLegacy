@@ -26,7 +26,7 @@ import javax.microedition.khronos.opengles.GL10;
 import static com.faceunity.fulivedemo.entity.BeautyParameterModel.sMakeupLevel;
 import static com.faceunity.fulivedemo.entity.BeautyParameterModel.sMakeups;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 /**
  * 美妆界面
