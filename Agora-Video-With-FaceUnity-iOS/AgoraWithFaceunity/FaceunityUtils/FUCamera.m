@@ -356,6 +356,7 @@ typedef enum : NSUInteger {
     
     if([self.delegate respondsToSelector:@selector(didOutputVideoSampleBuffer:)])
     {
+        connection.videoMirrored = NO;
         [self.delegate didOutputVideoSampleBuffer:sampleBuffer];
     }
     
