@@ -21,8 +21,6 @@
 		0F29C66420525BC6000F8159 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F29C66320525BC6000F8159 /* Assets.xcassets */; };
 		0F29C66720525BC6000F8159 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F29C66520525BC6000F8159 /* LaunchScreen.storyboard */; };
 		0F29C66A20525BC6000F8159 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F29C66920525BC6000F8159 /* main.m */; };
-		0F29C67420525BC6000F8159 /* AgoraWithFaceunityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F29C67320525BC6000F8159 /* AgoraWithFaceunityTests.m */; };
-		0F29C67F20525BC6000F8159 /* AgoraWithFaceunityUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F29C67E20525BC6000F8159 /* AgoraWithFaceunityUITests.m */; };
 		0F29C6DA205271C1000F8159 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6D9205271C1000F8159 /* Accelerate.framework */; };
 		0F29C6DE205272B4000F8159 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6DC205272A1000F8159 /* libstdc++.tbd */; };
 		0F29C6E220527D4A000F8159 /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E120527D49000F8159 /* AgoraRtcEngineKit.framework */; };
@@ -164,23 +162,6 @@
 		0FDB80B120DA51F7005D9C58 /* face_beautification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB80A820DA51F7005D9C58 /* face_beautification.bundle */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		0F29C67020525BC6000F8159 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0F29C64F20525BC6000F8159 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0F29C65620525BC6000F8159;
-			remoteInfo = AgoraWithFaceunity;
-		};
-		0F29C67B20525BC6000F8159 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0F29C64F20525BC6000F8159 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0F29C65620525BC6000F8159;
-			remoteInfo = AgoraWithFaceunity;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		0F29C6F92052DACE000F8159 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -209,12 +190,6 @@
 		0F29C66620525BC6000F8159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0F29C66820525BC6000F8159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F29C66920525BC6000F8159 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		0F29C66F20525BC6000F8159 /* AgoraWithFaceunityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgoraWithFaceunityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F29C67320525BC6000F8159 /* AgoraWithFaceunityTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraWithFaceunityTests.m; sourceTree = "<group>"; };
-		0F29C67520525BC6000F8159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0F29C67A20525BC6000F8159 /* AgoraWithFaceunityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgoraWithFaceunityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F29C67E20525BC6000F8159 /* AgoraWithFaceunityUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraWithFaceunityUITests.m; sourceTree = "<group>"; };
-		0F29C68020525BC7000F8159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F29C6D9205271C1000F8159 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		0F29C6DC205272A1000F8159 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		0F29C6E120527D49000F8159 /* AgoraRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtcEngineKit.framework; path = AgoraWithFaceunity/AgoraRtcEngineKit.framework; sourceTree = "<group>"; };
@@ -397,20 +372,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0F29C66C20525BC6000F8159 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0F29C67720525BC6000F8159 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -429,8 +390,6 @@
 			isa = PBXGroup;
 			children = (
 				0F29C65920525BC6000F8159 /* AgoraWithFaceunity */,
-				0F29C67220525BC6000F8159 /* AgoraWithFaceunityTests */,
-				0F29C67D20525BC6000F8159 /* AgoraWithFaceunityUITests */,
 				0F29C65820525BC6000F8159 /* Products */,
 				0F29C6D8205271C0000F8159 /* Frameworks */,
 			);
@@ -440,8 +399,6 @@
 			isa = PBXGroup;
 			children = (
 				0F29C65720525BC6000F8159 /* AgoraWithFaceunity.app */,
-				0F29C66F20525BC6000F8159 /* AgoraWithFaceunityTests.xctest */,
-				0F29C67A20525BC6000F8159 /* AgoraWithFaceunityUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -449,40 +406,16 @@
 		0F29C65920525BC6000F8159 /* AgoraWithFaceunity */ = {
 			isa = PBXGroup;
 			children = (
+				0FDB807A20DA3CB7005D9C58 /* authpack.h */,
 				0F280F95205666D100CF70CC /* KeyCenter.h */,
 				0F280F94205666D100CF70CC /* KeyCenter.m */,
+				0F29C66020525BC6000F8159 /* Main.storyboard */,
 				0F02C1F520561AB6006EF198 /* Controllers */,
 				0FDB7F7120DA3C8E005D9C58 /* Faceunity */,
 				0F29C6C320525C9E000F8159 /* FaceunityUtils */,
-				0F29C65A20525BC6000F8159 /* AppDelegate.h */,
-				0F29C65B20525BC6000F8159 /* AppDelegate.m */,
-				0F29C66020525BC6000F8159 /* Main.storyboard */,
-				0F29C66320525BC6000F8159 /* Assets.xcassets */,
-				0F29C66520525BC6000F8159 /* LaunchScreen.storyboard */,
-				0FD4E2072105C747006E46A1 /* Localizable.strings */,
-				0F29C66820525BC6000F8159 /* Info.plist */,
-				0FDB809F20DA505D005D9C58 /* dataSource.plist */,
-				0F29C66920525BC6000F8159 /* main.m */,
+				A7DB2641218BF54800F6C5AC /* Supporting Files */,
 			);
 			path = AgoraWithFaceunity;
-			sourceTree = "<group>";
-		};
-		0F29C67220525BC6000F8159 /* AgoraWithFaceunityTests */ = {
-			isa = PBXGroup;
-			children = (
-				0F29C67320525BC6000F8159 /* AgoraWithFaceunityTests.m */,
-				0F29C67520525BC6000F8159 /* Info.plist */,
-			);
-			path = AgoraWithFaceunityTests;
-			sourceTree = "<group>";
-		};
-		0F29C67D20525BC6000F8159 /* AgoraWithFaceunityUITests */ = {
-			isa = PBXGroup;
-			children = (
-				0F29C67E20525BC6000F8159 /* AgoraWithFaceunityUITests.m */,
-				0F29C68020525BC7000F8159 /* Info.plist */,
-			);
-			path = AgoraWithFaceunityUITests;
 			sourceTree = "<group>";
 		};
 		0F29C6C320525C9E000F8159 /* FaceunityUtils */ = {
@@ -526,7 +459,6 @@
 		0FDB7F7120DA3C8E005D9C58 /* Faceunity */ = {
 			isa = PBXGroup;
 			children = (
-				0FDB807A20DA3CB7005D9C58 /* authpack.h */,
 				0FDB80A120DA51F7005D9C58 /* FaceUnity-SDK-iOS */,
 				0FDB7F7E20DA3C8E005D9C58 /* items */,
 			);
@@ -779,6 +711,21 @@
 			path = Headers;
 			sourceTree = "<group>";
 		};
+		A7DB2641218BF54800F6C5AC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0F29C65A20525BC6000F8159 /* AppDelegate.h */,
+				0F29C65B20525BC6000F8159 /* AppDelegate.m */,
+				0F29C66320525BC6000F8159 /* Assets.xcassets */,
+				0F29C66520525BC6000F8159 /* LaunchScreen.storyboard */,
+				0FD4E2072105C747006E46A1 /* Localizable.strings */,
+				0F29C66820525BC6000F8159 /* Info.plist */,
+				0FDB809F20DA505D005D9C58 /* dataSource.plist */,
+				0F29C66920525BC6000F8159 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -800,42 +747,6 @@
 			productReference = 0F29C65720525BC6000F8159 /* AgoraWithFaceunity.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0F29C66E20525BC6000F8159 /* AgoraWithFaceunityTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0F29C68620525BC7000F8159 /* Build configuration list for PBXNativeTarget "AgoraWithFaceunityTests" */;
-			buildPhases = (
-				0F29C66B20525BC6000F8159 /* Sources */,
-				0F29C66C20525BC6000F8159 /* Frameworks */,
-				0F29C66D20525BC6000F8159 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0F29C67120525BC6000F8159 /* PBXTargetDependency */,
-			);
-			name = AgoraWithFaceunityTests;
-			productName = AgoraWithFaceunityTests;
-			productReference = 0F29C66F20525BC6000F8159 /* AgoraWithFaceunityTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		0F29C67920525BC6000F8159 /* AgoraWithFaceunityUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0F29C68920525BC7000F8159 /* Build configuration list for PBXNativeTarget "AgoraWithFaceunityUITests" */;
-			buildPhases = (
-				0F29C67620525BC6000F8159 /* Sources */,
-				0F29C67720525BC6000F8159 /* Frameworks */,
-				0F29C67820525BC6000F8159 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0F29C67C20525BC6000F8159 /* PBXTargetDependency */,
-			);
-			name = AgoraWithFaceunityUITests;
-			productName = AgoraWithFaceunityUITests;
-			productReference = 0F29C67A20525BC6000F8159 /* AgoraWithFaceunityUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -847,17 +758,7 @@
 				TargetAttributes = {
 					0F29C65620525BC6000F8159 = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Manual;
-					};
-					0F29C66E20525BC6000F8159 = {
-						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 0F29C65620525BC6000F8159;
-					};
-					0F29C67920525BC6000F8159 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 0F29C65620525BC6000F8159;
 					};
 				};
 			};
@@ -875,8 +776,6 @@
 			projectRoot = "";
 			targets = (
 				0F29C65620525BC6000F8159 /* AgoraWithFaceunity */,
-				0F29C66E20525BC6000F8159 /* AgoraWithFaceunityTests */,
-				0F29C67920525BC6000F8159 /* AgoraWithFaceunityUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1014,20 +913,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0F29C66D20525BC6000F8159 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0F29C67820525BC6000F8159 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1051,36 +936,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0F29C66B20525BC6000F8159 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0F29C67420525BC6000F8159 /* AgoraWithFaceunityTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0F29C67620525BC6000F8159 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0F29C67F20525BC6000F8159 /* AgoraWithFaceunityUITests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0F29C67120525BC6000F8159 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0F29C65620525BC6000F8159 /* AgoraWithFaceunity */;
-			targetProxy = 0F29C67020525BC6000F8159 /* PBXContainerItemProxy */;
-		};
-		0F29C67C20525BC6000F8159 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0F29C65620525BC6000F8159 /* AgoraWithFaceunity */;
-			targetProxy = 0F29C67B20525BC6000F8159 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0F29C66020525BC6000F8159 /* Main.storyboard */ = {
@@ -1225,8 +1081,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 48TB6ZZL5S;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1244,7 +1100,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "28d072e1-f550-49ef-a601-6038e4fddc51";
-				PROVISIONING_PROFILE_SPECIFIER = AgoraIODev2018;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1255,8 +1111,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 48TB6ZZL5S;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1274,62 +1130,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "28d072e1-f550-49ef-a601-6038e4fddc51";
-				PROVISIONING_PROFILE_SPECIFIER = AgoraIODev2018;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		0F29C68720525BC7000F8159 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = AgoraWithFaceunityTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunityTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgoraWithFaceunity.app/AgoraWithFaceunity";
-			};
-			name = Debug;
-		};
-		0F29C68820525BC7000F8159 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = AgoraWithFaceunityTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunityTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AgoraWithFaceunity.app/AgoraWithFaceunity";
-			};
-			name = Release;
-		};
-		0F29C68A20525BC7000F8159 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = AgoraWithFaceunityUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunityUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AgoraWithFaceunity;
-			};
-			name = Debug;
-		};
-		0F29C68B20525BC7000F8159 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = AgoraWithFaceunityUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunityUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = AgoraWithFaceunity;
 			};
 			name = Release;
 		};
@@ -1350,24 +1152,6 @@
 			buildConfigurations = (
 				0F29C68420525BC7000F8159 /* Debug */,
 				0F29C68520525BC7000F8159 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0F29C68620525BC7000F8159 /* Build configuration list for PBXNativeTarget "AgoraWithFaceunityTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0F29C68720525BC7000F8159 /* Debug */,
-				0F29C68820525BC7000F8159 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0F29C68920525BC7000F8159 /* Build configuration list for PBXNativeTarget "AgoraWithFaceunityUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0F29C68A20525BC7000F8159 /* Debug */,
-				0F29C68B20525BC7000F8159 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
