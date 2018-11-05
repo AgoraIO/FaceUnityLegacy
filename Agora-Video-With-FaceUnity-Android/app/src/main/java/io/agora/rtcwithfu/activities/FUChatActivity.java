@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.faceunity.FURenderer;
@@ -59,15 +58,14 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
 
     private final static int DESC_SHOW_LENGTH = 1500;
 
-    private GLSurfaceView mGLSurfaceView;
+    private GLSurfaceView mGLSurfaceViewLocal;
     private FURenderer mFURenderer;
     private CameraRenderer mGLRenderer;
 
-    private FrameLayout mLocalViewContainer;
-
-    private FrameLayout mRemoteViewContainer;
-
-    private SurfaceView mGLRemoteSurfaceView;
+    private FrameLayout mBigViewContainer;
+    private FrameLayout mSmallViewContainer;
+    private boolean mBigViewIsLocalVideo = true;
+    private int mRemoteUid = -1;
 
     private TextView mDescriptionText;
     private TextView mTrackingText;
@@ -104,19 +102,25 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
                 .inputTextureType(FURenderer.FU_ADM_FLAG_EXTERNAL_OES_TEXTURE)
                 .build();
 
-        mGLSurfaceView = (GLSurfaceView) findViewById(R.id.local_surface_view);
-        mGLSurfaceView.setEGLContextClientVersion(2);
-        mGLRenderer = new CameraRenderer(this, mGLSurfaceView, this);
-        mGLSurfaceView.setRenderer(mGLRenderer);
-        mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        mGLSurfaceViewLocal = new GLSurfaceView(this);
+        mGLSurfaceViewLocal.setEGLContextClientVersion(2);
+        mGLRenderer = new CameraRenderer(this, mGLSurfaceViewLocal, this);
+        mGLSurfaceViewLocal.setRenderer(mGLRenderer);
+        mGLSurfaceViewLocal.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-        mDescriptionText = (TextView) findViewById(R.id.effect_desc_text);
-        mTrackingText = (TextView) findViewById(R.id.iv_face_detect);
+        mDescriptionText = findViewById(R.id.effect_desc_text);
+        mTrackingText = findViewById(R.id.iv_face_detect);
 
-        mLocalViewContainer = (FrameLayout) findViewById(R.id.local_video_view_container);
+        mBigViewContainer = findViewById(R.id.big_video_view_container);
+        if (mBigViewContainer.getChildCount() > 0) {
+            mBigViewContainer.removeAllViews();
+        }
+        mBigViewContainer.addView(mGLSurfaceViewLocal,
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT);
 
-        mRemoteViewContainer = (FrameLayout) findViewById(R.id.remote_video_view_container);
-        mRemoteViewContainer.setOnTouchListener(this);
+        mSmallViewContainer = findViewById(R.id.small_video_view_container);
+        mSmallViewContainer.setOnTouchListener(this);
 
         mEffectPanel = new EffectPanel(findViewById(R.id.effect_container), mFURenderer, this);
 
@@ -135,67 +139,54 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         getWorker().joinChannel(roomName, getConfig().mUid);
     }
 
-    private void switchVideoView() {
-        if (mRemoteViewContainer.getChildCount() == 0) {
-            return;
+    private void swapLocalRemoteDisplay() {
+        // Instead of resizing them, it is better directly
+        // switch the displaying themselves.
+        // The remote view is manipulated by RTC APIs, while
+        // the local view rendering is controlled by FaceUnity.
+
+        // Stop current renderings and recycle views.
+        // We need to handle local surface view recycling for
+        // FaceUnity, but call the RTC API for local capturing.
+        mGLRenderer.onPause();
+        mGLRenderer.onDestroy();
+
+        if (mSmallViewContainer.getChildCount() > 0) {
+            mSmallViewContainer.removeAllViews();
         }
 
-        // TODO Support switch view
-        if (mLocalViewContainer.getTag(97839220) != null) {
+        if (mBigViewContainer.getChildCount() > 0) {
+            mBigViewContainer.removeAllViews();
+        }
 
-            RelativeLayout.LayoutParams rParams = (RelativeLayout.LayoutParams) mRemoteViewContainer.getLayoutParams();
-            RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) mLocalViewContainer.getLayoutParams();
+        mGLSurfaceViewLocal = new GLSurfaceView(this);
+        mGLSurfaceViewLocal.setEGLContextClientVersion(2);
+        mGLRenderer = new CameraRenderer(this, mGLSurfaceViewLocal, this);
+        mGLSurfaceViewLocal.setRenderer(mGLRenderer);
+        mGLSurfaceViewLocal.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-//        mRemoteViewContainer.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
-//        mRemoteViewContainer.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
-//        mRemoteViewContainer.requestLayout();
+        SurfaceView remoteView = RtcEngine.CreateRendererView(this);
+        getRtcEngine().setupRemoteVideo(new VideoCanvas(
+                remoteView, VideoCanvas.RENDER_MODE_HIDDEN, mRemoteUid ));
 
-            mLocalViewContainer.setOnTouchListener(null);
-            mRemoteViewContainer.setOnTouchListener(this);
-
-            mRemoteViewContainer.setLayoutParams(rParams);
-            mLocalViewContainer.setLayoutParams(lParams);
-
-            mRemoteViewContainer.requestLayout();
-            mLocalViewContainer.requestLayout();
-
-            mGLRemoteSurfaceView.setZOrderMediaOverlay(true);
-            mGLRemoteSurfaceView.setZOrderOnTop(true);
-            mGLRemoteSurfaceView.bringToFront();
-
-//            mRemoteViewContainer.bringChildToFront(mGLSurfaceView);
-//            mRemoteViewContainer.bringToFront();
-
-            mLocalViewContainer.setTag(97839220, null);
+        if (mBigViewIsLocalVideo) {
+            addViewMatchParent(mSmallViewContainer, mGLSurfaceViewLocal);
+            addViewMatchParent(mBigViewContainer, remoteView);
+            mGLSurfaceViewLocal.setZOrderMediaOverlay(true);
         } else {
-            RelativeLayout.LayoutParams rParams = (RelativeLayout.LayoutParams) mRemoteViewContainer.getLayoutParams();
-            RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) mLocalViewContainer.getLayoutParams();
-
-//        mRemoteViewContainer.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
-//        mRemoteViewContainer.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
-//        mRemoteViewContainer.requestLayout();
-
-            mRemoteViewContainer.setOnTouchListener(null);
-            mLocalViewContainer.setOnTouchListener(this);
-
-            RelativeLayout.LayoutParams tmpParams = new RelativeLayout.LayoutParams(rParams.width, rParams.height);
-            mLocalViewContainer.setLayoutParams(tmpParams);
-            mRemoteViewContainer.setLayoutParams(lParams);
-
-            mLocalViewContainer.getParent().requestLayout();
-            mRemoteViewContainer.getParent().requestLayout();
-
-            mLocalViewContainer.bringToFront();
-            mLocalViewContainer.bringChildToFront(mGLSurfaceView);
-
-            mGLRemoteSurfaceView.setZOrderMediaOverlay(false);
-            mGLRemoteSurfaceView.setZOrderOnTop(false);
-
-            mGLSurfaceView.setZOrderMediaOverlay(true);
-            mGLSurfaceView.setZOrderOnTop(true);
-
-            mLocalViewContainer.setTag(97839220, 8888);
+            addViewMatchParent(mSmallViewContainer, remoteView);
+            remoteView.setZOrderMediaOverlay(true);
+            addViewMatchParent(mBigViewContainer, mGLSurfaceViewLocal);
         }
+
+        mGLRenderer.onCreate();
+        mGLRenderer.onResume();
+        mBigViewIsLocalVideo = !mBigViewIsLocalVideo;
+    }
+
+    private void addViewMatchParent(FrameLayout parent, View child) {
+        int matchParent = FrameLayout.LayoutParams.MATCH_PARENT;
+        parent.addView(child, matchParent, matchParent);
     }
 
     @Override
@@ -275,6 +266,16 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         });
     }
 
+    private void onRemoteUserLeft() {
+        FrameLayout remoteLayout = getRemoteLayout();
+        remoteLayout.removeAllViews();
+        mRemoteUid = -1;
+    }
+
+    private FrameLayout getRemoteLayout() {
+        return mBigViewIsLocalVideo ? mSmallViewContainer : mBigViewContainer;
+    }
+
     @Override
     public void onUserJoined(int uid, int elapsed) {
 
@@ -283,37 +284,7 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         camera.addCallbackBuffer(data);
-        mGLSurfaceView.requestRender();
-    }
-
-    private void setupRemoteVideo(int uid) {
-        if (mRemoteViewContainer.getChildCount() >= 1) {
-            // Supports only one remote video
-            return;
-        }
-
-        mGLRemoteSurfaceView = RtcEngine.CreateRendererView(getBaseContext());
-        mGLRemoteSurfaceView.setZOrderMediaOverlay(true);
-
-        mRemoteViewContainer.addView(mGLRemoteSurfaceView);
-
-        getRtcEngine().setupRemoteVideo(new VideoCanvas(mGLRemoteSurfaceView,
-                VideoCanvas.RENDER_MODE_HIDDEN, uid));
-
-        // for mark purpose
-        mGLRemoteSurfaceView.setTag(uid);
-    }
-
-    private void onRemoteUserLeft() {
-        // TODO Support switch view
-        if (mRemoteViewContainer.getChildCount() > 0
-                && mGLSurfaceView == mRemoteViewContainer.getChildAt(0)) { // switch back if switched view before
-            mLocalViewContainer.removeAllViews();
-            mGLSurfaceView.setZOrderMediaOverlay(false);
-            mLocalViewContainer.addView(mGLSurfaceView);
-        }
-
-        mRemoteViewContainer.removeAllViews();
+        mGLSurfaceViewLocal.requestRender();
     }
 
     @Override
@@ -326,10 +297,24 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         });
     }
 
+    private void setupRemoteVideo(int uid) {
+        mRemoteUid = uid;
+
+        SurfaceView surfaceView = RtcEngine.CreateRendererView(getBaseContext());
+        surfaceView.setZOrderMediaOverlay(true);
+
+        // for mark purpose
+        surfaceView.setTag(uid);
+
+        getRtcEngine().setupRemoteVideo(new VideoCanvas(
+                surfaceView, VideoCanvas.RENDER_MODE_HIDDEN, uid));
+
+        getRemoteLayout().addView(surfaceView);
+    }
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         Log.i(TAG, "onSurfaceCreated: " + gl + " " + config);
-
         mFURenderer.onSurfaceCreated();
     }
 
@@ -427,7 +412,8 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
 
     @Override
     protected void onViewSwitchRequested() {
-        switchVideoView();
+        // switchVideoView();
+        swapLocalRemoteDisplay();
     }
 
     @Override
@@ -450,7 +436,7 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         public void onPrepared(final MediaEncoder encoder) {
             if (encoder instanceof MediaVideoEncoder) {
                 final MediaVideoEncoder videoEncoder = (MediaVideoEncoder) encoder;
-                mGLSurfaceView.queueEvent(new Runnable() {
+                mGLSurfaceViewLocal.queueEvent(new Runnable() {
                     @Override
                     public void run() {
                         videoEncoder.setEglContext(EGL14.eglGetCurrentContext());

@@ -11,7 +11,7 @@ android {
         versionName "5.4"
 
         ndk {
-            abiFilters "armeabi-v7a" // DO NOT MODIFY THIS LINE, IT'S UPDATED BY BUILD MACHINE AUTOMATICALLY.
+            abiFilters "armeabi-v7a", "arm64-v8a", "X86" // DO NOT MODIFY THIS LINE, IT'S UPDATED BY BUILD MACHINE AUTOMATICALLY.
         }
     }
 
@@ -29,16 +29,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
-
     implementation 'com.android.support:recyclerview-v7:26.1.0'
-
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-
     implementation project(':faceunity')
-
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
 }
