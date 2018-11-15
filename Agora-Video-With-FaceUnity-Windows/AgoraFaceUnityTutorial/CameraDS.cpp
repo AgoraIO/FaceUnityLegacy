@@ -525,12 +525,13 @@ std::tr1::shared_ptr<unsigned char> CCameraDS::QueryFrame()
 {
 	long evCode;
 	long size = 0;
-
+	
 	m_pMediaControl->Run();
+
 	m_pMediaEvent->WaitForCompletion(INFINITE, &evCode);
-
+	
 	m_pSampleGrabber->GetCurrentBuffer(&size, NULL);
-
+	
 	//if the buffer size changed
 	if (size != m_nBufferSize)
 	{
@@ -541,6 +542,7 @@ std::tr1::shared_ptr<unsigned char> CCameraDS::QueryFrame()
 
 	m_pSampleGrabber->GetCurrentBuffer(&m_nBufferSize, (long*)m_frame.get());
 	//printf("%08x", m_frame.get());
+
 	return m_frame;
 }
 
