@@ -15,8 +15,13 @@
 #include "AgoraOpenGL.h"
 #include "YUVTrans.h"
 #include "ExtendVideoFrameObserver.h"
-
+#include <map>
+#define VIDEO_PROFILE_COUNT 32
 // CAgoraFaceUnityTutorialDlg 对话框
+typedef struct tagVideoResolution{
+	int width;
+	int height;
+}VideoResolution;
 class CAgoraFaceUnityTutorialDlg : public CDialogEx
 {
 // 构造
@@ -91,7 +96,7 @@ protected:
 	inline void uninitFaceUnity();
 
 	//static DWORD ThreadFaceUntiyDataProc(LPVOID lpParameter);
-
+	
 private:
 	bool m_bTerminated;
 
@@ -153,6 +158,7 @@ private:
 	CYUVTrans m_yuvTrans;
 
 	CExtendVideoFrameObserver m_ExtendVideoObserver;
+
 public:
 	afx_msg void OnNMCustomdrawBeauty0(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMCustomdrawBeauty1(NMHDR *pNMHDR, LRESULT *pResult);

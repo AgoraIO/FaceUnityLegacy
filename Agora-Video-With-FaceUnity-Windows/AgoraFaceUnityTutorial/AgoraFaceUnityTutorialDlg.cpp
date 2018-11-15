@@ -187,7 +187,7 @@ BOOL CAgoraFaceUnityTutorialDlg::OnInitDialog()
 	initCtrl();
 	initAgoraMedia();
 	initFaceUnity();
-
+	
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -202,6 +202,7 @@ void CAgoraFaceUnityTutorialDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	{
 		CDialogEx::OnSysCommand(nID, lParam);
 	}
+	CDialogEx::OnSysCommand(nID, lParam);
 }
 
 // 如果向对话框添加最小化按钮，则需要下面的代码
@@ -263,8 +264,12 @@ void CAgoraFaceUnityTutorialDlg::OnBnClickedButtonJoinchannel()
 		m_uMediaUid = str2long(cs2s(strParam));
 
 		m_lpAgoraObject->EnableLastmileTest(FALSE);
-		m_lpAgoraObject->SetClientRole(CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER);
 		m_lpAgoraObject->SetChannelProfile(TRUE);
+		m_lpAgoraObject->SetClientRole(CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER);
+	
+		int nVideoIndex = (int)VIDEO_PROFILE_LANDSCAPE_480P;// because m_FaceNama.Init use 640 and 480
+		m_lpAgoraObject->SetVideoProfile(nVideoIndex, FALSE);//640*480 15 500
+		m_lpAgoraObject->EnableExtendVideoCapture(TRUE, &m_ExtendVideoObserver);
 
 		m_uMediaUid = str2int(gAgoraFaceUnityConfig.getLoginUid());
 		std::string strAppcertificatId = gAgoraFaceUnityConfig.getAppCertificateId();
@@ -276,11 +281,6 @@ void CAgoraFaceUnityTutorialDlg::OnBnClickedButtonJoinchannel()
 		vc.uid = m_uMediaUid;
 		vc.view = m_PicCtlLocal;
 		m_lpRtcEngine->setupLocalVideo(vc);
-
-		int nVideoIndex = str2int(gAgoraFaceUnityConfig.getVideoSolutinIndex());
-		m_lpAgoraObject->SetVideoProfile(nVideoIndex, FALSE);//640*480 15 500
-
-		m_lpAgoraObject->EnableExtendVideoCapture(TRUE, &m_ExtendVideoObserver);
 
 		m_lpRtcEngine->startPreview();
 
@@ -473,6 +473,7 @@ LRESULT CAgoraFaceUnityTutorialDlg::onJoinChannelSuccess(WPARAM wParam, LPARAM l
 {
 	m_isJoinChannel = true;
 	OutputDebugStringA(__FUNCTION__);
+	m_AgBtnJoinChannel.SetWindowText(_T("LeaveChannel"));
 	return TRUE;
 }
 
@@ -492,6 +493,7 @@ LRESULT CAgoraFaceUnityTutorialDlg::onLeaveChannel(WPARAM wParam, LPARAM lParam)
 {
 	m_isJoinChannel = false;
 	OutputDebugStringA(__FUNCTION__);
+	m_AgBtnJoinChannel.SetWindowText(_T("JoinChannel"));
 	return TRUE;
 }
 
