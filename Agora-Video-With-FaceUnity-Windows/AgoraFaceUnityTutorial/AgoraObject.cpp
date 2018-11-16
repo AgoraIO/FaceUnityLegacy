@@ -7,7 +7,7 @@
 using namespace agora;
 using namespace agora::tools;
 
-#include "AgoraBase.h"
+//#include "AgoraBase.h"
 
 CAgoraObject *CAgoraObject::m_lpAgoraObject = NULL;
 IRtcEngine	*CAgoraObject::m_lpAgoraEngine = NULL;
@@ -334,18 +334,18 @@ BOOL CAgoraObject::EnableScreenCapture(HWND hWnd, int nCapFPS, LPCRECT lpCapRect
 
 	if (bEnable) {
 		if (lpCapRect == NULL)
-			ret = m_lpAgoraEngine->startScreenCapture(hWnd, nCapFPS, NULL, nBitrate);
+			ret = rep.startScreenCapture(hWnd, nCapFPS, NULL);
 		else {
 			rcCap.left = lpCapRect->left;
 			rcCap.right = lpCapRect->right;
 			rcCap.top = lpCapRect->top;
 			rcCap.bottom = lpCapRect->bottom;
 
-			ret = m_lpAgoraEngine->startScreenCapture(hWnd, nCapFPS, &rcCap, nBitrate);
+			ret = rep.startScreenCapture(hWnd, nCapFPS, &rcCap);
 		}
 	}
 	else
-		ret = m_lpAgoraEngine->stopScreenCapture();
+		ret = rep.stopScreenCapture();
 
 	if (ret == 0)
 		m_bScreenCapture = bEnable;
@@ -479,7 +479,7 @@ void CAgoraObject::SetWantedRole(CLIENT_ROLE_TYPE role)
 
 BOOL CAgoraObject::SetClientRole(CLIENT_ROLE_TYPE role, LPCSTR lpPermissionKey)
 {
-	int nRet = m_lpAgoraEngine->setClientRole(role);
+	int nRet = m_lpAgoraEngine->setClientRole(role, lpPermissionKey);
 
 	m_nRoleType = role;
 
