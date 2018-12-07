@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".FUDemo.activities.MainActivity">
+    tools:context=".rtcwithfu.activities.MainActivity">
 
     <EditText
         android:id="@+id/edt_channel"
