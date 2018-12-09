@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.faceunity.OnFUControlListener;
 import com.faceunity.entity.Filter;
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 import com.faceunity.fulivedemo.entity.FilterEnum;
 import com.faceunity.fulivedemo.ui.seekbar.DiscreteSeekBar;
 

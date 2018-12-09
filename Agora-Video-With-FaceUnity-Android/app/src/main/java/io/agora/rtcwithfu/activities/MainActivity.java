@@ -1,4 +1,4 @@
-package io.agora.FUDemo.activities;
+package io.agora.rtcwithfu.activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,8 +23,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.regex.Pattern;
 
-import io.agora.FUDemo.Constants;
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.Constants;
+import io.agora.rtcwithfu.R;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getName();

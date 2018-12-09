@@ -9,7 +9,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AlertDialog;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 import com.faceunity.gles.ProgramTexture2d;
 import com.faceunity.gles.ProgramTextureOES;
 import com.faceunity.gles.core.GlUtil;

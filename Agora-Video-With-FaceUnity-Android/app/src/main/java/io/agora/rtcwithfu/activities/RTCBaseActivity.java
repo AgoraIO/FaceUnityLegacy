@@ -1,12 +1,12 @@
-package io.agora.FUDemo.activities;
+package io.agora.rtcwithfu.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import io.agora.FUDemo.RTCApplication;
-import io.agora.FUDemo.EngineConfig;
-import io.agora.FUDemo.MyRtcEngineEventHandler;
-import io.agora.FUDemo.WorkerThread;
+import io.agora.rtcwithfu.MyApplication;
+import io.agora.rtcwithfu.EngineConfig;
+import io.agora.rtcwithfu.MyRtcEngineEventHandler;
+import io.agora.rtcwithfu.WorkerThread;
 import io.agora.rtc.RtcEngine;
 
 /**
@@ -17,7 +17,7 @@ public abstract class RTCBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((RTCApplication) getApplication()).initWorkerThread();
+        ((MyApplication) getApplication()).initWorkerThread();
     }
 
     @Override
@@ -31,18 +31,18 @@ public abstract class RTCBaseActivity extends AppCompatActivity {
     protected abstract void deInitUIAndEvent();
 
     protected RtcEngine getRtcEngine() {
-        return ((RTCApplication) getApplication()).getWorkerThread().getRtcEngine();
+        return ((MyApplication) getApplication()).getWorkerThread().getRtcEngine();
     }
 
     protected final WorkerThread getWorker() {
-        return ((RTCApplication) getApplication()).getWorkerThread();
+        return ((MyApplication) getApplication()).getWorkerThread();
     }
 
     protected final EngineConfig getConfig() {
-        return ((RTCApplication) getApplication()).getWorkerThread().getEngineConfig();
+        return ((MyApplication) getApplication()).getWorkerThread().getEngineConfig();
     }
 
     protected final MyRtcEngineEventHandler getEventHandler() {
-        return ((RTCApplication) getApplication()).getWorkerThread().eventHandler();
+        return ((MyApplication) getApplication()).getWorkerThread().eventHandler();
     }
 }

@@ -9,7 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 /**
  * Created by tujh on 2018/3/2.

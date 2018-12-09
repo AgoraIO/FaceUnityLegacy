@@ -1,4 +1,4 @@
-package io.agora.FUDemo;
+package io.agora.rtcwithfu;
 
 public interface RtcEngineEventHandler {
     void onFirstRemoteVideoDecoded(int uid, int width, int height, int elapsed);

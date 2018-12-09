@@ -1,4 +1,4 @@
-package io.agora.FUDemo.view;
+package io.agora.rtcwithfu.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -19,7 +19,7 @@ import com.faceunity.fulivedemo.utils.ToastUtil;
 
 import java.util.List;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 public class EffectPanel {
     private static final int[] PERMISSIONS_CODE = {

@@ -40,7 +40,7 @@ import com.faceunity.utils.MiscUtil;
 import java.io.File;
 import java.io.IOException;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 /**
  * Base Activity, 主要封装FUBeautyActivity与FUEffectActivity的公用界面与方法

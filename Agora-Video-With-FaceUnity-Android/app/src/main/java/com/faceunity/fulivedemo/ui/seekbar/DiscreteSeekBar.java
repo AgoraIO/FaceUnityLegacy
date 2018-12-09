@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 import com.faceunity.fulivedemo.ui.seekbar.internal.PopupIndicator;
 import com.faceunity.fulivedemo.ui.seekbar.internal.compat.AnimatorCompat;
 import com.faceunity.fulivedemo.ui.seekbar.internal.compat.SeekBarCompat;

@@ -38,7 +38,7 @@ import java.io.IOException;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 public class ShowVideoActivity extends AppCompatActivity
         implements VideoRenderer.OnRendererStatusListener,

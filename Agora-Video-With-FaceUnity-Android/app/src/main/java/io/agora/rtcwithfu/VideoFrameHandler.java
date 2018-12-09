@@ -1,4 +1,4 @@
-package io.agora.FUDemo;
+package io.agora.rtcwithfu;
 
 /**
  * Created by Yao Ximing on 2018/2/4.

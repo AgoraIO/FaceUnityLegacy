@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 /**
  * Created by tujh on 2018/4/17.

@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">FU&amp;Agora</string>
-    <string name="fu_live_demo">FU Live Demo</string>
-    <string name="agora_app_id"><#APP_ID#></string>
+    <string name="app_name">Agora with FU</string>
+    <string name="fu_live_demo">Agora with FU live sample</string>
+    <string name="agora_app_id"><#YOUR APP ID#></string>
 
     <string name="home_function_name_beauty">Beautification</string>
     <string name="home_function_name_animoji">Animoji</string>
@@ -106,8 +106,10 @@
     <string name="btn_start_recording">Start Recording</string>
     <string name="btn_stop_recording">Stop Recording</string>
 
+    <string name="btn_switch_video_view">Switch View</string>
+
     <string name="msg_permission_granted">Permission granted, tap and try again</string>
-    <string name="msg_permission_rejected">Permissin rejected, must grant permission first</string>
+    <string name="msg_permission_rejected">Permission rejected, must grant permission first</string>
 
     <string name="expression_calibrating">Expression Calibrating</string>
 </resources>

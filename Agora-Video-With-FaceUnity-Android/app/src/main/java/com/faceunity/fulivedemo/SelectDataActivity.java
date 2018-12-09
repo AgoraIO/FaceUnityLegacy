@@ -12,7 +12,7 @@ import com.faceunity.utils.MiscUtil;
 
 import java.io.File;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 public class SelectDataActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = SelectDataActivity.class.getSimpleName();

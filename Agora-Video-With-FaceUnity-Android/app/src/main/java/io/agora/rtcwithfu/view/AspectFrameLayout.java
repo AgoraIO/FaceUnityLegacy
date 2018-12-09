@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.agora.FUDemo.view;
+package io.agora.rtcwithfu.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

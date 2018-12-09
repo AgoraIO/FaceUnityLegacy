@@ -1,4 +1,4 @@
-package io.agora.FUDemo;
+package io.agora.rtcwithfu;
 
 public class EngineConfig {
     public int mClientRole;

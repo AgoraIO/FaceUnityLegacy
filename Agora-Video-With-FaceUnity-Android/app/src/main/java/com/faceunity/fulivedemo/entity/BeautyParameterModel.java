@@ -7,7 +7,7 @@ import com.faceunity.entity.Makeup;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.agora.FUDemo.R;
+import io.agora.rtcwithfu.R;
 
 /**
  * 美颜参数SharedPreferences记录,目前仅以保存数据，可改造为以SharedPreferences保存数据
