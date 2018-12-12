@@ -5,13 +5,19 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/big_video_view_container"
+        android:id="@+id/remote_video_view_container_0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray" />
 
     <FrameLayout
-        android:id="@+id/small_video_view_container"
+        android:id="@+id/local_video_view_container_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray" />
+
+    <FrameLayout
+        android:id="@+id/remote_video_view_container_2"
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"

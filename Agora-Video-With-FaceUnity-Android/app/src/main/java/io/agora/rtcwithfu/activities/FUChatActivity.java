@@ -65,9 +65,10 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     private CameraRenderer mGLRenderer;
 
     private RelativeLayout mParentContainer;
-    private FrameLayout mBigViewContainer;
-    private FrameLayout mSmallViewContainer;
-    private boolean mBigViewIsLocalVideo = true;
+    private FrameLayout mRemoteViewContainer0;
+    private FrameLayout mLocalViewContainer1;
+    private FrameLayout mRemoteViewContainer2;
+    private boolean mLocalViewIsBig = true;
     private int mRemoteUid = -1;
 
     private TextView mDescriptionText;
@@ -116,16 +117,17 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         mDescriptionText = findViewById(R.id.effect_desc_text);
         mTrackingText = findViewById(R.id.iv_face_detect);
 
-        mBigViewContainer = findViewById(R.id.big_video_view_container);
-        if (mBigViewContainer.getChildCount() > 0) {
-            mBigViewContainer.removeAllViews();
+        mLocalViewContainer1 = findViewById(R.id.local_video_view_container_1);
+        if (mLocalViewContainer1.getChildCount() > 0) {
+            mLocalViewContainer1.removeAllViews();
         }
-        mBigViewContainer.addView(mGLSurfaceViewLocal,
+        mLocalViewContainer1.addView(mGLSurfaceViewLocal,
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
 
-        mSmallViewContainer = findViewById(R.id.small_video_view_container);
-        mSmallViewContainer.setOnTouchListener(this);
+        mRemoteViewContainer0 = findViewById(R.id.remote_video_view_container_0);
+        mRemoteViewContainer2 = findViewById(R.id.remote_video_view_container_2);
+        mRemoteViewContainer2.setOnTouchListener(this);
 
         mEffectPanel = new EffectPanel(findViewById(R.id.effect_container), mFURenderer, this);
 
@@ -145,52 +147,37 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     }
 
     private void swapLocalRemoteDisplay() {
-        if (mBigViewIsLocalVideo) {
-            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mBigViewContainer.getLayoutParams();
+        if (mLocalViewIsBig) {
+            getRtcEngine().setupRemoteVideo(new VideoCanvas(
+                    mRemoteSurfaceView0, VideoCanvas.RENDER_MODE_HIDDEN, mRemoteUid));
+
+            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mLocalViewContainer1.getLayoutParams();
             localParams.height = convert(200);
             localParams.width = convert(150);
             localParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             localParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             localParams.rightMargin = convert(16);
             localParams.topMargin = convert(70);
-            mBigViewContainer.setLayoutParams(localParams);
+            mLocalViewContainer1.setLayoutParams(localParams);
 
-            mParentContainer.removeView(mSmallViewContainer);
-            RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mSmallViewContainer.getLayoutParams();
-            remoteParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
-            remoteParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-            remoteParams.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            remoteParams.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
-            remoteParams.rightMargin = 0;
-            remoteParams.topMargin = 0;
-            mParentContainer.addView(mSmallViewContainer, 0, remoteParams);
-            mSmallViewContainer.removeView(mRemoteSurfaceView);
-            mRemoteSurfaceView.setZOrderMediaOverlay(false);
-            mSmallViewContainer.addView(mRemoteSurfaceView);
+            mRemoteSurfaceView2.setVisibility(View.GONE);
+            mRemoteViewContainer2.setVisibility(View.GONE);
         } else {
-            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mBigViewContainer.getLayoutParams();
+            getRtcEngine().setupRemoteVideo(new VideoCanvas(
+                    mRemoteSurfaceView2, VideoCanvas.RENDER_MODE_HIDDEN, mRemoteUid));
+            mRemoteSurfaceView2.setVisibility(View.VISIBLE);
+            mRemoteViewContainer2.setVisibility(View.VISIBLE);
+
+            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mLocalViewContainer1.getLayoutParams();
             localParams.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             localParams.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
             localParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
             localParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
             localParams.rightMargin = 0;
             localParams.topMargin = 0;
-            mBigViewContainer.setLayoutParams(localParams);
-
-            mParentContainer.removeView(mSmallViewContainer);
-            RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mSmallViewContainer.getLayoutParams();
-            remoteParams.height = convert(200);
-            remoteParams.width = convert(150);
-            remoteParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            remoteParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            remoteParams.rightMargin = convert(16);
-            remoteParams.topMargin = convert(70);
-            mParentContainer.addView(mSmallViewContainer, 1, remoteParams);
-            mSmallViewContainer.removeView(mRemoteSurfaceView);
-            mRemoteSurfaceView.setZOrderMediaOverlay(true);
-            mSmallViewContainer.addView(mRemoteSurfaceView);
+            mLocalViewContainer1.setLayoutParams(localParams);
         }
-        mBigViewIsLocalVideo = !mBigViewIsLocalVideo;
+        mLocalViewIsBig = !mLocalViewIsBig;
     }
 
     private int convert(int dp) {
@@ -281,13 +268,9 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     }
 
     private void onRemoteUserLeft() {
-        FrameLayout remoteLayout = getRemoteLayout();
-        remoteLayout.removeAllViews();
+        mRemoteViewContainer0.removeAllViews();
+        mRemoteViewContainer2.removeAllViews();
         mRemoteUid = -1;
-    }
-
-    private FrameLayout getRemoteLayout() {
-        return mBigViewIsLocalVideo ? mSmallViewContainer : mBigViewContainer;
     }
 
     @Override
@@ -311,21 +294,21 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         });
     }
 
-    private SurfaceView mRemoteSurfaceView;
+    private SurfaceView mRemoteSurfaceView0;
+    private SurfaceView mRemoteSurfaceView2;
 
     private void setupRemoteVideo(int uid) {
         mRemoteUid = uid;
 
-        mRemoteSurfaceView = RtcEngine.CreateRendererView(getBaseContext());
-        mRemoteSurfaceView.setZOrderMediaOverlay(true);
-
-        // for mark purpose
-        mRemoteSurfaceView.setTag(uid);
+        mRemoteSurfaceView0 = RtcEngine.CreateRendererView(getBaseContext());
+        mRemoteSurfaceView0.setZOrderMediaOverlay(false);
+        mRemoteViewContainer0.addView(mRemoteSurfaceView0);
+        mRemoteSurfaceView2 = RtcEngine.CreateRendererView(getBaseContext());
+        mRemoteSurfaceView2.setZOrderMediaOverlay(true);
+        mRemoteViewContainer2.addView(mRemoteSurfaceView2);
 
         getRtcEngine().setupRemoteVideo(new VideoCanvas(
-                mRemoteSurfaceView, VideoCanvas.RENDER_MODE_HIDDEN, uid));
-
-        getRemoteLayout().addView(mRemoteSurfaceView);
+                mRemoteSurfaceView2, VideoCanvas.RENDER_MODE_HIDDEN, uid));
     }
 
     @Override
