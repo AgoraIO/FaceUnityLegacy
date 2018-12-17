@@ -1,17 +1,13 @@
 package io.agora.rtcwithfu.activities;
 
 import android.content.Intent;
-import android.hardware.Camera;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.net.Uri;
 import android.opengl.EGL14;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -34,11 +30,12 @@ import java.io.IOException;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import io.agora.rtc.RtcEngine;
+import io.agora.rtc.gl.EglBase;
+import io.agora.rtc.mediaio.AgoraTextureView;
 import io.agora.rtc.mediaio.IVideoFrameConsumer;
 import io.agora.rtc.mediaio.IVideoSource;
 import io.agora.rtc.mediaio.MediaIO;
-import io.agora.rtc.video.VideoCanvas;
+import io.agora.rtc.mediaio.TextureSource;
 import io.agora.rtc.video.VideoEncoderConfiguration;
 import io.agora.rtcwithfu.Constants;
 import io.agora.rtcwithfu.R;
@@ -51,24 +48,22 @@ import io.agora.rtcwithfu.view.EffectPanel;
  * The FU activity which possesses remote video chatting ability.
  */
 @SuppressWarnings("deprecation")
-public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCallback, RtcEngineEventHandler,
-        CameraRenderer.OnRendererStatusListener, SensorEventListener,
-        FURenderer.OnFUDebugListener, FURenderer.OnTrackingStatusChangedListener,
-        EffectRecyclerAdapter.OnDescriptionChangeListener {
+public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHandler {
 
     private final static String TAG = FUChatActivity.class.getSimpleName();
 
     private final static int DESC_SHOW_LENGTH = 1500;
 
-    private GLSurfaceView mGLSurfaceViewLocal;
     private FURenderer mFURenderer;
+    private GLSurfaceView mGLSurfaceViewLocal;
     private CameraRenderer mGLRenderer;
 
-    private RelativeLayout mParentContainer;
-    private FrameLayout mBigViewContainer;
-    private FrameLayout mSmallViewContainer;
-    private boolean mBigViewIsLocalVideo = true;
+    private FrameLayout mLocalViewContainer;
+    private AgoraTextureView mRemoteView;
+    private boolean mLocalViewIsBig = true;
     private int mRemoteUid = -1;
+    private float x_position;
+    private float y_position;
 
     private TextView mDescriptionText;
     private TextView mTrackingText;
@@ -93,7 +88,15 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     }
 
     protected void initUIAndEvent() {
-        mParentContainer = findViewById(R.id.parent_container);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        x_position = width - convert(150 + 16);
+        y_position = convert(70);
+
+        mDescriptionText = findViewById(R.id.effect_desc_text);
+        mTrackingText = findViewById(R.id.iv_face_detect);
 
         // The settings of FURender may be slightly different,
         // determined when initializing the effect panel
@@ -102,32 +105,87 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
                 .maxFaces(4)
                 .createEGLContext(false)
                 .needReadBackImage(false)
-                .setOnFUDebugListener(this)
-                .setOnTrackingStatusChangedListener(this)
+                .setOnFUDebugListener(new FURenderer.OnFUDebugListener() {
+                    @Override
+                    public void onFpsChange(double fps, double renderTime) {
+
+                    }
+                })
+                .setOnTrackingStatusChangedListener(new FURenderer.OnTrackingStatusChangedListener() {
+                    @Override
+                    public void onTrackingStatusChanged(final int status) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mTrackingText.setVisibility(status > 0 ? View.GONE : View.VISIBLE);
+                            }
+                        });
+                    }
+                })
                 .inputTextureType(FURenderer.FU_ADM_FLAG_EXTERNAL_OES_TEXTURE)
                 .build();
 
         mGLSurfaceViewLocal = new GLSurfaceView(this);
         mGLSurfaceViewLocal.setEGLContextClientVersion(2);
-        mGLRenderer = new CameraRenderer(this, mGLSurfaceViewLocal, this);
+        mGLRenderer = new CameraRenderer(this, mGLSurfaceViewLocal, new CameraRenderer.OnRendererStatusListener() {
+            @Override
+            public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+                Log.i(TAG, "onSurfaceCreated: " + gl + " " + config);
+                mFURenderer.onSurfaceCreated();
+            }
+
+            @Override
+            public void onSurfaceChanged(GL10 gl, int width, int height) {
+                Log.i(TAG, "onSurfaceChanged: " + gl + " " + width + " " + height);
+            }
+
+            @Override
+            public int onDrawFrame(byte[] cameraNV21Byte, int cameraTextureId, int cameraWidth, int cameraHeight, float[] mtx, long timeStamp) {
+                int fuTextureId;
+                byte[] backImage = new byte[cameraNV21Byte.length];
+                fuTextureId = mFURenderer.onDrawFrame(cameraNV21Byte, cameraTextureId,
+                        cameraWidth, cameraHeight, backImage, cameraWidth, cameraHeight);
+                if (mVideoFrameConsumerReady) {
+                    mIVideoFrameConsumer.consumeByteArrayFrame(backImage,
+                            MediaIO.PixelFormat.NV21.intValue(), cameraWidth,
+                            cameraHeight, mCameraOrientation, System.currentTimeMillis());
+                }
+                sendRecordingData(fuTextureId, mtx, timeStamp / Constant.NANO_IN_ONE_MILLI_SECOND);
+                return fuTextureId;
+            }
+
+            @Override
+            public void onSurfaceDestroy() {
+                Log.i(TAG, "onSurfaceDestroy");
+                mFURenderer.onSurfaceDestroyed();
+            }
+
+            @Override
+            public void onCameraChange(int currentCameraType, int cameraOrientation) {
+                mFURenderer.onCameraChange(currentCameraType, cameraOrientation);
+                mCameraOrientation = cameraOrientation;
+            }
+        });
         mGLSurfaceViewLocal.setRenderer(mGLRenderer);
         mGLSurfaceViewLocal.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-        mDescriptionText = findViewById(R.id.effect_desc_text);
-        mTrackingText = findViewById(R.id.iv_face_detect);
-
-        mBigViewContainer = findViewById(R.id.big_video_view_container);
-        if (mBigViewContainer.getChildCount() > 0) {
-            mBigViewContainer.removeAllViews();
+        mLocalViewContainer = findViewById(R.id.local_video_view_container);
+        if (mLocalViewContainer.getChildCount() > 0) {
+            mLocalViewContainer.removeAllViews();
         }
-        mBigViewContainer.addView(mGLSurfaceViewLocal,
+        mLocalViewContainer.addView(mGLSurfaceViewLocal,
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
 
-        mSmallViewContainer = findViewById(R.id.small_video_view_container);
-        mSmallViewContainer.setOnTouchListener(this);
+        mRemoteView = findViewById(R.id.remote_video_view);
+        mRemoteView.setOnTouchListener(this);
 
-        mEffectPanel = new EffectPanel(findViewById(R.id.effect_container), mFURenderer, this);
+        mEffectPanel = new EffectPanel(findViewById(R.id.effect_container), mFURenderer, new EffectRecyclerAdapter.OnDescriptionChangeListener() {
+            @Override
+            public void onDescriptionChangeListener(int description) {
+                showDescription(description, DESC_SHOW_LENGTH);
+            }
+        });
 
         getEventHandler().addEventHandler(this);
         joinChannel();
@@ -145,58 +203,61 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     }
 
     private void swapLocalRemoteDisplay() {
-        if (mBigViewIsLocalVideo) {
-            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mBigViewContainer.getLayoutParams();
+        if (mLocalViewIsBig) {
+            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mLocalViewContainer.getLayoutParams();
             localParams.height = convert(200);
             localParams.width = convert(150);
             localParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             localParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             localParams.rightMargin = convert(16);
             localParams.topMargin = convert(70);
-            mBigViewContainer.setLayoutParams(localParams);
+            mLocalViewContainer.setLayoutParams(localParams);
+            mLocalViewContainer.bringToFront();
+            mLocalViewContainer.setOnTouchListener(this);
 
-            mParentContainer.removeView(mSmallViewContainer);
-            RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mSmallViewContainer.getLayoutParams();
-            remoteParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
-            remoteParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+            RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mRemoteView.getLayoutParams();
             remoteParams.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             remoteParams.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+            remoteParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+            remoteParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
             remoteParams.rightMargin = 0;
             remoteParams.topMargin = 0;
-            mParentContainer.addView(mSmallViewContainer, 0, remoteParams);
-            mSmallViewContainer.removeView(mRemoteSurfaceView);
-            mRemoteSurfaceView.setZOrderMediaOverlay(false);
-            mSmallViewContainer.addView(mRemoteSurfaceView);
+            mRemoteView.setLayoutParams(remoteParams);
+            mRemoteView.setX(x_position);
+            mRemoteView.setY(y_position);
+            mRemoteView.getParent().requestLayout();
+            mRemoteView.setOnTouchListener(null);
         } else {
-            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mBigViewContainer.getLayoutParams();
+            RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mLocalViewContainer.getLayoutParams();
             localParams.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             localParams.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
             localParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
             localParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
             localParams.rightMargin = 0;
             localParams.topMargin = 0;
-            mBigViewContainer.setLayoutParams(localParams);
+            mLocalViewContainer.setLayoutParams(localParams);
+            mLocalViewContainer.setX(x_position);
+            mLocalViewContainer.setY(y_position);
+            mLocalViewContainer.getParent().requestLayout();
+            mLocalViewContainer.setOnTouchListener(null);
 
-            mParentContainer.removeView(mSmallViewContainer);
-            RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mSmallViewContainer.getLayoutParams();
+            RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mRemoteView.getLayoutParams();
             remoteParams.height = convert(200);
             remoteParams.width = convert(150);
             remoteParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             remoteParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             remoteParams.rightMargin = convert(16);
             remoteParams.topMargin = convert(70);
-            mParentContainer.addView(mSmallViewContainer, 1, remoteParams);
-            mSmallViewContainer.removeView(mRemoteSurfaceView);
-            mRemoteSurfaceView.setZOrderMediaOverlay(true);
-            mSmallViewContainer.addView(mRemoteSurfaceView);
+            mRemoteView.setLayoutParams(remoteParams);
+            mRemoteView.bringToFront();
+            mRemoteView.setOnTouchListener(this);
         }
-        mBigViewIsLocalVideo = !mBigViewIsLocalVideo;
+        mLocalViewIsBig = !mLocalViewIsBig;
     }
 
     private int convert(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
-
 
     private void addViewMatchParent(FrameLayout parent, View child) {
         int matchParent = FrameLayout.LayoutParams.MATCH_PARENT;
@@ -207,44 +268,16 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     protected void onResume() {
         super.onResume();
         setRtcVideos();
-
         mGLRenderer.onCreate();
         mGLRenderer.onResume();
     }
 
+    private IVideoSource mSource;
+
     private void setRtcVideos() {
-        IVideoSource source = new IVideoSource() {
-            @Override
-            public boolean onInitialize(IVideoFrameConsumer iVideoFrameConsumer) {
-                FUChatActivity.this.mIVideoFrameConsumer = iVideoFrameConsumer;
-                return true;
-            }
-
-            @Override
-            public boolean onStart() {
-                FUChatActivity.this.mVideoFrameConsumerReady = true;
-                return true;
-            }
-
-            @Override
-            public void onStop() {
-                FUChatActivity.this.mVideoFrameConsumerReady = false;
-            }
-
-            @Override
-            public void onDispose() {
-                FUChatActivity.this.mVideoFrameConsumerReady = false;
-            }
-
-            @Override
-            public int getBufferType() {
-                // Different PixelFormat should use different BufferType
-                // If you choose TEXTURE_2D/TEXTURE_OES, you should use BufferType.TEXTURE
-                return MediaIO.BufferType.BYTE_ARRAY.intValue();
-            }
-        };
-
-        getWorker().setVideoSource(source);
+        mSource = new MyTextureSource(null, 640, 480);
+        ((MyTextureSource) mSource).setPixelFormat(MediaIO.PixelFormat.NV21);
+        getWorker().setVideoSource(mSource);
     }
 
     @Override
@@ -281,24 +314,12 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
     }
 
     private void onRemoteUserLeft() {
-        FrameLayout remoteLayout = getRemoteLayout();
-        remoteLayout.removeAllViews();
         mRemoteUid = -1;
-    }
-
-    private FrameLayout getRemoteLayout() {
-        return mBigViewIsLocalVideo ? mSmallViewContainer : mBigViewContainer;
     }
 
     @Override
     public void onUserJoined(int uid, int elapsed) {
 
-    }
-
-    @Override
-    public void onPreviewFrame(byte[] data, Camera camera) {
-        camera.addCallbackBuffer(data);
-        mGLSurfaceViewLocal.requestRender();
     }
 
     @Override
@@ -311,101 +332,12 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
         });
     }
 
-    private SurfaceView mRemoteSurfaceView;
-
     private void setupRemoteVideo(int uid) {
         mRemoteUid = uid;
-
-        mRemoteSurfaceView = RtcEngine.CreateRendererView(getBaseContext());
-        mRemoteSurfaceView.setZOrderMediaOverlay(true);
-
-        // for mark purpose
-        mRemoteSurfaceView.setTag(uid);
-
-        getRtcEngine().setupRemoteVideo(new VideoCanvas(
-                mRemoteSurfaceView, VideoCanvas.RENDER_MODE_HIDDEN, uid));
-
-        getRemoteLayout().addView(mRemoteSurfaceView);
-    }
-
-    @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        Log.i(TAG, "onSurfaceCreated: " + gl + " " + config);
-        mFURenderer.onSurfaceCreated();
-    }
-
-    @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-        Log.i(TAG, "onSurfaceChanged: " + gl + " " + width + " " + height);
-    }
-
-    @Override
-    public int onDrawFrame(byte[] cameraNV21Byte, int cameraTextureId, int cameraWidth, int cameraHeight, float[] mtx, long timeStamp) {
-        int fuTextureId;
-        // if (isDoubleInputType) {
-        // fuTextureId = mFURenderer.onDrawFrame(cameraNV21Byte, cameraTextureId, cameraWidth, cameraHeight);
-        byte[] backImage = new byte[cameraNV21Byte.length];
-        fuTextureId = mFURenderer.onDrawFrame(cameraNV21Byte, cameraTextureId,
-                cameraWidth, cameraHeight, backImage, cameraWidth, cameraHeight);
-
-        if (mVideoFrameConsumerReady) {
-            mIVideoFrameConsumer.consumeByteArrayFrame(backImage,
-                    MediaIO.PixelFormat.NV21.intValue(), cameraWidth,
-                    cameraHeight, mCameraOrientation, System.currentTimeMillis());
-        }
-
-        //} else {
-        //    if (mFuNV21Byte == null) {
-        //        mFuNV21Byte = new byte[cameraNV21Byte.length];
-        //    }
-        //    System.arraycopy(cameraNV21Byte, 0, mFuNV21Byte, 0, cameraNV21Byte.length);
-        //    fuTextureId = mFURenderer.onDrawFrame(mFuNV21Byte, cameraWidth, cameraHeight);
-        //}
-        sendRecordingData(fuTextureId, mtx, timeStamp / Constant.NANO_IN_ONE_MILLI_SECOND);
-        //checkPic(fuTextureId, mtx, cameraHeight, cameraWidth);
-        return fuTextureId;
-    }
-
-    @Override
-    public void onSurfaceDestroy() {
-        Log.i(TAG, "onSurfaceDestroy");
-        mFURenderer.onSurfaceDestroyed();
-    }
-
-    @Override
-    public void onCameraChange(int currentCameraType, int cameraOrientation) {
-        mFURenderer.onCameraChange(currentCameraType, cameraOrientation);
-        mCameraOrientation = cameraOrientation;
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
-    @Override
-    public void onTrackingStatusChanged(final int status) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTrackingText.setVisibility(status > 0 ? View.GONE : View.VISIBLE);
-            }
-        });
-    }
-
-    @Override
-    public void onFpsChange(double fps, double renderTime) {
-
-    }
-
-    @Override
-    public void onDescriptionChangeListener(int description) {
-        showDescription(description, DESC_SHOW_LENGTH);
+        mRemoteView.init(((TextureSource) mSource).getEglContext());
+        mRemoteView.setBufferType(MediaIO.BufferType.BYTE_ARRAY);
+        mRemoteView.setPixelFormat(MediaIO.PixelFormat.I420);
+        getRtcEngine().setRemoteVideoRenderer(uid, mRemoteView);
     }
 
     protected void showDescription(int str, int time) {
@@ -525,4 +457,51 @@ public class FUChatActivity extends FUBaseActivity implements Camera.PreviewCall
             }
         }
     };
+
+    private class MyTextureSource extends TextureSource {
+
+        public MyTextureSource(EglBase.Context sharedContext, int width, int height) {
+            super(sharedContext, width, height);
+        }
+
+        @Override
+        protected boolean onCapturerOpened() {
+            FUChatActivity.this.mIVideoFrameConsumer = mConsumer.get();
+            return true;
+        }
+
+        @Override
+        protected boolean onCapturerStarted() {
+            FUChatActivity.this.mVideoFrameConsumerReady = true;
+            return true;
+        }
+
+        @Override
+        protected void onCapturerStopped() {
+            FUChatActivity.this.mVideoFrameConsumerReady = false;
+        }
+
+        @Override
+        protected void onCapturerClosed() {
+            FUChatActivity.this.mVideoFrameConsumerReady = false;
+        }
+
+        public void setWidth(int width) {
+            this.mWidth = width;
+        }
+
+        public void setHeight(int height) {
+            this.mHeight = height;
+        }
+
+        @Override
+        public int getBufferType() {
+            // return super.getBufferType();
+            return MediaIO.BufferType.BYTE_ARRAY.intValue();
+        }
+
+        public void setPixelFormat(MediaIO.PixelFormat pixelFormat) {
+            this.mPixelFormat = pixelFormat.intValue();
+        }
+    }
 }
