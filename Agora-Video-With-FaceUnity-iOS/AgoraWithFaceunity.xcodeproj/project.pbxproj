@@ -22,10 +22,8 @@
 		0F29C66720525BC6000F8159 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F29C66520525BC6000F8159 /* LaunchScreen.storyboard */; };
 		0F29C66A20525BC6000F8159 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F29C66920525BC6000F8159 /* main.m */; };
 		0F29C6DA205271C1000F8159 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6D9205271C1000F8159 /* Accelerate.framework */; };
-		0F29C6DE205272B4000F8159 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6DC205272A1000F8159 /* libstdc++.tbd */; };
 		0F29C6E220527D4A000F8159 /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E120527D49000F8159 /* AgoraRtcEngineKit.framework */; };
 		0F29C6E420527DF4000F8159 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E320527DF4000F8159 /* SystemConfiguration.framework */; };
-		0F29C6F220527E46000F8159 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6F120527E45000F8159 /* libc++.1.tbd */; };
 		0F29C6F420527E50000F8159 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6F320527E50000F8159 /* libresolv.tbd */; };
 		0F308540216DB831002A1D28 /* FUAPIDemoBar.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0FD4E20D2105CA53006E46A1 /* FUAPIDemoBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0F308541216DCED6002A1D28 /* FUAPIDemoBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FD4E20D2105CA53006E46A1 /* FUAPIDemoBar.framework */; };
@@ -160,6 +158,7 @@
 		0FDB80AF20DA51F7005D9C58 /* ardata_ex.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB80A620DA51F7005D9C58 /* ardata_ex.bundle */; };
 		0FDB80B020DA51F7005D9C58 /* anim_model.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB80A720DA51F7005D9C58 /* anim_model.bundle */; };
 		0FDB80B120DA51F7005D9C58 /* face_beautification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB80A820DA51F7005D9C58 /* face_beautification.bundle */; };
+		2FBF73042224F3940054BAEE /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FBF73032224F3940054BAEE /* libc++.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -191,7 +190,6 @@
 		0F29C66820525BC6000F8159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F29C66920525BC6000F8159 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0F29C6D9205271C1000F8159 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		0F29C6DC205272A1000F8159 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		0F29C6E120527D49000F8159 /* AgoraRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtcEngineKit.framework; path = AgoraWithFaceunity/AgoraRtcEngineKit.framework; sourceTree = "<group>"; };
 		0F29C6E320527DF4000F8159 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0F29C6E520527DFC000F8159 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -348,6 +346,7 @@
 		0FDB80A820DA51F7005D9C58 /* face_beautification.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = face_beautification.bundle; sourceTree = "<group>"; };
 		0FDB80AA20DA51F7005D9C58 /* funama.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funama.h; sourceTree = "<group>"; };
 		0FDB80AB20DA51F7005D9C58 /* FURenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FURenderer.h; sourceTree = "<group>"; };
+		2FBF73032224F3940054BAEE /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -355,6 +354,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FBF73042224F3940054BAEE /* libc++.tbd in Frameworks */,
 				0F308541216DCED6002A1D28 /* FUAPIDemoBar.framework in Frameworks */,
 				0F02C1FB20561D1B006EF198 /* AudioToolbox.framework in Frameworks */,
 				0F02C1FA20561D14006EF198 /* VideoToolbox.framework in Frameworks */,
@@ -364,10 +364,8 @@
 				0F02C1F720561CF6006EF198 /* CoreMotion.framework in Frameworks */,
 				0F29C6F420527E50000F8159 /* libresolv.tbd in Frameworks */,
 				0FDB80AD20DA51F7005D9C58 /* libnama.a in Frameworks */,
-				0F29C6F220527E46000F8159 /* libc++.1.tbd in Frameworks */,
 				0F29C6E420527DF4000F8159 /* SystemConfiguration.framework in Frameworks */,
 				0F29C6E220527D4A000F8159 /* AgoraRtcEngineKit.framework in Frameworks */,
-				0F29C6DE205272B4000F8159 /* libstdc++.tbd in Frameworks */,
 				0F29C6DA205271C1000F8159 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,6 +438,7 @@
 		0F29C6D8205271C0000F8159 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2FBF73032224F3940054BAEE /* libc++.tbd */,
 				0F29C6F320527E50000F8159 /* libresolv.tbd */,
 				0F29C6F120527E45000F8159 /* libc++.1.tbd */,
 				0F29C6EF20527E3A000F8159 /* AudioToolbox.framework */,
@@ -450,7 +449,6 @@
 				0F29C6E520527DFC000F8159 /* CoreMedia.framework */,
 				0F29C6E320527DF4000F8159 /* SystemConfiguration.framework */,
 				0F29C6E120527D49000F8159 /* AgoraRtcEngineKit.framework */,
-				0F29C6DC205272A1000F8159 /* libstdc++.tbd */,
 				0F29C6D9205271C1000F8159 /* Accelerate.framework */,
 			);
 			name = Frameworks;
