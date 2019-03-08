@@ -81,6 +81,9 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     private MediaMuxerWrapper mMuxer;
     private MediaVideoEncoder mVideoEncoder;
 
+    private int mSmallHeight;
+    private int mSmallWidth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +94,12 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
+        Log.d(TAG, "height:" + height);
         int width = displayMetrics.widthPixels;
-        x_position = width - convert(150 + 16);
+        Log.d(TAG, "width:" + width);
+        mSmallHeight = height / 3;
+        mSmallWidth = width / 3;
+        x_position = width - mSmallWidth - convert(16);
         y_position = convert(70);
 
         mDescriptionText = findViewById(R.id.effect_desc_text);
@@ -178,6 +185,14 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
                 FrameLayout.LayoutParams.MATCH_PARENT);
 
         mRemoteView = findViewById(R.id.remote_video_view);
+        RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mRemoteView.getLayoutParams();
+        remoteParams.height = mSmallHeight;
+        remoteParams.width = mSmallWidth;
+        remoteParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        remoteParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        remoteParams.rightMargin = convert(16);
+        remoteParams.topMargin = convert(70);
+        mRemoteView.setLayoutParams(remoteParams);
         mRemoteView.setOnTouchListener(this);
 
         mEffectPanel = new EffectPanel(findViewById(R.id.effect_container), mFURenderer, new EffectRecyclerAdapter.OnDescriptionChangeListener() {
@@ -205,8 +220,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     private void swapLocalRemoteDisplay() {
         if (mLocalViewIsBig) {
             RelativeLayout.LayoutParams localParams = (RelativeLayout.LayoutParams) mLocalViewContainer.getLayoutParams();
-            localParams.height = convert(200);
-            localParams.width = convert(150);
+            localParams.height = mSmallHeight;
+            localParams.width = mSmallWidth;
             localParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             localParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             localParams.rightMargin = convert(16);
@@ -242,8 +257,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
             mLocalViewContainer.setOnTouchListener(null);
 
             RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mRemoteView.getLayoutParams();
-            remoteParams.height = convert(200);
-            remoteParams.width = convert(150);
+            remoteParams.height = mSmallHeight;
+            remoteParams.width = mSmallWidth;
             remoteParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             remoteParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             remoteParams.rightMargin = convert(16);
