@@ -2,7 +2,7 @@
 
 *Read this in other languages: [English](README.md)*
 
-这个开源示例项目演示了如果快速集成 [Agora](www.agora.io) 视频 SDK 和 [Faceunity](http://www.faceunity.com) 美颜 SDK，实现一对一视频聊天。
+这个开源示例项目演示了如何快速集成 [Agora](www.agora.io) 视频 SDK 和 [Faceunity](http://www.faceunity.com) 美颜 SDK，实现一对一视频聊天。
 
 在这个示例项目中包含以下功能：
 
