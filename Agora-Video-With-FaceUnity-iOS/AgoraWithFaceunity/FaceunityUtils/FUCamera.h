@@ -22,7 +22,6 @@
 @property (assign, nonatomic) CGPoint exposurePoint;
 @property (assign, nonatomic) int captureFormat; //采集格式
 @property (copy  , nonatomic) dispatch_queue_t  videoCaptureQueue;//视频采集的队列
-@property (copy  , nonatomic) dispatch_queue_t  audioCaptureQueue;//音频采集队列
 
 - (instancetype)initWithCameraPosition:(AVCaptureDevicePosition)cameraPosition captureFormat:(int)captureFormat;
 
@@ -31,16 +30,6 @@
 - (void)stopCapture;
 
 - (void)changeCameraInputDeviceisFront:(BOOL)isFront;
-
-//- (void)takePhotoAndSave;
-//
-//- (void)startRecord;
-//
-//- (void)stopRecord;
-
-- (void)addAudio;
-
-- (void)removeAudio;
 
 // 设置采集方向
 - (void)setCaptureVideoOrientation:(AVCaptureVideoOrientation)orientation;

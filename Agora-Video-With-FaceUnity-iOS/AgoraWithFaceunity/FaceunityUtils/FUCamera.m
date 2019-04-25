@@ -9,18 +9,8 @@
 #import "FUCamera.h"
 #import <UIKit/UIKit.h>
 
-typedef enum : NSUInteger {
-    CommonMode,
-    PhotoTakeMode,
-    VideoRecordMode,
-    VideoRecordEndMode,
-} RunMode;
-
-
-@interface FUCamera()<AVCaptureVideoDataOutputSampleBufferDelegate,AVCaptureAudioDataOutputSampleBufferDelegate>
+@interface FUCamera()<AVCaptureVideoDataOutputSampleBufferDelegate>
 {
-    RunMode runMode;
-    
     BOOL hasStarted;
 }
 @property (nonatomic, strong) AVCaptureSession *captureSession;
@@ -31,9 +21,6 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) AVCaptureDevice *camera;
 
 @property (assign, nonatomic) AVCaptureDevicePosition cameraPosition;
-
-@property (nonatomic, strong) AVCaptureDeviceInput      *audioMicInput;//麦克风输入
-@property (nonatomic, strong) AVCaptureAudioDataOutput  *audioOutput;//音频输出
 
 @end
 
@@ -74,16 +61,6 @@ typedef enum : NSUInteger {
     }
 }
 
-- (void)addAudio    {
-    if ([_captureSession canAddOutput:self.audioOutput]) {
-        [_captureSession addOutput:self.audioOutput];
-    }
-}
-
-- (void)removeAudio {
-    [_captureSession removeOutput:self.audioOutput];
-}
-
 - (AVCaptureSession *)captureSession
 {
     if (!_captureSession) {
@@ -100,20 +77,11 @@ typedef enum : NSUInteger {
             [_captureSession addOutput:self.videoOutput];
         }
         
-        if ([_captureSession canAddInput:self.audioMicInput]) {
-            [_captureSession addInput:self.audioMicInput];
-        }
-        
-        [self addAudio];
-        
         [self.videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-        if (self.videoConnection.supportsVideoMirroring && self.isFrontCamera) {
-            self.videoConnection.videoMirrored = YES;
-        }
         
         [_captureSession beginConfiguration]; // the session to which the receiver's AVCaptureDeviceInput is added.
         if ( [deviceInput.device lockForConfiguration:NULL] ) {
-            [deviceInput.device setActiveVideoMinFrameDuration:CMTimeMake(1, 30)];
+            [deviceInput.device setActiveVideoMinFrameDuration:CMTimeMake(1, 15)];
             [deviceInput.device unlockForConfiguration];
         }
         [_captureSession commitConfiguration]; //
@@ -147,33 +115,6 @@ typedef enum : NSUInteger {
     return _frontCameraInput;
 }
 
-- (AVCaptureDeviceInput *)audioMicInput
-{
-    if (!_audioMicInput) {
-        //添加后置麦克风的输出
-        
-        AVCaptureDevice *mic = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
-        NSError *error;
-        _audioMicInput = [AVCaptureDeviceInput deviceInputWithDevice:mic error:&error];
-        if (error) {
-            NSLog(@"获取麦克风失败~");
-        }
-    }
-    return _audioMicInput;
-}
-
-- (AVCaptureAudioDataOutput *)audioOutput
-{
-    if (!_audioOutput) {
-        //添加音频输出
-        _audioOutput = [[AVCaptureAudioDataOutput alloc] init];
-        [_audioOutput setSampleBufferDelegate:self queue:self.audioCaptureQueue];
-    }
-    
-    return _audioOutput;
-}
-
-
 //返回前置摄像头
 - (AVCaptureDevice *)frontCamera {
     return [self cameraWithPosition:AVCaptureDevicePositionFront];
@@ -206,15 +147,11 @@ typedef enum : NSUInteger {
     
     [self.captureSession beginConfiguration]; // the session to which the receiver's AVCaptureDeviceInput is added.
     if ( [deviceInput.device lockForConfiguration:NULL] ) {
-        [deviceInput.device setActiveVideoMinFrameDuration:CMTimeMake(1, 30)];
+        [deviceInput.device setActiveVideoMinFrameDuration:CMTimeMake(1, 15)];
         [deviceInput.device unlockForConfiguration];
     }
     [self.captureSession commitConfiguration];
     
-    self.videoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
-    if (self.videoConnection.supportsVideoMirroring) {
-        self.videoConnection.videoMirrored = isFront;
-    }
     [self.captureSession startRunning];
 }
 
@@ -265,18 +202,11 @@ typedef enum : NSUInteger {
     return _videoCaptureQueue;
 }
 
-//音频采集队列
-- (dispatch_queue_t)audioCaptureQueue {
-    if (_audioCaptureQueue == nil) {
-        _audioCaptureQueue = dispatch_queue_create("com.faceunity.audioCaptureQueue", NULL);
-    }
-    return _audioCaptureQueue;
-}
-
 //视频连接
 - (AVCaptureConnection *)videoConnection {
     _videoConnection = [self.videoOutput connectionWithMediaType:AVMediaTypeVideo];
     _videoConnection.automaticallyAdjustsVideoMirroring =  NO;
+    _videoConnection.videoMirrored = NO;
     
     return _videoConnection;
 }
@@ -350,86 +280,10 @@ typedef enum : NSUInteger {
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    if (captureOutput == self.audioOutput) {
-        return ;
-    }
-    
     if([self.delegate respondsToSelector:@selector(didOutputVideoSampleBuffer:)])
     {
-        connection.videoMirrored = NO;
         [self.delegate didOutputVideoSampleBuffer:sampleBuffer];
     }
-    
-    switch (runMode) {
-        case CommonMode:
-            break;
-        case PhotoTakeMode:
-            break;
-        case VideoRecordMode:
-            break;
-        case VideoRecordEndMode:
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)takePhotoAndSave
-{
-    runMode = PhotoTakeMode;
-}
-
-//开始录像
-- (void)startRecord
-{
-    runMode = VideoRecordMode;
-}
-
-//停止录像
-- (void)stopRecord
-{
-    runMode = VideoRecordEndMode;
-}
-
-- (UIImage *)imageFromPixelBuffer:(CVPixelBufferRef)pixelBufferRef {
-    
-    CVPixelBufferLockBaseAddress(pixelBufferRef, 0);
-    
-    CGFloat SW = [UIScreen mainScreen].bounds.size.width;
-    CGFloat SH = [UIScreen mainScreen].bounds.size.height;
-    
-    float width = CVPixelBufferGetWidth(pixelBufferRef);
-    float height = CVPixelBufferGetHeight(pixelBufferRef);
-    
-    float dw = width / SW;
-    float dh = height / SH;
-    
-    float cropW = width;
-    float cropH = height;
-    
-    if (dw > dh) {
-        cropW = SW * dh;
-    }else
-    {
-        cropH = SH * dw;
-    }
-    
-    CGFloat cropX = (width - cropW) * 0.5;
-    CGFloat cropY = (height - cropH) * 0.5;
-    
-    CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBufferRef];
-    
-    CIContext *temporaryContext = [CIContext contextWithOptions:nil];
-    CGImageRef videoImage = [temporaryContext
-                             createCGImage:ciImage
-                             fromRect:CGRectMake(cropX, cropY,
-                                                 cropW,
-                                                 cropH)];
-    
-    UIImage *image = [UIImage imageWithCGImage:videoImage];
-    CGImageRelease(videoImage);
-    CVPixelBufferUnlockBaseAddress(pixelBufferRef, 0);
-    return image;
 }
 
 - (void)setCaptureVideoOrientation:(AVCaptureVideoOrientation) orientation {
