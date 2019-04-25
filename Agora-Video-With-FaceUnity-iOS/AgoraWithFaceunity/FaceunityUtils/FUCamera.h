@@ -32,16 +32,6 @@
 
 - (void)changeCameraInputDeviceisFront:(BOOL)isFront;
 
-//- (void)takePhotoAndSave;
-//
-//- (void)startRecord;
-//
-//- (void)stopRecord;
-
-- (void)addAudio;
-
-- (void)removeAudio;
-
 // 设置采集方向
 - (void)setCaptureVideoOrientation:(AVCaptureVideoOrientation)orientation;
 @end

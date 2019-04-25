@@ -130,8 +130,6 @@
         [[FUManager shareManager] loadAnimojiFaxxBundle];
     }
     
-    [self.mCamera startCapture];
-    
     if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
         [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"];
     }
@@ -140,8 +138,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if (self.model.type == FULiveModelTypeMusicFilter) {
-        
-        [self.mCamera removeAudio ];
         [[FUMusicPlayer sharePlayer] stop];
     }else if (self.model.type == FULiveModelTypeAnimoji) {
         
@@ -230,11 +226,26 @@
     [self.agoraKit setVideoSource:self];
     
     [self.agoraKit enableWebSdkInteroperability:YES];
+
+    [self setupLocalView];
+    [self.agoraKit startPreview];
     
     self.count = 0;
     self.isMuted = false;
     
     [self.agoraKit joinChannelByToken:nil channelId:self.channelName info:nil uid:0 joinSuccess:nil];
+}
+
+- (void) setupLocalView {
+    UIView *renderView = [[UIView alloc] initWithFrame:self.view.frame];
+    [self.containView insertSubview:renderView atIndex:0];
+    if (self.localCanvas == nil) {
+        self.localCanvas = [[AgoraRtcVideoCanvas alloc] init];
+    }
+    self.localCanvas.view = renderView;
+    self.localCanvas.renderMode = AgoraVideoRenderModeHidden;
+    [self.agoraKit setupLocalVideo:self.localCanvas];
+    self.localRenderView = renderView;
 }
 
 #pragma mark - Agora Video Source Protocol
@@ -261,17 +272,6 @@
 
 #pragma mark - Agora Engine Delegate
 - (void)rtcEngine:(AgoraRtcEngineKit *)engine didJoinChannel:(NSString*)channel withUid:(NSUInteger)uid elapsed:(NSInteger) elapsed {
-    UIView *renderView = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.containView insertSubview:renderView atIndex:0];
-    if (self.localCanvas == nil) {
-        self.localCanvas = [[AgoraRtcVideoCanvas alloc] init];
-    }
-    self.localCanvas.uid = uid;
-    self.localCanvas.view = renderView;
-    self.localCanvas.renderMode = AgoraVideoRenderModeHidden;
-    [self.agoraKit setupLocalVideo:self.localCanvas];
-    self.localRenderView = renderView;
-    
     NSLog(@"Join Channel Success");
 }
 
@@ -442,6 +442,7 @@
     });
     [self.agoraKit setVideoSource:nil];
     [self.agoraKit leaveChannel:nil];
+    [self.agoraKit stopPreview];
     [self.localRenderView removeFromSuperview];
     if (self.count > 0) {
         [self.remoteRenderView removeFromSuperview];
@@ -583,15 +584,7 @@
 }
 
 #pragma mark - FUCameraDelegate
-bool isNeeded = YES;
 - (void)didOutputVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer {
-    if (isNeeded) {
-        isNeeded = !isNeeded;
-        return;
-    }
-
-    isNeeded = !isNeeded;
-    
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
     
     CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer) ;
