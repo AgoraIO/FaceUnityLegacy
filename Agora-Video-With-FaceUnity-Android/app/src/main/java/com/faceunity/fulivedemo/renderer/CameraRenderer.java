@@ -7,6 +7,7 @@ import android.hardware.Camera;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
 import android.support.v7.app.AlertDialog;
 
 import io.agora.rtcwithfu.R;
@@ -22,11 +23,10 @@ import java.util.concurrent.TimeUnit;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-
 /**
- * Camera相关处理
- * Camera.PreviewCallback camera数据回调
- * GLSurfaceView.Renderer GLSurfaceView相应的创建销毁与绘制回调
+ * Camera 相关处理
+ * Camera.PreviewCallback Camera 数据回调
+ * GLSurfaceView.Renderer GLSurfaceView 相应的创建销毁与绘制回调
  * <p>
  * Created by tujh on 2018/3/2.
  */
@@ -147,12 +147,13 @@ public class CameraRenderer implements Camera.PreviewCallback, GLSurfaceView.Ren
         } catch (Exception e) {
             return;
         }
+
         if (mCameraNV21Byte == null) {
             mFullFrameRectTexture2D.drawFrame(mFuTextureId, mtx, mvp);
             return;
         }
         mFuTextureId = mOnCameraRendererStatusListener.onDrawFrame(mCameraNV21Byte, mCameraTextureId, mCameraWidth, mCameraHeight, mtx, mSurfaceTexture.getTimestamp());
-        //用于屏蔽切换调用SDK处理数据方法导致的绿屏（切换SDK处理数据方法是用于展示，实际使用中无需切换，故无需调用做这个判断,直接使用else分支绘制即可）
+        // 用于屏蔽切换调用 SDK 处理数据方法导致的绿屏（切换SDK处理数据方法是用于展示，实际使用中无需切换，故无需调用做这个判断，直接使用 else 分支绘制即可）
         if (mFuTextureId <= 0) {
             mTextureOES.drawFrame(mCameraTextureId, mtx, mvp);
         } else {
@@ -163,6 +164,14 @@ public class CameraRenderer implements Camera.PreviewCallback, GLSurfaceView.Ren
         mGLSurfaceView.requestRender();
 
         isDraw = true;
+    }
+
+    public void flipFrontX() {
+        if (mCurrentCameraType != Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            return;
+        }
+
+        Matrix.scaleM(mvp, 0, -1, 1, 1);
     }
 
     private void onSurfaceDestroy() {

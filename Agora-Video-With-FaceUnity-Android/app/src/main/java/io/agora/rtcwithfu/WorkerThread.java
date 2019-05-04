@@ -182,7 +182,6 @@ public class WorkerThread extends Thread {
 
             try {
                 mRtcEngine = RtcEngine.create(mContext, appId, mEngineEventHandler.mRtcEventHandler);
-                mRtcEngine.setParameters("{\"rtc.log_filter\":65535}");
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
                 throw new RuntimeException("NEED TO check rtc sdk init fatal error\n" + Log.getStackTraceString(e));

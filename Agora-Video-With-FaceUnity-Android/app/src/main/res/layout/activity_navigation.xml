@@ -5,13 +5,14 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".rtcwithfu.activities.MainActivity">
+    tools:context="io.agora.rtcwithfu.activities.MainActivity">
 
     <EditText
         android:id="@+id/edt_channel"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:gravity="center" />
+        android:gravity="center"
+        android:lines="1" />
 
     <Button
         android:layout_width="200dp"

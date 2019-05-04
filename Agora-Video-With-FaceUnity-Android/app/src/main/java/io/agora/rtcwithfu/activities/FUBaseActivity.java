@@ -23,6 +23,8 @@ public abstract class FUBaseActivity extends RTCBaseActivity
     protected Button mRecordingBtn;
     private int mRecordStatus = 0;
 
+    private int mMirrorVideoPreviewStatus = 1;
+
     protected TextView isCalibratingText;
 
     protected EffectPanel mEffectPanel;
@@ -95,12 +97,18 @@ public abstract class FUBaseActivity extends RTCBaseActivity
             case R.id.btn_switch_view:
                 onViewSwitchRequested();
                 break;
+            case R.id.btn_mirror_video_preview:
+                mMirrorVideoPreviewStatus ^= 1;
+                onMirrorPreviewRequested(mMirrorVideoPreviewStatus > 0);
+                break;
         }
     }
 
     abstract protected void onCameraChangeRequested();
 
     abstract protected void onViewSwitchRequested();
+
+    abstract protected void onMirrorPreviewRequested(boolean mirror);
 
     abstract protected void onStartRecordingRequested();
 

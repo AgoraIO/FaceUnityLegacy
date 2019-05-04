@@ -93,43 +93,77 @@
             android:textSize="17sp"
             android:visibility="gone" />
 
-        <Button
-            android:id="@+id/btn_choose_camera"
-            android:layout_width="40dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/max_space"
             android:layout_marginTop="@dimen/max_space"
             android:layout_marginRight="@dimen/max_space"
-            android:background="@mipmap/camera_front"
-            android:onClick="onClick" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_switch_view"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/max_space"
-            android:background="@color/faceUnityYellow"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="@string/btn_switch_video_view"
-            android:textColor="@color/colorWhite" />
+            <Button
+                android:id="@+id/btn_recording"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
 
-        <Button
-            android:id="@+id/btn_recording"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:background="@color/faceUnityYellow"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:text="@string/btn_start_recording"
-            android:textColor="@color/colorWhite" />
+                android:background="@color/faceUnityYellow"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/btn_start_recording"
+                android:textColor="@color/colorWhite" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10" />
+
+            <Button
+                android:id="@+id/btn_switch_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:background="@color/faceUnityYellow"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="@string/btn_switch_video_view"
+                android:textColor="@color/colorWhite" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10" />
+
+            <Button
+                android:id="@+id/btn_mirror_video_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:background="@color/faceUnityYellow"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="@string/btn_switch_mirror_video_preview"
+                android:textColor="@color/colorWhite" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10" />
+
+            <ImageButton
+                android:id="@+id/btn_choose_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:scaleType="centerInside"
+                android:background="@mipmap/camera_front"
+                android:gravity="center"
+                android:onClick="onClick" />
+        </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

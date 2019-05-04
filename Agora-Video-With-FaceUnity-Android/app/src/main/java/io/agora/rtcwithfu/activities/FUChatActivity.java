@@ -94,9 +94,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
-        Log.d(TAG, "height:" + height);
         int width = displayMetrics.widthPixels;
-        Log.d(TAG, "width:" + width);
+        Log.d(TAG, "width: " + width + ", height: " + height);
         mSmallHeight = height / 3;
         mSmallWidth = width / 3;
         x_position = width - mSmallWidth - convert(16);
@@ -375,8 +374,14 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     @Override
     protected void onViewSwitchRequested() {
-        // switchVideoView();
         swapLocalRemoteDisplay();
+    }
+
+    @Override
+    protected void onMirrorPreviewRequested(boolean mirror) {
+        Log.i(TAG, "onMirrorPreviewRequested " + mirror);
+
+        mGLRenderer.flipFrontX();
     }
 
     @Override
