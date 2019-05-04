@@ -156,6 +156,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
                             MediaIO.PixelFormat.NV21.intValue(), cameraWidth,
                             cameraHeight, mCameraOrientation, System.currentTimeMillis());
                 }
+
+                // File Recording is a beta feature
                 sendRecordingData(fuTextureId, mtx, timeStamp / Constant.NANO_IN_ONE_MILLI_SECOND);
                 return fuTextureId;
             }
