@@ -138,6 +138,8 @@ public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAd
          * mp3
          */
         try {
+            //若希望得到更好的混音效果（播放的音乐与麦克风采集到的音频的混合），则需要调用RtcEngine的startAudioMixing方法
+            //具体可参考：https://docs.agora.io/cn/Interactive%20Broadcast/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_rtc_engine.html#ac56ceea1a143a4898382bce10b04df09
             AssetFileDescriptor descriptor = mContext.getAssets().openFd("musicfilter/" + effect.bundleName() + ".mp3");
             mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
             descriptor.close();
