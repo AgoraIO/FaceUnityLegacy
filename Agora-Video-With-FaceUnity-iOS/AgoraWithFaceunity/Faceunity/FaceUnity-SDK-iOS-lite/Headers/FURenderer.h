@@ -37,11 +37,12 @@ typedef enum {
      - 使用该接口进行初始化的话，需要在代码中配置 EAGLContext 环境，并且保证我们的接口是在同一个 EAGLContext 下调用的
  
  @param data v3.bundle 对应的二进制数据地址
+ @param dataSize v3.bundle 数据的字节数
  @param ardata 该参数已舍弃，传 NULL 即可
  @param package 密钥数组，必须配置好密钥，SDK 才能正常工作
  @param size 密钥数组大小
  */
-- (void)setupWithData:(void *)data ardata:(void *)ardata authPackage:(void *)package authSize:(int)size;
+- (void)setupWithData:(void *)data dataSize:(int)dataSize ardata:(void *)ardata authPackage:(void *)package authSize:(int)size;
 
 /**
  初始化接口2：
@@ -49,12 +50,13 @@ typedef enum {
      - 与 初始化接口1 相比此接口新增 shouldCreate 参数，如果传入YES我们将在内部创建并持有一个 EAGLContext，无需外部再创建 EAGLContext 环境。
  
  @param data v3.bundle 对应的二进制数据地址
+ @param dataSize v3.bundle 数据的字节数
  @param ardata 该参数已废弃，传 NULL 即可
  @param package 密钥数组，必须配置好密钥，SDK 才能正常工作
  @param size 密钥数组大小
  @param shouldCreate 如果设置为 YES，我们会在内部创建并持有一个 EAGLContext，此时必须使用OC层接口
  */
-- (void)setupWithData:(void *)data ardata:(void *)ardata authPackage:(void *)package authSize:(int)size shouldCreateContext:(BOOL)shouldCreate;
+- (void)setupWithData:(void *)data dataSize:(int)dataSize ardata:(void *)ardata authPackage:(void *)package authSize:(int)size shouldCreateContext:(BOOL)shouldCreate;
 
 /**
  初始化接口3：
@@ -107,7 +109,7 @@ typedef enum {
  @param customSize 自定义输出的分辨率，目前仅支持BGRA格式
  @return 被处理过的的图像数据，与传入的 pixelBuffer 为同一个 pixelBuffer
  */
-- (CVPixelBufferRef)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize;
+- (CVPixelBufferRef)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口4：
@@ -119,7 +121,7 @@ typedef enum {
  @param itemCount 句柄数组中包含的句柄个数
  @return 被处理过的的图像数据，与传入的 pixelBuffer 不是同一个 pixelBuffer
  */
-- (CVPixelBufferRef)renderToInternalPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount;
+- (CVPixelBufferRef)renderToInternalPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口5：
@@ -133,7 +135,7 @@ typedef enum {
  @param itemCount 句柄数组中包含的句柄个数
  @return 被处理过的的图像数据
  */
-- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount;
+- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口6：
@@ -148,7 +150,7 @@ typedef enum {
  @param flip 道具镜像使能，如果设置为 YES 可以将道具做镜像操作
  @return 被处理过的的图像数据
  */
-- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip;
+- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口7：
@@ -164,7 +166,7 @@ typedef enum {
  @param customSize 自定义输出的分辨率，目前仅支持BGRA格式
  @return 被处理过的的图像数据
  */
-- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize;
+- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口8：
@@ -241,7 +243,7 @@ typedef enum {
  @param resizeSize resizeSize
  @return resizeSize之后的pixelBuffer
  */
-- (CVPixelBufferRef)resizePixelBuffer:(CVPixelBufferRef)pixelBuffer resizeSize:(CGSize)resizeSize;
+- (CVPixelBufferRef)resizePixelBuffer:(CVPixelBufferRef)pixelBuffer resizeSize:(CGSize)resizeSize NS_AVAILABLE_IOS(8_0);
 
 /**
  通过texture获取指定大小与格式的pixelBuffer
@@ -252,7 +254,7 @@ typedef enum {
  @param outputFormat 输出的pixelBuffer的格式，接受的参数有两个，分别为：FU_FORMAT_NV12_BUFFER、FU_FORMAT_BGRA_BUFFER
  @return 从texture获取到的指定大小与格式的pixelBuffer
  */
-- (CVPixelBufferRef)getPixelBufferFromTexture:(int)texture textureSize:(CGSize)textureSize outputSize:(CGSize)outPutSize outputFormat:(int)outputFormat;
+- (CVPixelBufferRef)getPixelBufferFromTexture:(int)texture textureSize:(CGSize)textureSize outputSize:(CGSize)outPutSize outputFormat:(int)outputFormat NS_AVAILABLE_IOS(8_0);
 
 /**
  切换摄像头时需调用的接口：
@@ -372,6 +374,8 @@ typedef enum {
  */
 + (int)trackFace:(int)inputFormat inputData:(void*)inputData width:(int)width height:(int)height;
 
++ (int)trackFaceWithTongue:(int)inputFormat inputData:(void*)inputData width:(int)width height:(int)height;
+
 /**
  获取人脸信息：
      - 在程序中需要先运行过视频处理接口( 视频处理接口8 除外)或 人脸信息跟踪接口 后才能使用该接口来获取人脸信息；
@@ -430,7 +434,7 @@ typedef enum {
  @param contractsCount contracts 数组中 contract 道具句柄的个数
  @return 被绑定到 avatar 道具上的普通道具个数
  */
-+ (int)avatarBindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount contracts:(int *)contracts contractsCount:(int)contractsCount;
++ (int)avatarBindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount contracts:(int *)contracts contractsCount:(int)contractsCount DEPRECATED_MSG_ATTRIBUTE("use bindItems:items:itemsCount: instead");
 
 /**
  将普通道具从avatar道具上解绑：
@@ -441,7 +445,7 @@ typedef enum {
  @param itemsCount 句柄数组包含的道具句柄个数
  @return 从 avatar 道具上解除绑定的普通道具个数
  */
-+ (int)avatarUnbindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount;
++ (int)avatarUnbindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount DEPRECATED_MSG_ATTRIBUTE("use unBindItems:items:itemsCount: instead");
 
 /**
  绑定道具：
@@ -453,6 +457,17 @@ typedef enum {
  @return 被绑定到目标道具上的普通道具个数
  */
 + (int)bindItems:(int)item items:(int*)items itemsCount:(int)itemsCount;
+
+/**
+ 解绑道具：
+ -  该接口可以将一些普通道具从某个目标道具上解绑
+ 
+ @param item 目标道具句柄
+ @param items 需要从目标道具上解除绑定的普通道具的句柄数组
+ @param itemsCount 句柄数组包含的道具句柄个数
+ @return 被绑定到目标道具上的普通道具个数
+ */
++ (int)unBindItems:(int)item items:(int *)items itemsCount:(int)itemsCount;
 
 /**
  解绑所有道具：
@@ -483,4 +498,10 @@ typedef enum {
 + (int)loadAnimModelWithModelPath:(NSString *)modelPath;
 
 + (void)setDefaultRotationMode:(float)mode;
+
++ (void)setAsyncTrackFaceEnable:(int)enable;
+
++ (void)setTongueTrackingEnable:(int)enable;
+ 
++ (int)loadTongueModel:(void*)model size:(int)size;
 @end

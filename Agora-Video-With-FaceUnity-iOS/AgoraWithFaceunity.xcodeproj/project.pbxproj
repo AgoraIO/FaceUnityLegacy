@@ -329,7 +329,7 @@
 		0FDB7FF920DA3C8E005D9C58 /* jingongmen_zh_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = jingongmen_zh_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFA20DA3C8E005D9C58 /* sea_lm_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = sea_lm_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFB20DA3C8E005D9C58 /* xiandai_ztt_fu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiandai_ztt_fu.png; sourceTree = "<group>"; };
-		0FDB807A20DA3CB7005D9C58 /* authpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = authpack.h; sourceTree = "<group>"; };
+		0FDB807A20DA3CB7005D9C58 /* authpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authpack.h; path = Faceunity/authpack.h; sourceTree = "<group>"; };
 		0FDB807C20DA4633005D9C58 /* FULiveCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FULiveCell.h; sourceTree = "<group>"; };
 		0FDB807D20DA4633005D9C58 /* FULiveCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FULiveCell.m; sourceTree = "<group>"; };
 		0FDB807F20DA466C005D9C58 /* FULiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FULiveModel.m; sourceTree = "<group>"; };
@@ -461,7 +461,7 @@
 		0FDB7F7120DA3C8E005D9C58 /* Faceunity */ = {
 			isa = PBXGroup;
 			children = (
-				0FDB80A120DA51F7005D9C58 /* FaceUnity-SDK-iOS */,
+				0FDB80A120DA51F7005D9C58 /* FaceUnity-SDK-iOS-lite */,
 				0FDB7F7E20DA3C8E005D9C58 /* items */,
 			);
 			path = Faceunity;
@@ -682,7 +682,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		0FDB80A120DA51F7005D9C58 /* FaceUnity-SDK-iOS */ = {
+		0FDB80A120DA51F7005D9C58 /* FaceUnity-SDK-iOS-lite */ = {
 			isa = PBXGroup;
 			children = (
 				0FDB80A220DA51F7005D9C58 /* release_note.txt */,
@@ -690,7 +690,7 @@
 				0FDB80A420DA51F7005D9C58 /* Resources */,
 				0FDB80A920DA51F7005D9C58 /* Headers */,
 			);
-			path = "FaceUnity-SDK-iOS";
+			path = "FaceUnity-SDK-iOS-lite";
 			sourceTree = "<group>";
 		};
 		0FDB80A420DA51F7005D9C58 /* Resources */ = {
@@ -771,6 +771,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 0F29C64E20525BC6000F8159;
 			productRefGroup = 0F29C65820525BC6000F8159 /* Products */;
@@ -1096,16 +1097,15 @@
 					"$(PROJECT_DIR)/AgoraWithFaceunity",
 				);
 				INFOPLIST_FILE = AgoraWithFaceunity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunity;
+				PRODUCT_BUNDLE_IDENTIFIER = io.agora.rtcwithfu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "28d072e1-f550-49ef-a601-6038e4fddc51";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1126,16 +1126,15 @@
 					"$(PROJECT_DIR)/AgoraWithFaceunity",
 				);
 				INFOPLIST_FILE = AgoraWithFaceunity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.AgoraWithFaceunity;
+				PRODUCT_BUNDLE_IDENTIFIER = io.agora.rtcwithfu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "28d072e1-f550-49ef-a601-6038e4fddc51";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
