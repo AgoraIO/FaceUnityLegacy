@@ -14,6 +14,7 @@ import java.io.File;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.mediaio.IVideoSink;
 import io.agora.rtc.mediaio.IVideoSource;
+import io.agora.rtc.video.VideoEncoderConfiguration;
 
 public class WorkerThread extends Thread {
     private final static String TAG = "WorkerThread";
@@ -61,7 +62,7 @@ public class WorkerThread extends Thread {
                     break;
                 case ACTION_WORKER_CONFIG_ENGINE:
                     Object[] configData = (Object[]) msg.obj;
-                    mWorkerThread.configEngine((int) configData[0], (int) configData[1]);
+                    mWorkerThread.configEngine((int) configData[0], (VideoEncoderConfiguration) configData[1]);
                     break;
             }
         }
@@ -139,24 +140,24 @@ public class WorkerThread extends Thread {
 
     private final MyRtcEngineEventHandler mEngineEventHandler;
 
-    public final void configEngine(int cRole, int vProfile) {
+    public final void configEngine(int cRole, VideoEncoderConfiguration vcConfiguration) {
         if (Thread.currentThread() != this) {
-            Log.d(TAG, "configEngine() - getWorker thread asynchronously " + cRole + " " + vProfile);
+            Log.d(TAG, "configEngine() - getWorker thread asynchronously " + cRole + " " + vcConfiguration);
             Message envelop = new Message();
             envelop.what = ACTION_WORKER_CONFIG_ENGINE;
-            envelop.obj = new Object[]{cRole, vProfile};
+            envelop.obj = new Object[]{cRole, vcConfiguration};
             mWorkerHandler.sendMessage(envelop);
             return;
         }
 
         ensureRtcEngineReadyLock();
         mEngineConfig.mClientRole = cRole;
-        mEngineConfig.mVideoProfile = vProfile;
 
-        mRtcEngine.setVideoProfile(mEngineConfig.mVideoProfile, true);
+//      mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_360P, false); // Earlier than 2.3.0
+        mRtcEngine.setVideoEncoderConfiguration(vcConfiguration);
         mRtcEngine.setClientRole(cRole);
 
-        Log.d(TAG, "configEngine " + cRole + " " + mEngineConfig.mVideoProfile);
+        Log.d(TAG, "configEngine " + cRole + " " + vcConfiguration);
     }
 
     public static String getDeviceID(Context context) {

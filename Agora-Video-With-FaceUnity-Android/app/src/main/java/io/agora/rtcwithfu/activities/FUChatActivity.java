@@ -36,7 +36,7 @@ import io.agora.rtc.mediaio.IVideoFrameConsumer;
 import io.agora.rtc.mediaio.IVideoSource;
 import io.agora.rtc.mediaio.MediaIO;
 import io.agora.rtc.mediaio.TextureSource;
-import io.agora.rtc.video.VideoEncoderConfiguration;
+import io.agora.rtc.video.VideoEncoderConfiguration; // 2.3.0 and later
 import io.agora.rtcwithfu.Constants;
 import io.agora.rtcwithfu.R;
 import io.agora.rtcwithfu.RtcEngineEventHandler;
@@ -208,8 +208,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     }
 
     private void joinChannel() {
-        getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER);
-        getRtcEngine().setVideoEncoderConfiguration(new VideoEncoderConfiguration(
+        getWorker().configEngine(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER, new VideoEncoderConfiguration(
                 VideoEncoderConfiguration.VD_480x360,
                 VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, 400,
                 VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT));
