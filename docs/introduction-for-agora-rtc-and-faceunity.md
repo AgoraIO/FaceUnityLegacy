@@ -29,17 +29,17 @@
                 mConsumer = consumer;
     	    }
 
-    	    @Override
+            @Override
      	    public boolean onStart() {
                 mHasStarted = true;
     	    }
 
-    	    @Override
+            @Override
       	    public void onStop() {
                 mHasStarted = false;
             }
 
-    	    @Override
+            @Override
             public void onDispose() {
                 // 释放对 Consumer 的引用
                 mConsumer = null;
