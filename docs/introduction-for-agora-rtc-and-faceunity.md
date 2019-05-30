@@ -14,37 +14,37 @@
 
 ## 1. 设置 Agora RTC SDK 视频源为自定义视频源
 
-	// 一个通用的实现 IVideoSource 接口的类如下，本示例程序中未用到该类
-	public class MyVideoSource implements IVideoSource {
-            @Override
-            public int getBufferType() {
-                // 返回当前帧数据缓冲区的类型，每种类型数据在 Agora RTC SDK 内部会经过不同的处理，所以必须与帧数据的类型保持一致
-                // 有三种类型 BufferType.BYTE_ARRAY/BufferType.TEXTURE/BufferType.BYTE_BUFFER
-                return BufferType.BYTE_ARRAY;
-            }
-
-            @Override
-            public boolean onInitialize(IVideoFrameConsumer consumer) {
-                // IVideoFrameConsumer 是由 Agora RTC SDK 创建的，在 MyVideoSource 生命周期中注意保存它的引用，因为后续将通过它将数据传送给SDK
-                mConsumer = consumer;
-    	    }
-
-            @Override
-     	    public boolean onStart() {
-                mHasStarted = true;
-    	    }
-
-            @Override
-      	    public void onStop() {
-                mHasStarted = false;
-            }
-
-            @Override
-            public void onDispose() {
-                // 释放对 Consumer 的引用
-                mConsumer = null;
-            }
+    // 一个通用的实现 IVideoSource 接口的类如下，本示例程序中未用到该类
+    public class MyVideoSource implements IVideoSource {
+        @Override
+        public int getBufferType() {
+            // 返回当前帧数据缓冲区的类型，每种类型数据在 Agora RTC SDK 内部会经过不同的处理，所以必须与帧数据的类型保持一致
+            // 有三种类型 BufferType.BYTE_ARRAY/BufferType.TEXTURE/BufferType.BYTE_BUFFER
+            return BufferType.BYTE_ARRAY;
         }
+
+        @Override
+        public boolean onInitialize(IVideoFrameConsumer consumer) {
+            // IVideoFrameConsumer 是由 Agora RTC SDK 创建的，在 MyVideoSource 生命周期中注意保存它的引用，因为后续将通过它将数据传送给SDK
+            mConsumer = consumer;
+    	}
+
+        @Override
+        public boolean onStart() {
+            mHasStarted = true;
+        }
+
+        @Override
+        public void onStop() {
+            mHasStarted = false;
+        }
+
+        @Override
+        public void onDispose() {
+            // 释放对 Consumer 的引用
+            mConsumer = null;
+        }
+    }
 
 在本示例程序中，使用了 `TextureSource` 类，该类是 Agora RTC SDK 提供的适用于纹理类型(texture)视频源的预定义实现。当实例化了该类后，可调用 `setVideoSource` 接口来设置视频源，具体用法如下：
 
@@ -189,71 +189,71 @@
 
 其中 `img` 和 `tex` 是我们传入的原始数据，`mItemsArray` 则是需要用到的美颜效果数组，当该方法返回时，得到的数据便是经过美颜处理的数据，该数据会写回到我们传入的 `img` 数组中，而返回的 `fuTex` 则是经过美颜处理的新的纹理标识。而相应的美颜效果可以通过如下方法进行调节(均在 faceunity 当中)：
 
-     // filter_level 滤镜强度 范围 0~1 SDK 默认为 1
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "filter_level", mFilterLevel);
-     // filter_name 滤镜
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "filter_name", mFilterName.filterName());
+    // filter_level 滤镜强度 范围 0~1 SDK 默认为 1
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "filter_level", mFilterLevel);
+    // filter_name 滤镜
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "filter_name", mFilterName.filterName());
 
-     // skin_detect 精准美肤 0:关闭 1:开启 SDK 默认为 0
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "skin_detect", mSkinDetect);
-     // heavy_blur 美肤类型 0:清晰美肤 1:朦胧美肤 SDK 默认为 0
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "heavy_blur", mHeavyBlur);
-     // blur_level 磨皮 范围 0~6 SDK 默认为 6
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "blur_level", 6 * mBlurLevel);
-     // blur_blend_ratio 磨皮结果和原图融合率 范围 0~1 SDK 默认为 1
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "blur_blend_ratio", 1);
+    // skin_detect 精准美肤 0:关闭 1:开启 SDK 默认为 0
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "skin_detect", mSkinDetect);
+    // heavy_blur 美肤类型 0:清晰美肤 1:朦胧美肤 SDK 默认为 0
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "heavy_blur", mHeavyBlur);
+    // blur_level 磨皮 范围 0~6 SDK 默认为 6
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "blur_level", 6 * mBlurLevel);
+    // blur_blend_ratio 磨皮结果和原图融合率 范围 0~1 SDK 默认为 1
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "blur_blend_ratio", 1);
 
-     // color_level 美白 范围 0~1 SDK 默认为 1
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "color_level", mColorLevel);
-     // red_level 红润 范围 0~1 SDK 默认为 1
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "red_level", mRedLevel);
-     // eye_bright 亮眼 范围 0~1 SDK 默认为 0
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "eye_bright", mEyeBright);
-     // tooth_whiten 美牙 范围 0~1 SDK 默认为 0
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "tooth_whiten", mToothWhiten);
-	  // face_shape_level 美型程度 范围 0~1 SDK 默认为 1
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "face_shape_level", mFaceShapeLevel);
-     // face_shape 脸型 0：女神 1：网红 2：自然 3：默认 4：自定义（新版美型） SDK 默认为 3
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "face_shape", mFaceShape);
-     // eye_enlarging 大眼 范围 0~1 SDK 默认为 0
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "eye_enlarging", mEyeEnlarging);
-     // cheek_thinning 瘦脸 范围 0~1 SDK 默认为 0
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "cheek_thinning", mCheekThinning);
-     // intensity_chin 下巴 范围 0~1 SDK 默认为 0.5 大于   0.5 变大，小于 0.5 变小
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_chin", mIntensityChin);
-     // intensity_forehead 额头 范围 0~1 SDK 默认为 0.5   大于 0.5 变大，小于 0.5 变小
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_forehead", mIntensityForehead);
-     // intensity_nose 鼻子 范围 0~1 SDK 默认为 0
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_nose", mIntensityNose);
-     // intensity_mouth 嘴型 范围 0~1 SDK 默认为 0.5   大于 0.5 变大，小于 0.5 变小
-     faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_mouth", mIntensityMouth);
+    // color_level 美白 范围 0~1 SDK 默认为 1
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "color_level", mColorLevel);
+    // red_level 红润 范围 0~1 SDK 默认为 1
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "red_level", mRedLevel);
+    // eye_bright 亮眼 范围 0~1 SDK 默认为 0
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "eye_bright", mEyeBright);
+    // tooth_whiten 美牙 范围 0~1 SDK 默认为 0
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "tooth_whiten", mToothWhiten);
+    // face_shape_level 美型程度 范围 0~1 SDK 默认为 1
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "face_shape_level", mFaceShapeLevel);
+    // face_shape 脸型 0：女神 1：网红 2：自然 3：默认 4：自定义（新版美型） SDK 默认为 3
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "face_shape", mFaceShape);
+    // eye_enlarging 大眼 范围 0~1 SDK 默认为 0
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "eye_enlarging", mEyeEnlarging);
+    // cheek_thinning 瘦脸 范围 0~1 SDK 默认为 0
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "cheek_thinning", mCheekThinning);
+    // intensity_chin 下巴 范围 0~1 SDK 默认为 0.5 大于   0.5 变大，小于 0.5 变小
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_chin", mIntensityChin);
+    // intensity_forehead 额头 范围 0~1 SDK 默认为 0.5   大于 0.5 变大，小于 0.5 变小
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_forehead", mIntensityForehead);
+    // intensity_nose 鼻子 范围 0~1 SDK 默认为 0
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_nose", mIntensityNose);
+    // intensity_mouth 嘴型 范围 0~1 SDK 默认为 0.5   大于 0.5 变大，小于 0.5 变小
+    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], "intensity_mouth", mIntensityMouth);
 
 ## 5. 本地对经过美颜处理的数据进行渲染显示
 如果本地需要对美颜效果进行预览，则可以对进行过美颜处理的数据进行自渲染，具体做法如下：
 
-	mFullFrameRectTexture2D.drawFrame(mFuTextureId, mtx, mvp);
+    mFullFrameRectTexture2D.drawFrame(mFuTextureId, mtx, mvp);
 
 其中 `mFuTextureId` 便是第 4 步中经过美颜处理返回的新的纹理标识，我们通过调用 `mFullFrameRectTexture2D.drawFrame` 方法在本地 `GLSurfaceView.Renderer` 中的 `onDrawFrame` 方法中进行绘制。
 
 ## 6. 将经过美颜处理的数据发送给对端
 当拿到已经经过美颜处理的数据后，下一步要做的就是通过调用 Agora RTC SDK 提供的接口将该数据传送给对端，具体做法如下：
 
- 	mIVideoFrameConsumer.consumeByteArrayFrame(backImage,
-                        MediaIO.PixelFormat.NV21.intValue(), cameraWidth,
-                        cameraHeight, mCameraOrientation,
-                        System.currentTimeMillis());
-                        
+    mIVideoFrameConsumer.consumeByteArrayFrame(backImage,
+                    MediaIO.PixelFormat.NV21.intValue(), cameraWidth,
+                    cameraHeight, mCameraOrientation,
+                    System.currentTimeMillis());
+    
 其中 `mIVideoFrameConsume` 就是我们在第 1 步中保存的 `IVideoFrameConsumer` 对象，通过调用该对象的 `consumeByteArrayFrame` 方法，我们就可以将经过美颜处理的数据发送给 Agora RTC SDK，然后通过 SD-RTN 传到对端，其中的入参 `backImage` 便是我们在第 4 步中得到的经过美颜处理的数据，`MediaIO.PixelFormat.NV21.intValue()` 为该视频数据使用的格式， `cameraWidth` 与 `cameraHeight` 为视频图像的宽与高，`mCameraOrientation` 为视频图像需要旋转的角度，`System.currentTimeMillis()` 为当前单调递增时间，Agora RTC SDK 以此来判断每一帧数据的先后顺序。
 
 ## 7. 对端对收到的经过美颜处理的数据进行渲染显示
 当对端收到发送过来的经过美颜处理的数据时，我们可以对其进行渲染显示(这是默认的渲染方式，当然也可以类似于自定义的视频源去实现自定义渲染，这里就不展开)，具体做法如下：
 
-	private void setupRemoteView(int uid) {
-    	SurfaceView surfaceV = RtcEngine.CreateRendererView(getApplicationContext());
-    	surfaceV.setZOrderOnTop(true);
-    	surfaceV.setZOrderMediaOverlay(true);
-    	mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceV, VideoCanvas.RENDER_MODE_FIT, uid));
-	}
+    private void setupRemoteView(int uid) {
+        SurfaceView surfaceV = RtcEngine.CreateRendererView(getApplicationContext());
+        surfaceV.setZOrderOnTop(true);
+        surfaceV.setZOrderMediaOverlay(true);
+        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceV, VideoCanvas.RENDER_MODE_FIT, uid));
+    }
 
 其中 `uid` 为发送端的用户标识。
 
