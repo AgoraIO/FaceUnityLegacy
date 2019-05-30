@@ -16,36 +16,36 @@
 
 	// 一个通用的实现 IVideoSource 接口的类如下，本示例程序中未用到该类
 	public class MyVideoSource implements IVideoSource {
-    	@Override
-    	public int getBufferType() {
-        	// 返回当前帧数据缓冲区的类型，每种类型数据在 Agora RTC SDK 内部会经过不同的处理，所以必须与帧数据的类型保持一致
-        	// 有三种类型 BufferType.BYTE_ARRAY/BufferType.TEXTURE/BufferType.BYTE_BUFFER
-        	return BufferType.BYTE_ARRAY;
-    	}
+            @Override
+            public int getBufferType() {
+                // 返回当前帧数据缓冲区的类型，每种类型数据在 Agora RTC SDK 内部会经过不同的处理，所以必须与帧数据的类型保持一致
+                // 有三种类型 BufferType.BYTE_ARRAY/BufferType.TEXTURE/BufferType.BYTE_BUFFER
+                return BufferType.BYTE_ARRAY;
+    	    }
 
-    	@Override
-     	public boolean onInitialize(IVideoFrameConsumer consumer) {
-        	// IVideoFrameConsumer 是由 Agora RTC SDK 创建的，在 MyVideoSource 生命周期中注意保存它的引用，因为后续将通过它将数据传送给SDK
-        	mConsumer = consumer;
-    	}
+            @Override
+             public boolean onInitialize(IVideoFrameConsumer consumer) {
+                // IVideoFrameConsumer 是由 Agora RTC SDK 创建的，在 MyVideoSource 生命周期中注意保存它的引用，因为后续将通过它将数据传送给SDK
+                mConsumer = consumer;
+    	    }
 
-    	@Override
-     	public boolean onStart() {
-        	mHasStarted = true;
-    	}
+    	    @Override
+     	    public boolean onStart() {
+                mHasStarted = true;
+    	    }
 
-    	@Override
-      	public void onStop() {
-        	mHasStarted = false;
-    	}
+    	    @Override
+      	    public void onStop() {
+                mHasStarted = false;
+    	    }
 
-    	@Override
-     	public void onDispose() {
-        	// 释放对 Consumer 的引用
-        	mConsumer = null;
-    	}
-	}
-	
+    	    @Override
+     	    public void onDispose() {
+                // 释放对 Consumer 的引用
+                mConsumer = null;
+            }
+        }
+
 在本示例程序中，使用了 `TextureSource` 类，该类是 Agora RTC SDK 提供的适用于纹理类型(texture)视频源的预定义实现。当实例化了该类后，可调用 `setVideoSource` 接口来设置视频源，具体用法如下：
 
 	mRtcEngine.setVideoSource(mTextureSource);
