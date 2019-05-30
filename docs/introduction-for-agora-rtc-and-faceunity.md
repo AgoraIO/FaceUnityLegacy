@@ -21,10 +21,10 @@
                 // 返回当前帧数据缓冲区的类型，每种类型数据在 Agora RTC SDK 内部会经过不同的处理，所以必须与帧数据的类型保持一致
                 // 有三种类型 BufferType.BYTE_ARRAY/BufferType.TEXTURE/BufferType.BYTE_BUFFER
                 return BufferType.BYTE_ARRAY;
-    	    }
+            }
 
             @Override
-             public boolean onInitialize(IVideoFrameConsumer consumer) {
+            public boolean onInitialize(IVideoFrameConsumer consumer) {
                 // IVideoFrameConsumer 是由 Agora RTC SDK 创建的，在 MyVideoSource 生命周期中注意保存它的引用，因为后续将通过它将数据传送给SDK
                 mConsumer = consumer;
     	    }
@@ -37,10 +37,10 @@
     	    @Override
       	    public void onStop() {
                 mHasStarted = false;
-    	    }
+            }
 
     	    @Override
-     	    public void onDispose() {
+            public void onDispose() {
                 // 释放对 Consumer 的引用
                 mConsumer = null;
             }
