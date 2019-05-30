@@ -27,7 +27,7 @@
         public boolean onInitialize(IVideoFrameConsumer consumer) {
             // IVideoFrameConsumer 是由 Agora RTC SDK 创建的，在 MyVideoSource 生命周期中注意保存它的引用，因为后续将通过它将数据传送给SDK
             mConsumer = consumer;
-    	}
+        }
 
         @Override
         public boolean onStart() {
