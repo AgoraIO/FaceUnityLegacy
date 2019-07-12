@@ -86,10 +86,10 @@ public abstract class FUBaseUIActivity extends AppCompatActivity implements View
             mTopBackground = (ImageView) findViewById(R.id.fu_base_top_background);
 
             mGLSurfaceView = (GLSurfaceView) findViewById(R.id.fu_base_gl_surface);
-            mGLSurfaceView.setEGLContextClientVersion(2);
-            mCameraRenderer = new CameraRenderer(this, mGLSurfaceView, this);
-            mGLSurfaceView.setRenderer(mCameraRenderer);
-            mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+            //mGLSurfaceView.setEGLContextClientVersion(2);
+            //mCameraRenderer = new CameraRenderer(this, mGLSurfaceView, this);
+            //mGLSurfaceView.setRenderer(mCameraRenderer);
+            //mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
             mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             mInputTypeRadioGroup = (RadioGroup) findViewById(R.id.fu_base_input_type_radio_group);
@@ -149,8 +149,8 @@ public abstract class FUBaseUIActivity extends AppCompatActivity implements View
     @Override
     protected void onResume() {
         super.onResume();
-        mCameraRenderer.onCreate();
-        mCameraRenderer.onResume();
+        //mCameraRenderer.onCreate();
+        //mCameraRenderer.onResume();
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 

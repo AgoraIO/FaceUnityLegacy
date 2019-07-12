@@ -1,5 +1,6 @@
 package io.agora.rtcwithfu.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.opengl.EGL14;
@@ -9,6 +10,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import java.io.IOException;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import io.agora.rtc.RtcEngine;
 import io.agora.rtc.gl.EglBase;
 import io.agora.rtc.mediaio.AgoraTextureView;
 import io.agora.rtc.mediaio.IVideoFrameConsumer;
@@ -41,6 +45,9 @@ import io.agora.rtcwithfu.Constants;
 import io.agora.rtcwithfu.R;
 import io.agora.rtcwithfu.RtcEngineEventHandler;
 import io.agora.rtcwithfu.view.EffectPanel;
+import io.agora.video.VideoManager;
+import io.agora.video.capture.VideoCaptureFrame;
+import io.agora.video.connector.SinkConnector;
 
 /**
  * This activity demonstrates how to make FU and Agora RTC SDK work together
@@ -56,7 +63,6 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     private FURenderer mFURenderer;
     private GLSurfaceView mGLSurfaceViewLocal;
-    private CameraRenderer mGLRenderer;
 
     private FrameLayout mLocalViewContainer;
     private AgoraTextureView mRemoteView;
@@ -68,11 +74,6 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     private TextView mDescriptionText;
     private TextView mTrackingText;
 
-    private int mCameraOrientation;
-
-    private IVideoFrameConsumer mIVideoFrameConsumer;
-    private boolean mVideoFrameConsumerReady;
-
     private int showNum = 0;
 
     // Video recording related
@@ -83,6 +84,37 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     private int mSmallHeight;
     private int mSmallWidth;
+
+    private VideoManager mVideoManager;
+
+    private boolean mFUInit;
+
+    private int mImageWidth;
+    private int mImageHeight;
+
+    private SinkConnector<VideoCaptureFrame> mEffectHandler = new SinkConnector<VideoCaptureFrame>() {
+        @Override
+        public int onDataAvailable(VideoCaptureFrame data) {
+            if (!mFUInit) {
+                mFUInit = true;
+                mFURenderer.initialize();
+            }
+
+            mImageHeight = data.mFormat.getHeight();
+            mImageWidth = data.mFormat.getWidth();
+            int fuTextureId;
+            byte[] backImage = new byte[data.mImage.length];
+
+            fuTextureId = mFURenderer.onDrawFrame(data.mImage, data.mTextureId,
+                    data.mFormat.getWidth(), data.mFormat.getHeight(),
+                    backImage, data.mFormat.getWidth(), data.mFormat.getHeight());
+
+            data.mImage = backImage;
+
+            sendRecordingData(fuTextureId, data.mTexMatrix, data.mTimeStamp / Constant.NANO_IN_ONE_MILLI_SECOND);
+            return fuTextureId;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,50 +164,13 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
                 .build();
 
         mGLSurfaceViewLocal = new GLSurfaceView(this);
-        mGLSurfaceViewLocal.setEGLContextClientVersion(2);
-        mGLRenderer = new CameraRenderer(this, mGLSurfaceViewLocal, new CameraRenderer.OnRendererStatusListener() {
-            @Override
-            public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-                Log.i(TAG, "onSurfaceCreated: " + gl + " " + config);
-                mFURenderer.onSurfaceCreated();
-            }
 
-            @Override
-            public void onSurfaceChanged(GL10 gl, int width, int height) {
-                Log.i(TAG, "onSurfaceChanged: " + gl + " " + width + " " + height);
-            }
-
-            @Override
-            public int onDrawFrame(byte[] cameraNV21Byte, int cameraTextureId, int cameraWidth, int cameraHeight, float[] mtx, long timeStamp) {
-                int fuTextureId;
-                byte[] backImage = new byte[cameraNV21Byte.length];
-                fuTextureId = mFURenderer.onDrawFrame(cameraNV21Byte, cameraTextureId,
-                        cameraWidth, cameraHeight, backImage, cameraWidth, cameraHeight);
-                if (mVideoFrameConsumerReady) {
-                    mIVideoFrameConsumer.consumeByteArrayFrame(backImage,
-                            MediaIO.PixelFormat.NV21.intValue(), cameraWidth,
-                            cameraHeight, mCameraOrientation, System.currentTimeMillis());
-                }
-
-                // File Recording is a beta feature
-                sendRecordingData(fuTextureId, mtx, timeStamp / Constant.NANO_IN_ONE_MILLI_SECOND);
-                return fuTextureId;
-            }
-
-            @Override
-            public void onSurfaceDestroy() {
-                Log.i(TAG, "onSurfaceDestroy");
-                mFURenderer.onSurfaceDestroyed();
-            }
-
-            @Override
-            public void onCameraChange(int currentCameraType, int cameraOrientation) {
-                mFURenderer.onCameraChange(currentCameraType, cameraOrientation);
-                mCameraOrientation = cameraOrientation;
-            }
-        });
-        mGLSurfaceViewLocal.setRenderer(mGLRenderer);
-        mGLSurfaceViewLocal.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        mVideoManager = VideoManager.createInstance(this);
+        mVideoManager.allocate(width, height,15, io.agora.video.constant.Constant.CAMERA_FACING_FRONT);
+        mVideoManager.setRenderView(mGLSurfaceViewLocal);
+        mVideoManager.connectEffectHandler(mEffectHandler);
+        mVideoManager.attachToRTCEngine(getWorker().getRtcEngine());
+        mVideoManager.startCapture();
 
         mLocalViewContainer = findViewById(R.id.local_video_view_container);
         if (mLocalViewContainer.getChildCount() > 0) {
@@ -282,29 +277,18 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     @Override
     protected void onResume() {
         super.onResume();
-        setRtcVideos();
-        mGLRenderer.onCreate();
-        mGLRenderer.onResume();
-    }
-
-    private IVideoSource mSource;
-
-    private void setRtcVideos() {
-        mSource = new MyTextureSource(null, 640, 480);
-        ((MyTextureSource) mSource).setPixelFormat(MediaIO.PixelFormat.NV21);
-        getWorker().setVideoSource(mSource);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mGLRenderer.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mGLRenderer.onDestroy();
+        mVideoManager.deallocate();
+        mFURenderer.destroy();
     }
 
     @Override
@@ -349,7 +333,6 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     private void setupRemoteVideo(int uid) {
         mRemoteUid = uid;
-        mRemoteView.init(((TextureSource) mSource).getEglContext());
         mRemoteView.setBufferType(MediaIO.BufferType.BYTE_ARRAY);
         mRemoteView.setPixelFormat(MediaIO.PixelFormat.I420);
         getRtcEngine().setRemoteVideoRenderer(uid, mRemoteView);
@@ -382,12 +365,12 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     protected void onMirrorPreviewRequested(boolean mirror) {
         Log.i(TAG, "onMirrorPreviewRequested " + mirror);
 
-        mGLRenderer.flipFrontX();
+        mVideoManager.setMirrorMode(mirror);
     }
 
     @Override
     protected void onCameraChangeRequested() {
-        mGLRenderer.changeCamera();
+        mVideoManager.switchCamera();
     }
 
     @Override
@@ -437,7 +420,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
             // for video capturing
             new MediaVideoEncoder(mMuxer, mMediaEncoderListener,
-                    mGLRenderer.getCameraHeight(), mGLRenderer.getCameraWidth());
+                    mImageHeight, mImageWidth);
             new MediaAudioEncoder(mMuxer, mMediaEncoderListener);
 
             mMuxer.prepare();
@@ -478,51 +461,4 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
             }
         }
     };
-
-    private class MyTextureSource extends TextureSource {
-
-        public MyTextureSource(EglBase.Context sharedContext, int width, int height) {
-            super(sharedContext, width, height);
-        }
-
-        @Override
-        protected boolean onCapturerOpened() {
-            FUChatActivity.this.mIVideoFrameConsumer = mConsumer.get();
-            return true;
-        }
-
-        @Override
-        protected boolean onCapturerStarted() {
-            FUChatActivity.this.mVideoFrameConsumerReady = true;
-            return true;
-        }
-
-        @Override
-        protected void onCapturerStopped() {
-            FUChatActivity.this.mVideoFrameConsumerReady = false;
-        }
-
-        @Override
-        protected void onCapturerClosed() {
-            FUChatActivity.this.mVideoFrameConsumerReady = false;
-        }
-
-        public void setWidth(int width) {
-            this.mWidth = width;
-        }
-
-        public void setHeight(int height) {
-            this.mHeight = height;
-        }
-
-        @Override
-        public int getBufferType() {
-            // return super.getBufferType();
-            return MediaIO.BufferType.BYTE_ARRAY.intValue();
-        }
-
-        public void setPixelFormat(MediaIO.PixelFormat pixelFormat) {
-            this.mPixelFormat = pixelFormat.intValue();
-        }
-    }
 }

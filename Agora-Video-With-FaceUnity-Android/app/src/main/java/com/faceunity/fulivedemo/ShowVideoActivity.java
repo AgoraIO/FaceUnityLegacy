@@ -165,7 +165,7 @@ public class ShowVideoActivity extends AppCompatActivity
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        mFURenderer.onSurfaceCreated();
+        mFURenderer.initialize();
     }
 
     @Override
@@ -182,7 +182,7 @@ public class ShowVideoActivity extends AppCompatActivity
 
     @Override
     public void onSurfaceDestroy() {
-        mFURenderer.onSurfaceDestroyed();
+        mFURenderer.destroy();
     }
 
     @Override
