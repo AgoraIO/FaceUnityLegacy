@@ -212,7 +212,7 @@ public class FUMakeupActivity extends FUBaseUIActivity
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        mFURenderer.onSurfaceCreated();
+        mFURenderer.initialize();
     }
 
     @Override
@@ -239,7 +239,7 @@ public class FUMakeupActivity extends FUBaseUIActivity
     @Override
     public void onSurfaceDestroy() {
         //通知FU销毁
-        mFURenderer.onSurfaceDestroyed();
+        mFURenderer.destroy();
     }
 
     private ValueAnimator mBottomLayoutAnimator;

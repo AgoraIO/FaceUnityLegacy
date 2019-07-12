@@ -23,7 +23,7 @@ public abstract class FUBaseActivity extends RTCBaseActivity
     protected Button mRecordingBtn;
     private int mRecordStatus = 0;
 
-    private int mMirrorVideoPreviewStatus = 1;
+    private int mMirrorVideoPreviewStatus = 0;
 
     protected TextView isCalibratingText;
 
