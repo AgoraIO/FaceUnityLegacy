@@ -138,6 +138,9 @@ public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAd
          * mp3
          */
         try {
+            // If you are using Faceunity with Agora and applying music effect, please invoke `RtcEngine.startAudioMixing` or `IAudioEffectManager.playEffect` to play music
+            // This will outcome better performance
+            // https://docs.agora.io/en/Interactive%20Broadcast/API%20Reference/java/v2.8.0/classio_1_1agora_1_1rtc_1_1_rtc_engine.html
             AssetFileDescriptor descriptor = mContext.getAssets().openFd("musicfilter/" + effect.bundleName() + ".mp3");
             mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
             descriptor.close();
