@@ -20,8 +20,9 @@ public abstract class FUBaseActivity extends RTCBaseActivity
         implements View.OnClickListener, View.OnTouchListener {
     private final String TAG = "FUBaseUIActivity";
 
-    protected Button mRecordingBtn;
     private int mRecordStatus = 0;
+
+    private int mBroadcastingStatus = 1;
 
     private int mMirrorVideoPreviewStatus = 0;
 
@@ -38,9 +39,6 @@ public abstract class FUBaseActivity extends RTCBaseActivity
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.screenBrightness = 0.7f;
         getWindow().setAttributes(params);
-
-        mRecordingBtn = (Button) findViewById(R.id.btn_recording);
-        mRecordingBtn.setOnClickListener(this);
     }
 
     private HashMap<View, int[]> mTouchPointMap = new HashMap<>();
@@ -84,14 +82,13 @@ public abstract class FUBaseActivity extends RTCBaseActivity
                 onCameraChangeRequested();
                 break;
             case R.id.btn_recording:
+                mRecordStatus ^= 1;
                 if (mRecordStatus == 0) {
-                    mRecordingBtn.setText(R.string.btn_stop_recording);
-                    onStartRecordingRequested();
-                    mRecordStatus ^= 1;
-                } else {
-                    mRecordingBtn.setText(R.string.btn_start_recording);
+                    ((Button) v).setText(R.string.btn_start_recording);
                     onStopRecordingRequested();
-                    mRecordStatus ^= 1;
+                } else {
+                    ((Button) v).setText(R.string.btn_stop_recording);
+                    onStartRecordingRequested();
                 }
                 break;
             case R.id.btn_switch_view:
@@ -101,6 +98,15 @@ public abstract class FUBaseActivity extends RTCBaseActivity
                 mMirrorVideoPreviewStatus ^= 1;
                 onMirrorPreviewRequested(mMirrorVideoPreviewStatus > 0);
                 break;
+            case R.id.btn_switch_client_role:
+                mBroadcastingStatus ^= 1;
+                onChangedToBroadcaster(mBroadcastingStatus > 0);
+                if (mBroadcastingStatus > 0) {
+                    ((Button) v).setText(R.string.btn_switch_client_role_audience);
+                } else {
+                    ((Button) v).setText(R.string.btn_switch_client_role_broadcaster);
+                }
+                break;
         }
     }
 
@@ -109,6 +115,8 @@ public abstract class FUBaseActivity extends RTCBaseActivity
     abstract protected void onViewSwitchRequested();
 
     abstract protected void onMirrorPreviewRequested(boolean mirror);
+
+    abstract protected void onChangedToBroadcaster(boolean broadcaster);
 
     abstract protected void onStartRecordingRequested();
 

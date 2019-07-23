@@ -1,1 +1,1 @@
-include ':app', ':faceunity', ':video'
+include ':app', ':faceunity', ':video_capturer_and_renderer'

@@ -106,6 +106,9 @@
     <string name="btn_start_recording">Start Recording</string>
     <string name="btn_stop_recording">Stop Recording</string>
 
+    <string name="btn_switch_client_role_audience">Receive Only</string>
+    <string name="btn_switch_client_role_broadcaster">Send &amp; Receive</string>
+
     <string name="btn_switch_video_view">Switch View</string>
 
     <string name="btn_switch_mirror_video_preview">Switch FlipX</string>
@@ -114,4 +117,6 @@
     <string name="msg_permission_rejected">Permission rejected, must grant permission first</string>
 
     <string name="expression_calibrating">Expression Calibrating</string>
+
+    <string name="legal_characters_for_agora" translatable="false" >abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&amp;()+,-:;&lt;=.>?@[]^_`{|}~</string>
 </resources>
