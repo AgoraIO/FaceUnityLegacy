@@ -14,7 +14,6 @@ import com.faceunity.entity.Effect;
 import com.faceunity.entity.Filter;
 import com.faceunity.entity.Makeup;
 import com.faceunity.utils.Constant;
-import com.faceunity.wrapper.authpack;
 import com.faceunity.wrapper.faceunity;
 
 import java.io.File;
