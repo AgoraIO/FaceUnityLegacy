@@ -1,6 +1,5 @@
 package io.agora.rtcwithfu.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.opengl.EGL14;
@@ -10,8 +9,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +18,6 @@ import com.faceunity.encoder.MediaAudioEncoder;
 import com.faceunity.encoder.MediaEncoder;
 import com.faceunity.encoder.MediaMuxerWrapper;
 import com.faceunity.encoder.MediaVideoEncoder;
-import com.faceunity.fulivedemo.renderer.CameraRenderer;
 import com.faceunity.fulivedemo.ui.adapter.EffectRecyclerAdapter;
 import com.faceunity.fulivedemo.utils.ToastUtil;
 import com.faceunity.utils.Constant;
@@ -30,24 +26,16 @@ import com.faceunity.utils.MiscUtil;
 import java.io.File;
 import java.io.IOException;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
-import io.agora.rtc.RtcEngine;
-import io.agora.rtc.gl.EglBase;
 import io.agora.rtc.mediaio.AgoraTextureView;
-import io.agora.rtc.mediaio.IVideoFrameConsumer;
-import io.agora.rtc.mediaio.IVideoSource;
 import io.agora.rtc.mediaio.MediaIO;
-import io.agora.rtc.mediaio.TextureSource;
 import io.agora.rtc.video.VideoEncoderConfiguration; // 2.3.0 and later
 import io.agora.rtcwithfu.Constants;
 import io.agora.rtcwithfu.R;
 import io.agora.rtcwithfu.RtcEngineEventHandler;
 import io.agora.rtcwithfu.view.EffectPanel;
-import io.agora.video.VideoManager;
-import io.agora.video.capture.VideoCaptureFrame;
-import io.agora.video.connector.SinkConnector;
+import io.agora.kit.media.VideoManager;
+import io.agora.kit.media.capture.VideoCaptureFrame;
+import io.agora.kit.media.connector.SinkConnector;
 
 /**
  * This activity demonstrates how to make FU and Agora RTC SDK work together
@@ -166,7 +154,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         mGLSurfaceViewLocal = new GLSurfaceView(this);
 
         mVideoManager = VideoManager.createInstance(this);
-        mVideoManager.allocate(width, height,15, io.agora.video.constant.Constant.CAMERA_FACING_FRONT);
+
+        mVideoManager.allocate(width, height, 15, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
         mVideoManager.setRenderView(mGLSurfaceViewLocal);
         mVideoManager.connectEffectHandler(mEffectHandler);
         mVideoManager.attachToRTCEngine(getWorker().getRtcEngine());
@@ -287,6 +276,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mVideoManager.stopCapture();
         mVideoManager.deallocate();
         mFURenderer.destroy();
     }
@@ -366,6 +356,49 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         Log.i(TAG, "onMirrorPreviewRequested " + mirror);
 
         mVideoManager.setMirrorMode(mirror);
+    }
+
+    @Override
+    protected void onChangedToBroadcaster(boolean broadcaster) {
+        Log.i(TAG, "onChangedToBroadcaster " + broadcaster);
+
+        if (broadcaster) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+
+            getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER);
+
+            mGLSurfaceViewLocal = new GLSurfaceView(this);
+
+            mFURenderer.initialize();
+
+            mVideoManager.allocate(width, height, 15, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
+            mVideoManager.setRenderView(mGLSurfaceViewLocal);
+            mVideoManager.connectEffectHandler(mEffectHandler);
+            mVideoManager.attachToRTCEngine(getWorker().getRtcEngine());
+            mVideoManager.startCapture();
+
+            mLocalViewContainer.addView(mGLSurfaceViewLocal,
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT);
+
+            mVideoManager.startCapture();
+        } else {
+            mVideoManager.stopCapture();
+
+            mLocalViewContainer.removeAllViews();
+
+            getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_AUDIENCE);
+
+            mFURenderer.destroy();
+
+            mVideoManager.deallocate();
+
+            System.gc();
+        }
+
     }
 
     @Override
