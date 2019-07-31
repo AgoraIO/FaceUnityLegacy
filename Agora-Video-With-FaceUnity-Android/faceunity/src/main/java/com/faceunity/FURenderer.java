@@ -194,8 +194,8 @@ public class FURenderer implements OnFUControlListener {
     /**
      * 创建及初始化faceunity相应的资源
      */
-    public void onSurfaceCreated() {
-        Log.e(TAG, "onSurfaceCreated");
+    public void initialize() {
+        Log.d(TAG, "initialize");
 
         /**
          * fuCreateEGLContext 创建OpenGL环境
@@ -333,6 +333,7 @@ public class FURenderer implements OnFUControlListener {
         int fuTex = faceunity.fuDualInputToTexture(img, tex, flags, w, h, mFrameId++, mItemsArray,
                 readBackW, readBackH, readBackImg);
         if (mNeedBenchmark) mOneHundredFrameFUTime += System.nanoTime() - mFuCallStartTime;
+
         return fuTex;
     }
 
@@ -452,8 +453,8 @@ public class FURenderer implements OnFUControlListener {
     /**
      * 销毁faceunity相关的资源
      */
-    public void onSurfaceDestroyed() {
-        Log.e(TAG, "onSurfaceDestroyed");
+    public void destroy() {
+        Log.e(TAG, "destroy");
         for (int i = 0; i < ITEM_ARRAYS_COUNT; i++) {
             mFuItemHandler.removeMessages(i);
         }
@@ -1170,6 +1171,7 @@ public class FURenderer implements OnFUControlListener {
             fuRenderer.mOnFUDebugListener = onFUDebugListener;
             fuRenderer.mOnTrackingStatusChangedListener = onTrackingStatusChangedListener;
             fuRenderer.mOnSystemErrorListener = onSystemErrorListener;
+
             return fuRenderer;
         }
 

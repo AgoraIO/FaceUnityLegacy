@@ -36,4 +36,5 @@ dependencies {
     implementation project(':faceunity')
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
+    implementation project(path: ':video_capturer_and_renderer')
 }
