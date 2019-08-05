@@ -12,19 +12,20 @@ import android.view.ViewGroup;
 
 import com.faceunity.OnFUControlListener;
 import com.faceunity.entity.Effect;
-import io.agora.rtcwithfu.R;
 import com.faceunity.fulivedemo.entity.EffectEnum;
+import com.faceunity.fulivedemo.ui.CircleImageView;
+import com.faceunity.fulivedemo.utils.OnMultiClickListener;
 
 import java.io.IOException;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import io.agora.rtcwithfu.R;
+
 
 /**
  * Created by tujh on 2018/6/29.
  */
 public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAdapter.HomeRecyclerHolder> {
-    private static final String TAG = EffectRecyclerAdapter.class.getSimpleName();
 
     private Context mContext;
     private int mEffectType;
@@ -41,16 +42,18 @@ public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAd
     }
 
     @Override
+
     public HomeRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new HomeRecyclerHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_effect_recycler, parent, false));
     }
 
     @Override
     public void onBindViewHolder(HomeRecyclerHolder holder, final int position) {
+
         holder.effectImg.setImageResource(mEffects.get(position).resId());
-        holder.effectImg.setOnClickListener(new View.OnClickListener() {
+        holder.effectImg.setOnClickListener(new OnMultiClickListener() {
             @Override
-            public void onClick(View v) {
+            protected void onMultiClick(View v) {
                 if (mPositionSelect == position) {
                     return;
                 }
@@ -104,15 +107,11 @@ public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAd
         public void run() {
             if (mediaPlayer != null && mediaPlayer.isPlaying())
                 mOnFUControlListener.onMusicFilterTime(mediaPlayer.getCurrentPosition());
-
             mMusicHandler.postDelayed(mMusicRunnable, MUSIC_TIME);
         }
     };
 
     public void stopMusic() {
-        if (mEffectType != Effect.EFFECT_TYPE_MUSIC_FILTER) {
-            return;
-        }
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -138,9 +137,6 @@ public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAd
          * mp3
          */
         try {
-            // If you are using Faceunity with Agora and applying music effect, please invoke `RtcEngine.startAudioMixing` or `IAudioEffectManager.playEffect` to play music
-            // This will outcome better performance
-            // https://docs.agora.io/en/Interactive%20Broadcast/API%20Reference/java/v2.8.0/classio_1_1agora_1_1rtc_1_1_rtc_engine.html
             AssetFileDescriptor descriptor = mContext.getAssets().openFd("musicfilter/" + effect.bundleName() + ".mp3");
             mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
             descriptor.close();
