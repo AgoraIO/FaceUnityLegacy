@@ -13,47 +13,96 @@ import android.widget.TextView;
 import com.faceunity.FURenderer;
 import com.faceunity.entity.Effect;
 import com.faceunity.fulivedemo.entity.EffectEnum;
-import com.faceunity.fulivedemo.ui.BeautyControlView;
 import com.faceunity.fulivedemo.ui.adapter.EffectRecyclerAdapter;
+import com.faceunity.fulivedemo.ui.control.BeautyControlView;
+import com.faceunity.fulivedemo.ui.control.MakeupControlView;
 import com.faceunity.fulivedemo.utils.ToastUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.agora.rtcwithfu.R;
 
 public class EffectPanel {
-    private static final int[] PERMISSIONS_CODE = {
-            0x1,                    // beauty
-            0x2 | 0x4,              // sticker
-            0x20 | 0x40,            // AR mask
-            0x80,                   // face change
-            0x800,                  // expression
-            0x100,                  // background
-            0x200,                  // gesture
-            0x80000,                // make up
-            0x10,                   // ani moji
-            0x20000,                // music filter
-            0x10000,                // face warp
-            0x8000,                 // portrait driven
+    // TODO Needs to refine names
+    private static final String[] PERMISSIONS_CODE = {
+            "9-0",                    // Beauty
+            "524288-0",               // Makeup
+            "6-0",                    // Sticker
+            "16-0",                   // Animoji
+            "1048576-0",              // Hair
+            "96-0",                   // AR Mask
+            "128-0",                  // Face Change
+            "8388608-0",              // Poster Face
+            "2048-0",                 // Expression
+            "131072-0",               // Douyin
+            "256-0",                  // Background
+            "512-0",                  // Gesture
+            "65536-0",                // Face Warp
+            "32768-0",                // Dynamic Portrait
+            "0-16",                   // Avatar Face
+            "16777216-0"              // Live Photo
     };
 
-    private static final int[] FUNCTION_TYPES = {
+    private static final int[] FUNCTION_TYPE = {
+            Effect.EFFECT_TYPE_NONE,
+            Effect.EFFECT_TYPE_NONE,
+            Effect.EFFECT_TYPE_NORMAL,
+            Effect.EFFECT_TYPE_ANIMOJI,
+            Effect.EFFECT_TYPE_NONE,
+            Effect.EFFECT_TYPE_AR,
+            Effect.EFFECT_TYPE_FACE_CHANGE,
+            Effect.EFFECT_TYPE_POSTER_FACE,
+            Effect.EFFECT_TYPE_EXPRESSION,
+            Effect.EFFECT_TYPE_MUSIC_FILTER,
+            Effect.EFFECT_TYPE_BACKGROUND,
+            Effect.EFFECT_TYPE_GESTURE,
+            Effect.EFFECT_TYPE_FACE_WARP,
+            Effect.EFFECT_TYPE_PORTRAIT_DRIVE,
+            Effect.EFFECT_TYPE_NONE,
+            Effect.EFFECT_TYPE_LIVE_PHOTO
+    };
+
+    private static final int[] FUNCTION_NAME = {
             R.string.home_function_name_beauty,
+            R.string.home_function_name_makeup,
             R.string.home_function_name_normal,
+            R.string.home_function_name_animoji,
+            R.string.home_function_name_hair,
             R.string.home_function_name_ar,
             R.string.home_function_name_face_change,
+            R.string.home_function_name_poster_face,
             R.string.home_function_name_expression,
+            R.string.home_function_name_music_filter,
             R.string.home_function_name_background,
             R.string.home_function_name_gesture,
-            R.string.home_function_name_makeup,
-            R.string.home_function_name_animoji,
-            R.string.home_function_name_music_filter,
             R.string.home_function_name_face_warp,
             R.string.home_function_name_portrait_drive,
+            R.string.home_function_name_avatar,
+            R.string.home_function_name_live_photo
     };
 
+    private static final int[] FUNCTION_RES = {
+            R.drawable.main_beauty,
+            R.drawable.main_makeup,
+            R.drawable.main_effect,
+            R.drawable.main_animoji,
+            R.drawable.main_hair,
+            R.drawable.main_ar_mask,
+            R.drawable.main_change_face,
+            R.drawable.main_poster_face,
+            R.drawable.main_expression,
+            R.drawable.main_music_fiter,
+            R.drawable.main_background,
+            R.drawable.main_gesture,
+            R.drawable.main_face_warp,
+            R.drawable.main_portrait_drive,
+            R.drawable.main_avatar,
+            R.drawable.main_live_photo
+    };
 
-    private boolean[] permissions = new boolean[FUNCTION_TYPES.length];
+    private List<Integer> hasFaceUnityPermissionsList = new ArrayList<>();
+    private final boolean[] hasFaceUnityPermissions = new boolean[FUNCTION_NAME.length];
 
     private Context mContext;
     private View mContainer;
@@ -86,15 +135,18 @@ public class EffectPanel {
     }
 
     private void initPermissions() {
-        boolean isLite = FURenderer.getVersion().contains("lite");
-        int moduleCode = FURenderer.getModuleCode();
+        int moduleCode0 = FURenderer.getModuleCode(0);
+        int moduleCode1 = FURenderer.getModuleCode(1);
 
-        for (int i = 0; i < FUNCTION_TYPES.length; i++) {
-            permissions[i] = ((moduleCode == 0) || (PERMISSIONS_CODE[i] & moduleCode) > 0);
-
-            if (isLite && (FUNCTION_TYPES[i] == R.string.home_function_name_background ||
-                    FUNCTION_TYPES[i] == R.string.home_function_name_gesture)) {
-                permissions[i] = false;
+        for (int i = 0, count = 0; i < FUNCTION_NAME.length; i++) {
+            String[] codeStr = PERMISSIONS_CODE[i].split("-");
+            int code0 = Integer.valueOf(codeStr[0]);
+            int code1 = Integer.valueOf(codeStr[1]);
+            hasFaceUnityPermissions[i] = (moduleCode0 == 0 && moduleCode1 == 0) || ((code0 & moduleCode0) > 0 || (code1 & moduleCode1) > 0);
+            if (hasFaceUnityPermissions[i]) {
+                hasFaceUnityPermissionsList.add(count++, i);
+            } else {
+                hasFaceUnityPermissionsList.add(i);
             }
         }
     }
@@ -108,15 +160,16 @@ public class EffectPanel {
         }
 
         @Override
-        public void onBindViewHolder(ItemViewHolder holder, int position) {
-            final int pos = holder.getAdapterPosition();
-            holder.mText.setText(FUNCTION_TYPES[pos]);
+        public void onBindViewHolder(ItemViewHolder holder, int p) {
+            final int position = hasFaceUnityPermissionsList.get(p);
+
+            holder.mText.setText(FUNCTION_NAME[position]);
 
             int color;
-            if (!permissions[pos]) {
+            if (!hasFaceUnityPermissions[position]) {
                 color = R.color.warmGrayColor;
             } else {
-                color = (pos == mSelectedPosition)
+                color = (position == mSelectedPosition)
                         ? R.color.faceUnityYellow
                         : R.color.colorWhite;
             }
@@ -126,13 +179,18 @@ public class EffectPanel {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (pos != mSelectedPosition) {
-                        if (!permissions[pos]) {
+                    if (position != mSelectedPosition) {
+                        if (!hasFaceUnityPermissions[position]) {
                             ToastUtil.showToast(mContext, R.string.sorry_no_permission);
                             return;
                         }
-                        mSelectedPosition = pos;
-                        onEffectTypeSelected(mSelectedPosition);
+                        mSelectedPosition = position;
+                        boolean available = onEffectTypeSelected(mSelectedPosition);
+
+                        if (!available) {
+                            ToastUtil.showToast(mContext, R.string.sorry_not_available);
+                            return;
+                        }
                     } else {
                         mEffectPanel.removeAllViews();
                         mEffectPanel.setVisibility(View.GONE);
@@ -145,7 +203,7 @@ public class EffectPanel {
 
         @Override
         public int getItemCount() {
-            return FUNCTION_TYPES.length;
+            return FUNCTION_TYPE.length;
         }
 
         class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -158,20 +216,39 @@ public class EffectPanel {
         }
     }
 
-    private void onEffectTypeSelected(int position) {
+    private boolean onEffectTypeSelected(int position) {
         mEffectPanel.setVisibility(View.VISIBLE);
         mEffectPanel.removeAllViews();
 
-        int functionType = FUNCTION_TYPES[position];
-        if (functionType == R.string.home_function_name_beauty) {
+        int functionName = FUNCTION_NAME[position];
+
+        if (functionName == R.string.home_function_name_hair) {
+            return false;
+        }
+
+        if (functionName == R.string.home_function_name_poster_face) {
+            return false;
+        }
+
+        if (functionName == R.string.home_function_name_avatar) {
+            return false;
+        }
+
+        if (functionName == R.string.home_function_name_live_photo) {
+            return false;
+        }
+
+        if (functionName == R.string.home_function_name_beauty) {
             addBeautyPanel();
-        } else if (functionType == R.string.home_function_name_makeup) {
+        } else if (functionName == R.string.home_function_name_makeup) {
             addMakeupPanel();
         } else {
-            addEffectRecyclerView(toEffectType(functionType));
+            addEffectRecyclerView(toEffectType(functionName));
         }
-        
-        adjustFURenderer(functionType, mFURenderer);
+
+        adjustFURenderer(functionName, mFURenderer);
+
+        return true;
     }
 
     private void addBeautyPanel() {
@@ -179,21 +256,23 @@ public class EffectPanel {
         mEffectPanel.addView(view, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        BeautyControlView mBeautyControl = (BeautyControlView)
+        BeautyControlView control = (BeautyControlView)
                 view.findViewById(R.id.fu_beauty_control);
-        mBeautyControl.setOnFUControlListener(mFURenderer);
-        mBeautyControl.setOnDescriptionShowListener(new BeautyControlView.OnDescriptionShowListener() {
+        control.setOnFUControlListener(mFURenderer);
+        control.setOnDescriptionShowListener(new BeautyControlView.OnDescriptionShowListener() {
             @Override
             public void onDescriptionShowListener(int str) {
                 //showDescription(str, 1000);
             }
         });
-        mBeautyControl.onResume();
+        control.onResume();
     }
 
     private void addMakeupPanel() {
-        MakeupControlView control = new MakeupControlView(mContext, mFURenderer);
-        mEffectPanel.addView(control.createView(), LinearLayout.LayoutParams.MATCH_PARENT,
+        MakeupControlView control = new MakeupControlView(mContext);
+        control.setOnFUControlListener(mFURenderer);
+
+        mEffectPanel.addView(control, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
@@ -213,8 +292,8 @@ public class EffectPanel {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    private int toEffectType(int functionType) {
-        switch (functionType) {
+    private int toEffectType(int functionName) {
+        switch (functionName) {
             case R.string.home_function_name_normal:
                 return Effect.EFFECT_TYPE_NORMAL;
             case R.string.home_function_name_ar:
@@ -227,33 +306,40 @@ public class EffectPanel {
                 return Effect.EFFECT_TYPE_BACKGROUND;
             case R.string.home_function_name_gesture:
                 return Effect.EFFECT_TYPE_GESTURE;
+// EFFECT_TYPE_PORTRAIT_LIGHT
             case R.string.home_function_name_animoji:
                 return Effect.EFFECT_TYPE_ANIMOJI;
-            case R.string.home_function_name_music_filter:
-                return Effect.EFFECT_TYPE_MUSIC_FILTER;
-            case R.string.home_function_name_face_warp:
-                return Effect.EFFECT_TYPE_FACE_WARP;
             case R.string.home_function_name_portrait_drive:
                 return Effect.EFFECT_TYPE_PORTRAIT_DRIVE;
+            case R.string.home_function_name_face_warp:
+                return Effect.EFFECT_TYPE_FACE_WARP;
+            case R.string.home_function_name_music_filter:
+                return Effect.EFFECT_TYPE_MUSIC_FILTER;
+            case R.string.home_function_name_hair:
+                return Effect.EFFECT_TYPE_HAIR_NORMAL;
+// EFFECT_TYPE_POSTER_FACE
+// EFFECT_TYPE_HAIR_GRADIENT
+// EFFECT_TYPE_LIVE_PHOTO
+// EFFECT_TYPE_AVATAR
             default:
                 return Effect.EFFECT_TYPE_NORMAL;
         }
     }
 
-    private void adjustFURenderer(int functionType, FURenderer renderer) {
-        if (functionType == R.string.home_function_name_beauty) {
+    private void adjustFURenderer(int functionName, FURenderer renderer) {
+        if (functionName == R.string.home_function_name_beauty) {
             renderer.setDefaultEffect(null);
-            renderer.setNeedFaceBeauty(false);
-        } else if (functionType == R.string.home_function_name_makeup) {
+//            renderer.setNeedFaceBeauty(false);
+        } else if (functionName == R.string.home_function_name_makeup) {
             renderer.setDefaultEffect(null);
-            renderer.setNeedFaceBeauty(true);
+//            renderer.setNeedFaceBeauty(true);
         } else {
-            int effectType = toEffectType(functionType);
+            int effectType = toEffectType(functionName);
             List<Effect> effectList = EffectEnum.getEffectsByEffectType(effectType);
             renderer.setDefaultEffect(effectList.size() > 1 ? effectList.get(1) : null);
-            renderer.setNeedAnimoji3D(functionType == R.string.home_function_name_animoji);
-            renderer.setNeedFaceBeauty(functionType != R.string.home_function_name_animoji &&
-                    functionType != R.string.home_function_name_portrait_drive);
+//            renderer.setNeedAnimoji3D(functionName == R.string.home_function_name_animoji);
+//            renderer.setNeedFaceBeauty(functionName != R.string.home_function_name_animoji &&
+//                    functionType != R.string.home_function_name_portrait_drive);
         }
     }
 }

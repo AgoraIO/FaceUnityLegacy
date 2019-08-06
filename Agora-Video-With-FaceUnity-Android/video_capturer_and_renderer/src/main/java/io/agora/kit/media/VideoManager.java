@@ -117,16 +117,19 @@ public class VideoManager {
         switch (mFacing) {
             case Constant.CAMERA_FACING_INVALID:
                 Log.e(TAG, "camera not allocated or already deallocated");
+                break;
             case Constant.CAMERA_FACING_BACK:
                 stopCapture();
                 allocate(mWidth, mHeight, mFrameRate, Constant.CAMERA_FACING_FRONT);
                 mFacing = Constant.CAMERA_FACING_FRONT;
                 startCapture();
+                break;
             case Constant.CAMERA_FACING_FRONT:
                 stopCapture();
                 allocate(mWidth, mHeight, mFrameRate, Constant.CAMERA_FACING_BACK);
                 mFacing = Constant.CAMERA_FACING_BACK;
                 startCapture();
+                break;
             default:
                 Log.e(TAG, "no facing matched");
         }

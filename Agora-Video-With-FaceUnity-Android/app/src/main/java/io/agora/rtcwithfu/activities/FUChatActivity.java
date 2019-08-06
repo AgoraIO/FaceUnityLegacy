@@ -20,6 +20,7 @@ import com.faceunity.encoder.MediaMuxerWrapper;
 import com.faceunity.encoder.MediaVideoEncoder;
 import com.faceunity.fulivedemo.ui.adapter.EffectRecyclerAdapter;
 import com.faceunity.fulivedemo.utils.ToastUtil;
+import com.faceunity.gles.core.GlUtil;
 import com.faceunity.utils.Constant;
 import com.faceunity.utils.MiscUtil;
 
@@ -75,7 +76,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     private VideoManager mVideoManager;
 
-    private boolean mFUInit;
+    private volatile boolean mFUInit;
 
     private int mImageWidth;
     private int mImageHeight;
@@ -83,21 +84,11 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     private SinkConnector<VideoCaptureFrame> mEffectHandler = new SinkConnector<VideoCaptureFrame>() {
         @Override
         public int onDataAvailable(VideoCaptureFrame data) {
-            if (!mFUInit) {
-                mFUInit = true;
-                mFURenderer.initialize();
-            }
-
             mImageHeight = data.mFormat.getHeight();
             mImageWidth = data.mFormat.getWidth();
-            int fuTextureId;
-            byte[] backImage = new byte[data.mImage.length];
 
-            fuTextureId = mFURenderer.onDrawFrame(data.mImage, data.mTextureId,
-                    data.mFormat.getWidth(), data.mFormat.getHeight(),
-                    backImage, data.mFormat.getWidth(), data.mFormat.getHeight());
-
-            data.mImage = backImage;
+            int fuTextureId = mFURenderer.onDrawFrame(data.mImage, data.mTextureId,
+                    data.mFormat.getWidth(), data.mFormat.getHeight());
 
             sendRecordingData(fuTextureId, data.mTexMatrix, data.mTimeStamp / Constant.NANO_IN_ONE_MILLI_SECOND);
             return fuTextureId;
@@ -130,11 +121,11 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
                 .Builder(this)
                 .maxFaces(4)
                 .createEGLContext(false)
-                .needReadBackImage(false)
+                .setNeedFaceBeauty(true)
                 .setOnFUDebugListener(new FURenderer.OnFUDebugListener() {
                     @Override
                     public void onFpsChange(double fps, double renderTime) {
-
+                        Log.d(TAG, "FURenderer.onFpsChange, fps: " + fps + ", renderTime: " + renderTime);
                     }
                 })
                 .setOnTrackingStatusChangedListener(new FURenderer.OnTrackingStatusChangedListener() {
@@ -153,13 +144,31 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
         mGLSurfaceViewLocal = new GLSurfaceView(this);
 
-        mVideoManager = VideoManager.createInstance(this);
+        mGLSurfaceViewLocal.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!mFUInit) {
+                            mFUInit = true;
+                            mFURenderer.onSurfaceCreated();
+                        }
+                    }
+                });
+            }
 
-        mVideoManager.allocate(width, height, 15, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
-        mVideoManager.setRenderView(mGLSurfaceViewLocal);
-        mVideoManager.connectEffectHandler(mEffectHandler);
-        mVideoManager.attachToRTCEngine(getWorker().getRtcEngine());
-        mVideoManager.startCapture();
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFURenderer.onSurfaceDestroyed();
+                        mFUInit = false;
+                    }
+                });
+            }
+        });
 
         mLocalViewContainer = findViewById(R.id.local_video_view_container);
         if (mLocalViewContainer.getChildCount() > 0) {
@@ -168,6 +177,14 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         mLocalViewContainer.addView(mGLSurfaceViewLocal,
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
+
+        mVideoManager = VideoManager.createInstance(this);
+
+        mVideoManager.allocate(width, height, 30, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
+        mVideoManager.setRenderView(mGLSurfaceViewLocal);
+        mVideoManager.connectEffectHandler(mEffectHandler);
+        mVideoManager.attachToRTCEngine(getWorker().getRtcEngine());
+        mVideoManager.startCapture();
 
         mRemoteView = findViewById(R.id.remote_video_view);
         RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mRemoteView.getLayoutParams();
@@ -193,8 +210,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     private void joinChannel() {
         getWorker().configEngine(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER, new VideoEncoderConfiguration(
-                VideoEncoderConfiguration.VD_480x360,
-                VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, 400,
+                VideoEncoderConfiguration.VD_640x360,
+                VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24, 800,
                 VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT));
 
         String roomName = getIntent().getStringExtra(Constants.ACTION_KEY_ROOM_NAME);
@@ -278,7 +295,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         super.onDestroy();
         mVideoManager.stopCapture();
         mVideoManager.deallocate();
-        mFURenderer.destroy();
+        mFURenderer.onSurfaceDestroyed();
     }
 
     @Override
@@ -371,10 +388,14 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
             getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER);
 
             mGLSurfaceViewLocal = new GLSurfaceView(this);
+            mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    mFURenderer.onSurfaceCreated();
+                }
+            });
 
-            mFURenderer.initialize();
-
-            mVideoManager.allocate(width, height, 15, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
+            mVideoManager.allocate(width, height, 30, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
             mVideoManager.setRenderView(mGLSurfaceViewLocal);
             mVideoManager.connectEffectHandler(mEffectHandler);
             mVideoManager.attachToRTCEngine(getWorker().getRtcEngine());
@@ -392,7 +413,12 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
             getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_AUDIENCE);
 
-            mFURenderer.destroy();
+            mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    mFURenderer.onSurfaceDestroyed();
+                }
+            });
 
             mVideoManager.deallocate();
 
@@ -403,6 +429,10 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     @Override
     protected void onCameraChangeRequested() {
+
+        // TODO Reset options when camera changed
+//      mFURenderer.onCameraChange();
+
         mVideoManager.switchCamera();
     }
 
@@ -465,7 +495,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     protected void sendRecordingData(int texId, final float[] tex_matrix, final long timeStamp) {
         if (mVideoEncoder != null) {
-            mVideoEncoder.frameAvailableSoon(texId, tex_matrix);
+            mVideoEncoder.frameAvailableSoon(texId, tex_matrix, GlUtil.IDENTITY_MATRIX);
             if (mVideoRecordingStartTime == 0) mVideoRecordingStartTime = timeStamp;
         }
     }

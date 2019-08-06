@@ -14,9 +14,8 @@ public class FPSUtil {
      * @return
      */
     public static double fps() {
-        double fps = 0;
         long tmp = System.nanoTime();
-        fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND / (tmp - mLastFrameTimeStamp);
+        double fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND / (tmp - mLastFrameTimeStamp);
         mLastFrameTimeStamp = tmp;
         Log.d(TAG, "FPS : " + fps);
         return fps;
@@ -37,9 +36,7 @@ public class FPSUtil {
             return 0;
         }
         mFPSFrameRate += time;
-        double fps = 0;
-        fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND * mFPSFrameRate / (System.nanoTime() - mStartTime);
-//        Log.e(TAG, "FPS : " + fps);
+        double fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND * mFPSFrameRate / (System.nanoTime() - mStartTime);
         return fps;
     }
 
@@ -63,7 +60,7 @@ public class FPSUtil {
                 mLimitFrameRate = 0;
             }
             long sleepTime = mLimitMinTime * mLimitFrameRate++ - (System.nanoTime() - mLimitStartTime);
-            Log.e("sleep", "sleep time: " + sleepTime);
+            Log.w("FPSUtil.limit", "sleep time: " + sleepTime);
             if (sleepTime > 0) {
                 Thread.sleep(sleepTime / NANO_IN_ONE_MILLI_SECOND, (int) (sleepTime % NANO_IN_ONE_MILLI_SECOND));
             }
