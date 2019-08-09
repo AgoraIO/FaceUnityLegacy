@@ -49,12 +49,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.faceunity.wrapper.faceunity.FU_ADM_FLAG_FLIP_X;
 
 /**
- * 一个基于Faceunity Nama SDK的简单封装，方便简单集成，理论上简单需求的步骤：
+ * 一个基于 Faceunity Nama SDK 的简单封装，方便简单集成，理论上简单需求的步骤：
  * <p>
- * 1.通过OnEffectSelectedListener在UI上进行交互
- * 2.合理调用FURenderer构造函数
- * 3.对应的时机调用onSurfaceCreated和onSurfaceDestroyed
- * 4.处理图像时调用onDrawFrame
+ * 1.通过 OnEffectSelectedListener 在 UI 上进行交互
+ * 2.合理调用 FURenderer 构造函数
+ * 3.对应的时机调用 onSurfaceCreated 和 onSurfaceDestroyed
+ * 4.处理图像时调用 onDrawFrame
  */
 public class FURenderer implements OnFUControlListener {
     private static final String TAG = FURenderer.class.getSimpleName();
@@ -64,12 +64,12 @@ public class FURenderer implements OnFUControlListener {
     private Context mContext;
 
     /**
-     * 目录assets下的 *.bundle为程序的数据文件。
+     * 目录 assets 下的 *.bundle 为程序的数据文件。
      * 其中 v3.bundle：人脸识别数据文件，缺少该文件会导致系统初始化失败；
      * face_beautification.bundle：美颜和美型相关的数据文件；
-     * anim_model.bundle：优化表情跟踪功能所需要加载的动画数据文件；适用于使用Animoji和avatar功能的用户，如果不是，可不加载
+     * anim_model.bundle：优化表情跟踪功能所需要加载的动画数据文件；适用于使用 Animoji 和 Avatar 功能的用户，如果不是，可不加载
      * ardata_ex.bundle：高精度模式的三维张量数据文件。适用于换脸功能，如果没用该功能可不加载
-     * fxaa.bundle：3D绘制抗锯齿数据文件。加载后，会使得3D绘制效果更加平滑。
+     * fxaa.bundle：3D 绘制抗锯齿数据文件。加载后，会使得 3D 绘制效果更加平滑。
      * 目录effects下是我们打包签名好的道具
      */
     public static final String BUNDLE_V3 = "v3.bundle";
@@ -90,31 +90,31 @@ public class FURenderer implements OnFUControlListener {
     public static final String BUNDLE_LIGHT_MAKEUP = "light_makeup.bundle";
     // 美妆 bundle
     public static final String BUNDLE_FACE_MAKEUP = "face_makeup.bundle";
-    // 表情动图
+    // 表情动图 bundle
     public static final String BUNDLE_LIVE_PHOTO = "photolive.bundle";
-    // 新的人脸识别
+    // 新版人脸识别 bundle
     public static final String BUNDLE_NEW_FACE_TRACKER = "new_face_tracker.bundle";
 
-    private volatile static float mFilterLevel = 1.0f;//滤镜强度
-    private volatile static float mSkinDetect = 1.0f;//肤色检测开关
-    private volatile static float mHeavyBlur = 0.0f;//重度磨皮开关
-    private volatile static float mBlurLevel = 0.7f;//磨皮程度
-    private volatile static float mColorLevel = 0.3f;//美白
-    private volatile static float mRedLevel = 0.3f;//红润
-    private volatile static float mEyeBright = 0.0f;//亮眼
+    private volatile static float mFilterLevel = 1.0f; // 滤镜强度
+    private volatile static float mSkinDetect = 1.0f; // 肤色检测开关
+    private volatile static float mHeavyBlur = 0.0f; // 重度磨皮开关
+    private volatile static float mBlurLevel = 0.7f; // 磨皮程度
+    private volatile static float mColorLevel = 0.3f; // 美白
+    private volatile static float mRedLevel = 0.3f; // 红润
+    private volatile static float mEyeBright = 0.0f; // 亮眼
     private volatile static float mToothWhiten = 0.0f;//美牙
-    private volatile static float mFaceShape = BeautificationParams.FACE_SHAPE_CUSTOM;//脸型
-    private volatile static float mFaceShapeLevel = 1.0f;//程度
-    private volatile static float mCheekThinning = 0f;//瘦脸
-    private volatile static float mCheekV = 0.5f;//V脸
-    private volatile static float mCheekNarrow = 0f;//窄脸
-    private volatile static float mCheekSmall = 0f;//小脸
-    private volatile static float mEyeEnlarging = 0.4f;//大眼
-    private volatile static float mIntensityChin = 0.3f;//下巴
-    private volatile static float mIntensityForehead = 0.3f;//额头
-    private volatile static float mIntensityMouth = 0.4f;//嘴形
-    private volatile static float mIntensityNose = 0.5f;//瘦鼻
-    private volatile static float mChangeFrames = 0f;//渐变帧数
+    private volatile static float mFaceShape = BeautificationParams.FACE_SHAPE_CUSTOM; // 脸型
+    private volatile static float mFaceShapeLevel = 1.0f; // 程度
+    private volatile static float mCheekThinning = 0f; // 瘦脸
+    private volatile static float mCheekV = 0.5f; // V 脸
+    private volatile static float mCheekNarrow = 0f; // 窄脸
+    private volatile static float mCheekSmall = 0f; // 小脸
+    private volatile static float mEyeEnlarging = 0.4f; // 大眼
+    private volatile static float mIntensityChin = 0.3f; // 下巴
+    private volatile static float mIntensityForehead = 0.3f; // 额头
+    private volatile static float mIntensityMouth = 0.4f; // 嘴形
+    private volatile static float mIntensityNose = 0.5f; // 瘦鼻
+    private volatile static float mChangeFrames = 0f; // 渐变帧数
     // 默认滤镜，粉嫩效果
     private volatile static String sFilterName = new Filter(Filter.Key.FENNEN_1).filterName();
 
@@ -140,11 +140,11 @@ public class FURenderer implements OnFUControlListener {
     // 头发
     public static final int HAIR_NORMAL = 1;
     public static final int HAIR_GRADIENT = 2;
-    // 海报换脸 track 50次
+    // 海报换脸 track 50 次
     private static final int MAX_TRACK_COUNT = 50;
-    //美颜和其他道具的handle数组
+    // 美颜和其他道具的 handle 数组
     private volatile int[] mItemsArray = new int[ITEM_ARRAYS_COUNT];
-    //用于和异步加载道具的线程交互
+    // 用于和异步加载道具的线程交互
     private HandlerThread mFuItemHandlerThread;
     private Handler mFuItemHandler;
 
@@ -152,18 +152,18 @@ public class FURenderer implements OnFUControlListener {
     private boolean isNeedFaceBeauty = true;
     private boolean isNeedAnimoji3D = false;
     private boolean isNeedPosterFace = false;
-    private volatile Effect mDefaultEffect;//默认道具（同步加载）
-    private boolean mIsCreateEGLContext; //是否需要手动创建EGLContext
-    private int mInputTextureType = 0; //输入的图像texture类型，Camera提供的默认为EXTERNAL OES
+    private volatile Effect mDefaultEffect; // 默认道具（同步加载）
+    private boolean mIsCreateEGLContext; //是否需要手动创建 EGLContext
+    private int mInputTextureType = 0; // 输入的图像 texture 类型，Camera 提供的默认为 EXTERNAL OES
     private int mInputImageFormat = 0;
-    //美颜和滤镜的默认参数
+    // 美颜和滤镜的默认参数
     private volatile boolean isNeedUpdateFaceBeauty = true;
 
     private volatile int mInputImageOrientation = 270;
-    private volatile int mInputPropOrientation = 270;//道具方向（针对全屏道具）
-    private volatile int mIsInputImage = 0;//输入的是否是图片
+    private volatile int mInputPropOrientation = 270; // 道具方向（针对全屏道具）
+    private volatile int mIsInputImage = 0; // 输入的是否是图片
     private volatile int mCurrentCameraType = Camera.CameraInfo.CAMERA_FACING_FRONT;
-    private volatile int mMaxFaces = 4; //同时识别的最大人脸
+    private volatile int mMaxFaces = 4; // 同时识别的最大人脸数
     // 美发参数
     private volatile float mHairColorStrength = 0.6f;
     private volatile int mHairColorType = HAIR_GRADIENT;
@@ -193,7 +193,7 @@ public class FURenderer implements OnFUControlListener {
     private boolean mNeedBackground;
 
     /**
-     * 创建及初始化 faceunity 相应的资源
+     * 创建及初始化 Faceunity 相应的资源
      */
     public void onSurfaceCreated() {
         Log.e(TAG, "onSurfaceCreated");
@@ -215,10 +215,10 @@ public class FURenderer implements OnFUControlListener {
 
         mFrameId = 0;
         /**
-         *fuSetExpressionCalibration 控制表情校准功能的开关及不同模式，参数为0时关闭表情校准，2为被动校准。
+         *fuSetExpressionCalibration 控制表情校准功能的开关及不同模式，参数为 0 时关闭表情校准，2 为被动校准。
          * 被动校准：该种模式下会在整个用户使用过程中逐渐进行表情校准，用户对该过程没有明显感觉。
          *
-         * 优化后的SDK只支持被动校准功能，即fuSetExpressionCalibration接口只支持0（关闭）或2（被动校准）这两个数字，设置为1时将不再有效果。
+         * 优化后的 SDK 只支持被动校准功能，即 fuSetExpressionCalibration 接口只支持 0（关闭）或 2（被动校准）这两个数字，设置为 1 时将不再有效果。
          */
         faceunity.fuSetExpressionCalibration(2);
         faceunity.fuSetMaxFaces(mMaxFaces); // 设置多脸，目前最多支持 8 人。
@@ -296,7 +296,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 获取faceunity sdk 版本库
+     * 获取 Faceunity sdk 版本库
      */
     public static String getVersion() {
         return faceunity.fuGetVersion();
@@ -310,7 +310,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * FURenderer构造函数
+     * FURenderer 构造函数
      */
     private FURenderer(Context context, boolean isCreateEGLContext) {
         this.mContext = context;
@@ -318,7 +318,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 销毁faceunity相关的资源
+     * 销毁 Faceunity 相关的资源
      */
     public void onSurfaceDestroyed() {
         Log.e(TAG, "onSurfaceDestroyed");
@@ -372,7 +372,7 @@ public class FURenderer implements OnFUControlListener {
     /**
      * 单输入接口(fuRenderToNV21Image)
      *
-     * @param img NV21数据
+     * @param img NV21 数据
      * @param w
      * @param h
      * @return
@@ -397,7 +397,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 单输入接口(fuRenderToNV21Image)，自定义画面数据需要回写到的byte[]
+     * 单输入接口(fuRenderToNV21Image)，自定义画面数据需要回写到的 byte[]
      *
      * @param img         NV21数据
      * @param w
@@ -428,7 +428,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 双输入接口(fuDualInputToTexture)(处理后的画面数据并不会回写到数组)，由于省去相应的数据拷贝性能相对最优，推荐使用。
+     * 双输入接口(fuDualInputToTexture)，处理后的画面数据并不会回写到数组，由于省去相应的数据拷贝性能相对最优，推荐使用。
      *
      * @param img NV21数据
      * @param tex 纹理ID
@@ -456,7 +456,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 双输入接口(fuDualInputToTexture)，自定义画面数据需要回写到的byte[]
+     * 双输入接口(fuDualInputToTexture)，自定义画面数据需要回写到的 byte[]
      *
      * @param img         NV21数据
      * @param tex         纹理ID
@@ -549,21 +549,21 @@ public class FURenderer implements OnFUControlListener {
 
     /**
      * 全局加载相应的底层数据包，应用使用期间只需要初始化一次
-     * 初始化系统环境，加载系统数据，并进行网络鉴权。必须在调用SDK其他接口前执行，否则会引发崩溃。
+     * 初始化系统环境，加载系统数据，并进行网络鉴权。必须在调用 SDK 其他接口前执行，否则会引发崩溃。
      */
     public static void initFURenderer(Context context) {
         if (mIsInited) {
             return;
         }
         try {
-            //获取faceunity SDK版本信息
+            // 获取 faceunity SDK 版本信息
             Log.e(TAG, "fu sdk version " + faceunity.fuGetVersion());
             long startTime = System.currentTimeMillis();
             /**
-             * fuSetup faceunity初始化
+             * fuSetup faceunity 初始化
              * 其中 v3.bundle：人脸识别数据文件，缺少该文件会导致系统初始化失败；
              *      authpack：用于鉴权证书内存数组。
-             * 首先调用完成后再调用其他FU API
+             * 首先调用完成后再调用其他 FU API
              */
             InputStream v3 = context.getAssets().open(BUNDLE_V3);
             byte[] v3Data = new byte[v3.available()];
@@ -625,7 +625,7 @@ public class FURenderer implements OnFUControlListener {
     //--------------------------------------对外可使用的接口----------------------------------------
 
     /**
-     * 使用 fuTrackFace + fuAvatarToTexture 的方法组合绘制画面，该组合没有camera画面绘制，适用于animoji等相关道具的绘制。
+     * 使用 fuTrackFace + fuAvatarToTexture 的方法组合绘制画面，该组合没有 camera 画面绘制，适用于 animoji 等相关道具的绘制。
      * fuTrackFace 获取识别到的人脸信息
      * fuAvatarToTexture 依据人脸信息绘制道具
      *
@@ -657,23 +657,23 @@ public class FURenderer implements OnFUControlListener {
 
         if (isTracking > 0) {
             /**
-             * landmarks 2D人脸特征点，返回值为75个二维坐标，长度75*2
+             * landmarks 2D 人脸特征点，返回值为 75 个二维坐标，长度 75*2
              */
             faceunity.fuGetFaceInfo(0, "landmarks", landmarksData);
             /**
-             *rotation 人脸三维旋转，返回值为旋转四元数，长度4
+             *rotation 人脸三维旋转，返回值为旋转四元数，长度 4
              */
             faceunity.fuGetFaceInfo(0, "rotation", rotationData);
             /**
-             * expression  表情系数，长度46
+             * expression  表情系数，长度 46
              */
             faceunity.fuGetFaceInfo(0, "expression", expressionData);
             /**
-             * pupil pos 眼球旋转，长度2
+             * pupil pos 眼球旋转，长度 2
              */
             faceunity.fuGetFaceInfo(0, "pupil_pos", pupilPosData);
             /**
-             * rotation mode 人脸朝向，0-3分别对应手机四种朝向，长度1
+             * rotation mode 人脸朝向，0-3 分别对应手机四种朝向，长度 1
              */
             faceunity.fuGetFaceInfo(0, "rotation_mode", rotationModeData);
         } else {
@@ -754,7 +754,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 设置捏脸属性的权值，范围[0-1]。这里param对应的就是第几个捏脸属性，从1开始。
+     * 设置捏脸属性的权值，范围 [0-1]。这里 param 对应的就是第几个捏脸属性，从 1 开始。
      *
      * @param key
      * @param value
@@ -905,7 +905,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 类似GLSurfaceView的queueEvent机制
+     * 类似 GLSurfaceView 的 queueEvent 机制
      */
     public void queueEvent(Runnable r) {
         if (mEventQueue == null)
@@ -914,7 +914,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 类似GLSurfaceView的queueEvent机制,保护在快速切换界面时进行的操作是当前界面的加载操作
+     * 类似 GLSurfaceView 的 queueEvent 机制,保护在快速切换界面时进行的操作是当前界面的加载操作
      */
     private void queueEventItemHandle(Runnable r) {
         if (mFuItemHandlerThread == null || Thread.currentThread().getId() != mFuItemHandlerThread.getId())
@@ -978,16 +978,16 @@ public class FURenderer implements OnFUControlListener {
      * 每帧处理画面时被调用
      */
     private void prepareDrawFrame() {
-        //计算FPS等数据
+        // 计算 FPS 等数据
         benchmarkFPS();
 
-        //获取人脸是否识别，并调用回调接口
+        // 获取人脸是否识别，并调用回调接口
         int isTracking = faceunity.fuIsTracking();
         if (mOnTrackingStatusChangedListener != null && mTrackingStatus != isTracking) {
             mOnTrackingStatusChangedListener.onTrackingStatusChanged(mTrackingStatus = isTracking);
         }
 
-        //获取faceunity错误信息，并调用回调接口
+        // 获取 faceunity 错误信息，并调用回调接口
         int error = faceunity.fuGetSystemError();
         if (error != 0) {
             Log.e(TAG, "fuGetSystemErrorString " + faceunity.fuGetSystemErrorString(error));
@@ -996,53 +996,53 @@ public class FURenderer implements OnFUControlListener {
             }
         }
 
-        //修改美颜参数
+        // 修改美颜参数
         if (isNeedUpdateFaceBeauty && mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX] > 0) {
-            //filter_name 滤镜名称
+            // filter_name 滤镜名称
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.FILTER_NAME, sFilterName);
-            //filter_level 滤镜强度 范围0~1 SDK默认为 1
+            // filter_level 滤镜强度 范围 0~1 SDK 默认为 1
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.FILTER_LEVEL, mFilterLevel);
 
-            //skin_detect 精准美肤（肤色检测开关） 0:关闭 1:开启 SDK默认为 0
+            // skin_detect 精准美肤（肤色检测开关） 0:关闭 1:开启 SDK默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.SKIN_DETECT, mSkinDetect);
-            //heavy_blur 磨皮类型 0:清晰磨皮 1:重度磨皮 SDK默认为 1
+            // heavy_blur 磨皮类型 0:清晰磨皮 1:重度磨皮 SDK默认为 1
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.HEAVY_BLUR, mHeavyBlur);
-            //blur_level 磨皮 范围0~6 SDK默认为 6
+            // blur_level 磨皮 范围 0~6 SDK 默认为 6
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.BLUR_LEVEL, 6 * mBlurLevel);
-            //nonskin_blur_scale 肤色检测之后，非肤色区域的融合程度，范围0-1，SDK默认为0.45
+            // nonskin_blur_scale 肤色检测之后，非肤色区域的融合程度，范围 0-1，SDK 默认为0.45
 //            faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.NONSKIN_BLUR_SCALE, 0);
-            //color_level 美白 范围0~1 SDK默认为 0.2
+            // color_level 美白 范围 0~1 SDK 默认为 0.2
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.COLOR_LEVEL, mColorLevel);
-            //red_level 红润 范围0~1 SDK默认为 0.5
+            // red_level 红润 范围 0~1 SDK默认为 0.5
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.RED_LEVEL, mRedLevel);
-            //eye_bright 亮眼 范围0~1 SDK默认为 0
+            // eye_bright 亮眼 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.EYE_BRIGHT, mEyeBright);
-            //tooth_whiten 美牙 范围0~1 SDK默认为 0
+            // tooth_whiten 美牙 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.TOOTH_WHITEN, mToothWhiten);
 
-            //face_shape_level 美型程度 范围0~1 SDK默认为1
+            // face_shape_level 美型程度 范围 0~1 SDK 默认为 1
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.FACE_SHAPE_LEVEL, mFaceShapeLevel);
-            //face_shape 脸型 0：女神 1：网红，2：自然，3：默认，4：精细变形，5 用户自定义，SDK默认为 3
+            // face_shape 脸型 0：女神 1：网红，2：自然，3：默认，4：精细变形，5 用户自定义，SDK 默认为 3
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.FACE_SHAPE, mFaceShape);
-            //eye_enlarging 大眼 范围0~1 SDK默认为 0
+            // eye_enlarging 大眼 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.EYE_ENLARGING, mEyeEnlarging);
-            //cheek_thinning 瘦脸 范围0~1 SDK默认为 0
+            // cheek_thinning 瘦脸 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.CHEEK_THINNING, mCheekThinning);
-            //cheek_narrow 窄脸 范围0~1 SDK默认为 0
+            // cheek_narrow 窄脸 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.CHEEK_NARROW, mCheekNarrow);
-            //cheek_small 小脸 范围0~1 SDK默认为 0
+            // cheek_small 小脸 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.CHEEK_SMALL, mCheekSmall);
-            //cheek_v V脸 范围0~1 SDK默认为 0
+            // cheek_v V 脸 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.CHEEK_V, mCheekV);
-            //intensity_nose 鼻子 范围0~1 SDK默认为 0
+            // intensity_nose 鼻子 范围 0~1 SDK 默认为 0
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.INTENSITY_NOSE, mIntensityNose);
-            //intensity_chin 下巴 范围0~1 SDK默认为 0.5    大于0.5变大，小于0.5变小
+            // intensity_chin 下巴 范围 0~1 SDK 默认为 0.5    大于 0.5 变大，小于 0.5 变小
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.INTENSITY_CHIN, mIntensityChin);
-            //intensity_forehead 额头 范围0~1 SDK默认为 0.5    大于0.5变大，小于0.5变小
+            // intensity_forehead 额头 范围 0~1 SDK默认为 0.5    大于 0.5 变大，小于 0.5 变小
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.INTENSITY_FOREHEAD, mIntensityForehead);
-            //intensity_mouth 嘴型 范围0~1 SDK默认为 0.5   大于0.5变大，小于0.5变小
+            // intensity_mouth 嘴型 范围 0~1 SDK 默认为 0.5   大于 0.5 变大，小于 0.5 变小
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.INTENSITY_MOUTH, mIntensityMouth);
-            //change_frame 变形渐变调整参数，0 渐变关闭，大于 0 渐变开启，值为渐变需要的帧数
+            // change_frame 变形渐变调整参数，0 渐变关闭，大于 0 渐变开启，值为渐变需要的帧数
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_FACE_BEAUTY_INDEX], BeautificationParams.CHANGE_FRAMES, mChangeFrames);
             isNeedUpdateFaceBeauty = false;
         }
@@ -1057,7 +1057,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * camera切换时需要调用
+     * camera 切换时需要调用
      *
      * @param currentCameraType     前后置摄像头ID
      * @param inputImageOrientation
@@ -1081,7 +1081,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * camera切换时需要调用
+     * camera 切换时需要调用
      *
      * @param currentCameraType     前后置摄像头ID
      * @param inputImageOrientation
@@ -1169,7 +1169,7 @@ public class FURenderer implements OnFUControlListener {
     }
 
     /**
-     * 美妆功能点位镜像，0为关闭，1为开启
+     * 美妆功能点位镜像，0 为关闭，1 为开启
      *
      * @param isFlipPoints
      */
@@ -1405,14 +1405,14 @@ public class FURenderer implements OnFUControlListener {
 
     @Override
     public void onCheekNarrowSelected(float level) {
-        // 窄脸参数上限为0.5
+        // 窄脸参数上限为 0.5
         mCheekNarrow = level / 2;
         isNeedUpdateFaceBeauty = true;
     }
 
     @Override
     public void onCheekSmallSelected(float level) {
-        // 小脸参数上限为0.5
+        // 小脸参数上限为 0.5
         mCheekSmall = level / 2;
         isNeedUpdateFaceBeauty = true;
     }
@@ -1863,11 +1863,11 @@ public class FURenderer implements OnFUControlListener {
 
         int effectType = effect.effectType();
         if (effectType == Effect.EFFECT_TYPE_NORMAL) {
-            //rotationAngle 参数是用于旋转普通道具
+            // rotationAngle 参数是用于旋转普通道具
             faceunity.fuItemSetParam(itemHandle, "rotationAngle", 360 - mInputPropOrientation);
         }
         if (effectType == Effect.EFFECT_TYPE_BACKGROUND) {
-            //计算角度（全屏背景分割，第一次未识别人脸）
+            // 计算角度（全屏背景分割，第一次未识别人脸）
             faceunity.fuSetDefaultRotationMode((360 - mInputImageOrientation) / 90);
         }
         int back = mCurrentCameraType == Camera.CameraInfo.CAMERA_FACING_BACK ? 1 : 0;
@@ -1882,13 +1882,13 @@ public class FURenderer implements OnFUControlListener {
             faceunity.fuItemSetParam(itemHandle, "is3DFlipH", back);
             // 镜像表情
             faceunity.fuItemSetParam(itemHandle, "isFlipExpr", back);
-            //这两句代码用于识别人脸默认方向的修改，主要针对animoji道具的切换摄像头倒置问题
+            // 这两句代码用于识别人脸默认方向的修改，主要针对 animoji 道具的切换摄像头倒置问题
             faceunity.fuItemSetParam(itemHandle, "camera_change", 1.0);
             faceunity.fuSetDefaultRotationMode((360 - mInputImageOrientation) / 90);
         }
 
         if (effectType == Effect.EFFECT_TYPE_GESTURE) {
-            //loc_y_flip与loc_x_flip 参数是用于对手势识别道具的镜像
+            // loc_y_flip 与 loc_x_flip 参数是用于对手势识别道具的镜像
             faceunity.fuItemSetParam(itemHandle, "is3DFlipH", back);
             faceunity.fuItemSetParam(itemHandle, "loc_y_flip", back);
             faceunity.fuItemSetParam(itemHandle, "loc_x_flip", back);
@@ -2099,8 +2099,8 @@ public class FURenderer implements OnFUControlListener {
 
         /**
          * 传入纹理的类型（传入数据没有纹理则无需调用）
-         * camera OES纹理：1
-         * 普通2D纹理：2
+         * camera OES 纹理：1
+         * 普通 2D 纹理：2
          *
          * @param textureType
          * @return
@@ -2210,7 +2210,7 @@ public class FURenderer implements OnFUControlListener {
         }
 
         /**
-         * 设置debug数据回调
+         * 设置 debug 数据回调
          *
          * @param onFUDebugListener
          * @return
@@ -2244,7 +2244,7 @@ public class FURenderer implements OnFUControlListener {
 
 
         /**
-         * 设置SDK使用错误回调
+         * 设置 SDK 使用错误回调
          *
          * @param onSystemErrorListener
          * @return
@@ -2302,7 +2302,7 @@ public class FURenderer implements OnFUControlListener {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                //加载普通道具
+                // 加载普通道具
                 case ITEM_ARRAYS_EFFECT_INDEX: {
                     final Effect effect = (Effect) msg.obj;
                     if (effect == null) {
@@ -2337,7 +2337,7 @@ public class FURenderer implements OnFUControlListener {
                     });
                 }
                 break;
-                //加载美颜bundle
+                // 加载美颜 bundle
                 case ITEM_ARRAYS_FACE_BEAUTY_INDEX: {
                     final int itemBeauty = loadItem(BUNDLE_FACE_BEAUTIFICATION);
                     if (itemBeauty <= 0) {
@@ -2353,7 +2353,7 @@ public class FURenderer implements OnFUControlListener {
                     });
                 }
                 break;
-                // 加载轻美妆bundle
+                // 加载轻美妆 bundle
                 case ITEM_ARRAYS_LIGHT_MAKEUP_INDEX: {
                     final MakeupItem makeupItem = (MakeupItem) msg.obj;
                     if (makeupItem == null) {
@@ -2424,7 +2424,7 @@ public class FURenderer implements OnFUControlListener {
                     }
                 }
                 break;
-                // 加载美妆bundle
+                // 加载美妆 bundle
                 case ITEM_ARRAYS_FACE_MAKEUP_INDEX: {
                     final Map<String, Object> paramMap = (Map<String, Object>) msg.obj;
                     if (paramMap == null) {
@@ -2492,7 +2492,7 @@ public class FURenderer implements OnFUControlListener {
                     });
                 }
                 break;
-                //加载普通美发bundle
+                //加载普通美发 bundle
                 case ITEM_ARRAYS_EFFECT_HAIR_NORMAL_INDEX: {
                     final int itemHair = loadItem(BUNDLE_HAIR_NORMAL);
                     if (itemHair <= 0) {
@@ -2517,7 +2517,7 @@ public class FURenderer implements OnFUControlListener {
                     });
                 }
                 break;
-                //加载渐变美发bundle
+                // 加载渐变美发 bundle
                 case ITEM_ARRAYS_EFFECT_HAIR_GRADIENT_INDEX: {
                     final int itemHair = loadItem(BUNDLE_HAIR_GRADIENT);
                     if (itemHair <= 0) {
@@ -2579,7 +2579,7 @@ public class FURenderer implements OnFUControlListener {
                     }
                 }
                 break;
-                //加载Animoji道具3D抗锯齿bundle
+                // 加载 Animoji 道具 3D 抗锯齿 bundle
                 case ITEM_ARRAYS_EFFECT_ABIMOJI_3D_INDEX: {
                     final int itemAnimoji3D = loadItem(BUNDLE_ANIMOJI_3D);
                     if (itemAnimoji3D <= 0) {
@@ -2594,7 +2594,7 @@ public class FURenderer implements OnFUControlListener {
                     });
                 }
                 break;
-                // 加载表情动图bundle
+                // 加载表情动图 bundle
                 case ITEM_ARRAYS_LIVE_PHOTO_INDEX: {
                     final LivePhoto livePhoto = (LivePhoto) msg.obj;
                     if (livePhoto == null) {

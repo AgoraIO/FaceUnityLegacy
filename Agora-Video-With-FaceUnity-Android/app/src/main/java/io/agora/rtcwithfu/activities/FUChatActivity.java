@@ -144,31 +144,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
         mGLSurfaceViewLocal = new GLSurfaceView(this);
 
-        mGLSurfaceViewLocal.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-                mGLSurfaceViewLocal.queueEvent(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!mFUInit) {
-                            mFUInit = true;
-                            mFURenderer.onSurfaceCreated();
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                mGLSurfaceViewLocal.queueEvent(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFURenderer.onSurfaceDestroyed();
-                        mFUInit = false;
-                    }
-                });
-            }
-        });
+        bindSurfaceViewEvent();
 
         mLocalViewContainer = findViewById(R.id.local_video_view_container);
         if (mLocalViewContainer.getChildCount() > 0) {
@@ -295,7 +271,9 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         super.onDestroy();
         mVideoManager.stopCapture();
         mVideoManager.deallocate();
+
         mFURenderer.onSurfaceDestroyed();
+        mFUInit = false;
     }
 
     @Override
@@ -388,12 +366,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
             getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER);
 
             mGLSurfaceViewLocal = new GLSurfaceView(this);
-            mGLSurfaceViewLocal.queueEvent(new Runnable() {
-                @Override
-                public void run() {
-                    mFURenderer.onSurfaceCreated();
-                }
-            });
+
+            bindSurfaceViewEvent();
 
             mVideoManager.allocate(width, height, 30, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
             mVideoManager.setRenderView(mGLSurfaceViewLocal);
@@ -413,18 +387,35 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
             getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_AUDIENCE);
 
-            mGLSurfaceViewLocal.queueEvent(new Runnable() {
-                @Override
-                public void run() {
-                    mFURenderer.onSurfaceDestroyed();
-                }
-            });
-
             mVideoManager.deallocate();
+
+            mFURenderer.onSurfaceDestroyed();
+            mFUInit = false;
 
             System.gc();
         }
 
+    }
+
+    private void bindSurfaceViewEvent() {
+        mGLSurfaceViewLocal.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!mFUInit) {
+                            mFUInit = true;
+                            mFURenderer.onSurfaceCreated();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+            }
+        });
     }
 
     @Override
