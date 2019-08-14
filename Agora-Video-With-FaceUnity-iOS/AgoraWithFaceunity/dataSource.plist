@@ -171,12 +171,11 @@
 		</array>
 		<key>items</key>
 		<array>
-			<string>chiji_lm_fu</string>
-			<string>ice_lm_fu</string>
-			<string>jingongmen_zh_fu</string>
-			<string>gufeng_zh_fu</string>
-			<string>men_ztt_fu</string>
-			<string>hez_ztt_fu</string>
+			<string>hez_ztt_fu_mp</string>
+			<string>gufeng_zh_fu_mp</string>
+			<string>xiandai_ztt_fu_mp</string>
+			<string>sea_lm_fu_mp</string>
+			<string>ice_lm_fu_mp</string>
 		</array>
 	</dict>
 	<dict>
