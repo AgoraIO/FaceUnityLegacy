@@ -1,42 +1,32 @@
 package io.agora.kit.media.render;
 
-import android.content.Context;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
+import android.view.View;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import io.agora.kit.media.capture.VideoCaptureFrame;
-import io.agora.kit.media.connector.SinkConnector;
-import io.agora.kit.media.connector.SrcConnector;
 import io.agora.kit.media.gles.ProgramTexture2d;
 import io.agora.kit.media.gles.ProgramTextureOES;
 import io.agora.kit.media.gles.core.GlUtil;
-import io.agora.kit.media.util.FPSUtil;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class VideoRender implements SinkConnector<VideoCaptureFrame> {
-    public final static String TAG = VideoRender.class.getSimpleName();
+public class RenderInGlSurfaceView extends BaseRender {
+    public final static String TAG = RenderInGlSurfaceView.class.getSimpleName();
 
     private GLSurfaceView mGLSurfaceView;
-    private Context mContext;
-    private VideoCaptureFrame mVideoCaptureFrame;
     private int mCameraTextureId;
     private int mEffectTextureId;
     private float[] mMTX = new float[16];
     private float[] mMVP = new float[16];
 
-    private SrcConnector<Integer> mTexConnector;
-    private SrcConnector<VideoCaptureFrame> mFrameConnector;
-    private SrcConnector<VideoCaptureFrame> mTransmitConnector;
 
-    private FPSUtil mFPSUtil;
     private boolean mLastMirror;
     private boolean mMVPInit;
 
@@ -122,35 +112,29 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
         }
     };
 
-    private CountDownLatch mDestroyLatch;
-
-    public VideoRender(Context context) {
-        mContext = context;
-        mDestroyLatch = new CountDownLatch(1);
-        mFPSUtil = new FPSUtil();
-        mTexConnector = new SrcConnector<>();
-        mFrameConnector = new SrcConnector<>();
-        mTransmitConnector = new SrcConnector<>();
+    public RenderInGlSurfaceView() {
+        super();
     }
 
-    public void setRenderView(GLSurfaceView glSurfaceView) {
-        mGLSurfaceView = glSurfaceView;
-        mGLSurfaceView.setEGLContextClientVersion(2);
-        mGLSurfaceView.setPreserveEGLContextOnPause(true);
-        mGLSurfaceView.setRenderer(mGLRenderer);
-        mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+    public boolean setRenderView(View view) {
+        if (view instanceof GLSurfaceView) {
+            mGLSurfaceView = (GLSurfaceView) view;
+            mGLSurfaceView.setEGLContextClientVersion(2);
+            mGLSurfaceView.setPreserveEGLContextOnPause(true);
+            mGLSurfaceView.setRenderer(mGLRenderer);
+            mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+            Log.i(TAG, "setRenderSurfaceView");
+            return true;
+        }
+        return false;
     }
 
-    public SrcConnector<Integer> getTexConnector() {
-        return mTexConnector;
-    }
+    @Override
+    public void runInRenderThread(Runnable r) {
+        if (mGLSurfaceView != null) {
+            mGLSurfaceView.queueEvent(r);
+        }
 
-    public SrcConnector<VideoCaptureFrame> getFrameConnector() {
-        return mFrameConnector;
-    }
-
-    public SrcConnector<VideoCaptureFrame> getTransmitConnector() {
-        return mTransmitConnector;
     }
 
     private void flipFrontX() {

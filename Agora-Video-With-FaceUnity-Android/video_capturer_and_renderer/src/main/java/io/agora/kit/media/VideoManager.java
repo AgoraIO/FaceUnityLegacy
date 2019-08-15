@@ -3,14 +3,18 @@ package io.agora.kit.media;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.view.SurfaceView;
+import android.view.TextureView;
 
+import io.agora.kit.media.render.BaseRender;
+import io.agora.kit.media.render.RenderInGlSurfaceView;
+import io.agora.kit.media.render.RenderInView;
 import io.agora.rtc.RtcEngine;
 import io.agora.kit.media.capture.VideoCapture;
 import io.agora.kit.media.capture.VideoCaptureFactory;
 import io.agora.kit.media.capture.VideoCaptureFrame;
 import io.agora.kit.media.connector.SinkConnector;
 import io.agora.kit.media.constant.Constant;
-import io.agora.kit.media.render.VideoRender;
 import io.agora.kit.media.transmit.VideoSource;
 import io.agora.kit.media.transmit.VideoTransmitter;
 
@@ -22,7 +26,7 @@ public class VideoManager {
     private int mFacing = Constant.CAMERA_FACING_INVALID;
 
     private VideoCapture mVideoCapture;
-    private VideoRender mVideoRender;
+    private BaseRender mVideoRender;
     private VideoTransmitter mVideoTransmitter;
     private VideoSource mVideoSource;
 
@@ -98,18 +102,66 @@ public class VideoManager {
 
     }
 
-    public void setRenderView(GLSurfaceView view) {
-        if (view != null) {
-            mNeedsPreview = true;
-            if (mVideoRender == null) {
-                mVideoRender = new VideoRender(mContext);
-            }
-            mVideoRender.setRenderView(view);
-            mVideoCapture.getSrcConnector().connect(mVideoRender);
-            mVideoRender.getTexConnector().connect(mVideoCapture);
-        } else {
+    public void setRenderView(SurfaceView view) {
+        if (view == null) {
             mNeedsPreview = false;
             Log.w(TAG, "the render view provided is null");
+            return;
+        }
+        if (mVideoRender == null) {
+            mVideoRender = new RenderInView();
+        }
+        if (!mVideoRender.setRenderView(view)) {
+            mNeedsPreview = false;
+            Log.w(TAG, "set view error");
+            return;
+        }
+        mNeedsPreview = true;
+        mVideoCapture.getSrcConnector().connect(mVideoRender);
+        mVideoRender.getTexConnector().connect(mVideoCapture);
+    }
+
+    public void setRenderView(GLSurfaceView view) {
+        if (view == null) {
+            mNeedsPreview = false;
+            Log.w(TAG, "the render view provided is null");
+            return;
+        }
+        if (mVideoRender == null) {
+            mVideoRender = new RenderInGlSurfaceView();
+        }
+        if (!mVideoRender.setRenderView(view)) {
+            mNeedsPreview = false;
+            Log.w(TAG, "set view error");
+            return;
+        }
+        mNeedsPreview = true;
+        mVideoCapture.getSrcConnector().connect(mVideoRender);
+        mVideoRender.getTexConnector().connect(mVideoCapture);
+    }
+
+    public void setRenderView(TextureView view) {
+        if (view == null) {
+            mNeedsPreview = false;
+            Log.w(TAG, "the render view provided is null");
+            return;
+        }
+        if (mVideoRender == null) {
+            mVideoRender = new RenderInView();
+        }
+        if (!mVideoRender.setRenderView(view)) {
+            mNeedsPreview = false;
+            Log.w(TAG, "set view error");
+            return;
+        }
+        mNeedsPreview = true;
+        mVideoCapture.getSrcConnector().connect(mVideoRender);
+        mVideoRender.getTexConnector().connect(mVideoCapture);
+    }
+
+    public void runInRenderThread(Runnable event) {
+        if (mVideoRender != null) {
+            mVideoRender.runInRenderThread(event);
         }
     }
 

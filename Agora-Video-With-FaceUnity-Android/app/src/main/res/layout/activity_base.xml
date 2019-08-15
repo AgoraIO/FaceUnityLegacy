@@ -20,6 +20,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:visibility="gone"
             android:layout_marginTop="70dp"
             android:layout_marginRight="@dimen/activity_horizontal_margin" />
     </RelativeLayout>

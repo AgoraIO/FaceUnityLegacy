@@ -1,4 +1,4 @@
-package com.faceunity;
+package com.faceunity.wrapper;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

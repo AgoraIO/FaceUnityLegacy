@@ -24,6 +24,7 @@ import com.faceunity.gles.core.GlUtil;
 import com.faceunity.utils.BitmapUtil;
 import com.faceunity.utils.Constant;
 import com.faceunity.utils.MakeupParamHelper;
+import com.faceunity.wrapper.authpack;
 import com.faceunity.wrapper.faceunity;
 
 import org.json.JSONArray;

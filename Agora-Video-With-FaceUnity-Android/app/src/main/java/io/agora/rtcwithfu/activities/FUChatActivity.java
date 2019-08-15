@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -51,7 +53,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     private final static int DESC_SHOW_LENGTH = 1500;
 
     private FURenderer mFURenderer;
-    private GLSurfaceView mGLSurfaceViewLocal;
+    private SurfaceView mGLSurfaceViewLocal;
 
     private FrameLayout mLocalViewContainer;
     private AgoraTextureView mRemoteView;
@@ -142,26 +144,27 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
                 .inputTextureType(FURenderer.FU_ADM_FLAG_EXTERNAL_OES_TEXTURE)
                 .build();
 
-        mGLSurfaceViewLocal = new GLSurfaceView(this);
+        mGLSurfaceViewLocal = new SurfaceView(this);
+        mVideoManager = VideoManager.createInstance(this);
 
-        bindSurfaceViewEvent();
 
         mLocalViewContainer = findViewById(R.id.local_video_view_container);
         if (mLocalViewContainer.getChildCount() > 0) {
             mLocalViewContainer.removeAllViews();
         }
+
         mLocalViewContainer.addView(mGLSurfaceViewLocal,
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
 
-        mVideoManager = VideoManager.createInstance(this);
-
         mVideoManager.allocate(width, height, 30, io.agora.kit.media.constant.Constant.CAMERA_FACING_FRONT);
         mVideoManager.setRenderView(mGLSurfaceViewLocal);
+
+
         mVideoManager.connectEffectHandler(mEffectHandler);
         mVideoManager.attachToRTCEngine(getWorker().getRtcEngine());
         mVideoManager.startCapture();
-
+        bindSurfaceViewEvent();
         mRemoteView = findViewById(R.id.remote_video_view);
         RelativeLayout.LayoutParams remoteParams = (RelativeLayout.LayoutParams) mRemoteView.getLayoutParams();
         remoteParams.height = mSmallHeight;
@@ -299,6 +302,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     private void onRemoteUserLeft() {
         mRemoteUid = -1;
+        mRemoteView.setVisibility(View.GONE);
     }
 
     @Override
@@ -320,6 +324,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         mRemoteUid = uid;
         mRemoteView.setBufferType(MediaIO.BufferType.BYTE_ARRAY);
         mRemoteView.setPixelFormat(MediaIO.PixelFormat.I420);
+        mRemoteView.setVisibility(View.VISIBLE);
         getRtcEngine().setRemoteVideoRenderer(uid, mRemoteView);
     }
 
@@ -365,7 +370,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
             getRtcEngine().setClientRole(io.agora.rtc.Constants.CLIENT_ROLE_BROADCASTER);
 
-            mGLSurfaceViewLocal = new GLSurfaceView(this);
+            mGLSurfaceViewLocal = new SurfaceView(this);
 
             bindSurfaceViewEvent();
 
@@ -401,7 +406,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         mGLSurfaceViewLocal.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-                mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                mVideoManager.runInRenderThread(new Runnable() {
                     @Override
                     public void run() {
                         if (!mFUInit) {
@@ -442,7 +447,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         public void onPrepared(final MediaEncoder encoder) {
             if (encoder instanceof MediaVideoEncoder) {
                 final MediaVideoEncoder videoEncoder = (MediaVideoEncoder) encoder;
-                mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                mVideoManager.runInRenderThread(new Runnable() {
                     @Override
                     public void run() {
                         videoEncoder.setEglContext(EGL14.eglGetCurrentContext());
