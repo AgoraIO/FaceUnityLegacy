@@ -715,6 +715,14 @@
 				0F02C1F520561AB6006EF198 /* Controllers */,
 				0FDB7F7120DA3C8E005D9C58 /* Faceunity */,
 				0F29C6C320525C9E000F8159 /* FaceunityUtils */,
+				A7DB2641218BF54800F6C5AC /* Supporting Files */,
+			);
+			path = AgoraWithFaceunity;
+			sourceTree = "<group>";
+		};
+		0F29C6C320525C9E000F8159 /* FaceunityUtils */ = {
+			isa = PBXGroup;
+			children = (
 				1A339CD023041390001659D4 /* FUCamera.h */,
 				1A339CD323041391001659D4 /* FUCamera.m */,
 				1A339CCF23041390001659D4 /* FUImageHelper.h */,
@@ -729,14 +737,6 @@
 				1A339CCD2304138F001659D4 /* FUOpenGLView.m */,
 				1A339CCC2304138F001659D4 /* FURenderer+header.h */,
 				1A339CD123041390001659D4 /* FURenderer+header.m */,
-				A7DB2641218BF54800F6C5AC /* Supporting Files */,
-			);
-			path = AgoraWithFaceunity;
-			sourceTree = "<group>";
-		};
-		0F29C6C320525C9E000F8159 /* FaceunityUtils */ = {
-			isa = PBXGroup;
-			children = (
 				0FD4E20D2105CA53006E46A1 /* FUAPIDemoBar.framework */,
 				0FDB807B20DA45F7005D9C58 /* Views */,
 			);
