@@ -186,20 +186,20 @@
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
-		<integer>8</integer>
+		<integer>11666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666</integer>
 		<key>modules</key>
 		<array>
 			<integer>512</integer>
 		</array>
 		<key>items</key>
 		<array>
-			<string>fu_lm_koreaheart</string>
-			<string>fu_zh_baoquan</string>
-			<string>fu_zh_hezxiong</string>
-			<string>fu_ztt_live520</string>
-			<string>ssd_thread_thumb</string>
-			<string>ssd_thread_six</string>
-			<string>ssd_thread_cute</string>
+            <string>ctrl_rain</string>
+            <string>ctrl_snow</string>
+            <string>ctrl_flower</string>
+            <string>ssd_thread_korheart</string>
+            <string>ssd_thread_six</string>
+            <string>ssd_thread_cute</string>
+            <string>ssd_thread_thumb</string>
 		</array>
 	</dict>
 	<dict>
