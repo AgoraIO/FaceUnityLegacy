@@ -27,6 +27,12 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/2.1.2/
 由于在使用美颜的时候需要使用第三方采集，请特别参考[自定义设备API](https://docs.agora.io/cn/2.1.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#agoravideosourceprotocol)  或者 [自采集API](https://docs.agora.io/cn/2.1.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#agoravideosourceprotocol)
 
 ## 运行示例程序
+
+```
+git clone https://github.com/AgoraIO/FaceUnity.git
+cd FaceUnity/Agora-Video-With-FaceUnity-iOS/
+pod install 
+```
 首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 KeyCenter.m
 
 ```
@@ -38,7 +44,7 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/2.1.2/
 
 请联系 [Faceunity](http://www.faceunity.com) 获取证书文件替换本项目/AgoraWithFaceunity/Faceunity 文件夹中的 ”authpack.h“ 文件。
 
-最后使用 XCode 打开 AgoraWithFaceunity.xcodeproj，连接 iPhone／iPad 测试设备，设置有效的开发者签名后即可运行。
+最后使用 XCode 打开 AgoraWithFaceunity.xcworkspace，连接 iPhone／iPad 测试设备，设置有效的开发者签名后即可运行。
 
 ## 运行环境
 * XCode 8.0 +

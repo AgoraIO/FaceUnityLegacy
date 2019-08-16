@@ -65,7 +65,7 @@
 {
     if (!_captureSession) {
         _captureSession = [[AVCaptureSession alloc] init];
-        _captureSession.sessionPreset = AVCaptureSessionPreset640x480;
+        _captureSession.sessionPreset = AVCaptureSessionPresetHigh;
         
         AVCaptureDeviceInput *deviceInput = self.isFrontCamera ? self.frontCameraInput:self.backCameraInput;
         

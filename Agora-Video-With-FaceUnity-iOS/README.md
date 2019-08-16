@@ -28,6 +28,13 @@ Agora function implementation please refer to [Agora Document](https://docs.agor
 Due to the need to use third-party capture when using beauty function, please refer to [Customized Media Source API](https://docs.agora.io/en/2.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#agoravideosourceprotocol)  or [Configuring the External Data API](https://docs.agora.io/en/2.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#configuring-the-external-data-api)
 
 ## Running the App
+
+```
+git clone https://github.com/AgoraIO/FaceUnity.git
+cd FaceUnity/Agora-Video-With-FaceUnity-iOS/
+pod install 
+```
+
 First, create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID. Update "KeyCenter.m" with your App ID. 
 
 ```
