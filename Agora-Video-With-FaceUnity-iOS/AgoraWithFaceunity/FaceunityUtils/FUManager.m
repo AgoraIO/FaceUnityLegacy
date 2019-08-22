@@ -120,9 +120,11 @@ static FUManager *shareManager = NULL;
 }
 
 -(void)setupFilterData{
-    self.beautyFiltersDataSource = @[@"origin",@"bailiang1",@"fennen1",@"lengsediao1",@"nuansediao1",@"xiaoqingxin1"];
-    
-    self.filtersCHName = @{@"origin" : @"原图", @"bailiang1":@"白亮", @"fennen1":@"粉嫩", @"gexing1":@"个性", @"heibai1":@"黑白", @"lengsediao1":@"冷色调",@"nuansediao1":@"暖色调", @"xiaoqingxin1":@"小清新"};
+
+    self.filtersDataSource = @[@"origin", @"delta", @"electric", @"slowlived", @"tokyo", @"warm"];
+
+    self.beautyFiltersDataSource = @[@"ziran", @"danya", @"fennen", @"qingxin", @"hongrun"];
+    self.filtersCHName = @{@"origin" : @"原图", @"ziran":@"自然", @"danya":@"淡雅", @"fennen":@"粉嫩", @"qingxin":@"清新", @"hongrun":@"红润"};
 }
 
 - (void)loadItems
