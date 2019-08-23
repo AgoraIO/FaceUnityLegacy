@@ -29,7 +29,7 @@ import com.faceunity.fulivedemo.ui.seekbar.internal.drawable.MarkerDrawable;
  * @see #showIndicator(View, Rect)
  * @see #dismiss()
  * @see #dismissComplete()
- * @see PopupIndicator.Floater
+ * @see Floater
  */
 public class PopupIndicator {
 

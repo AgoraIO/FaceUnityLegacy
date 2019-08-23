@@ -8,10 +8,9 @@
         android:id="@+id/effect_type_name"
         android:layout_width="98dp"
         android:layout_height="52dp"
-        android:textAlignment="gravity"
         android:gravity="center"
+        android:textAlignment="gravity"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_26"
-        android:textStyle="bold"
-        android:text="道具贴纸"/>
+        android:textStyle="bold" />
 </RelativeLayout>

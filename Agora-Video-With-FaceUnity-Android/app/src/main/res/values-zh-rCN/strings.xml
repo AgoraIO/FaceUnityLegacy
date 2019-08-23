@@ -98,6 +98,9 @@
     <string name="btn_start_recording">开始录制</string>
     <string name="btn_stop_recording">停止录制</string>
 
+    <string name="btn_switch_client_role_audience">仅收流</string>
+    <string name="btn_switch_client_role_broadcaster">收发流</string>
+
     <string name="btn_switch_video_view">切换视图</string>
 
     <string name="btn_switch_mirror_video_preview">切换镜像</string>

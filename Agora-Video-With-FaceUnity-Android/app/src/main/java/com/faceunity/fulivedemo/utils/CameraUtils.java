@@ -17,18 +17,36 @@
 package com.faceunity.fulivedemo.utils;
 
 import android.app.Activity;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.Surface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Camera-related utility functions.
  */
-public class CameraUtils {
+public final class CameraUtils {
     private static final String TAG = CameraUtils.class.getSimpleName();
     private static final boolean DEBUG = false;
+
+    public static int getFrontCameraOrientation() {
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        int cameraId = 1;
+        int numCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numCameras; i++) {
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                cameraId = i;
+                break;
+            }
+        }
+        return getCameraOrientation(cameraId);
+    }
 
     public static int getCameraOrientation(int cameraId) {
         Camera.CameraInfo info = new Camera.CameraInfo();
@@ -54,13 +72,14 @@ public class CameraUtils {
             case Surface.ROTATION_270:
                 degrees = 270;
                 break;
+            default:
         }
 
         int result;
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degrees) % 360;
-            result = (360 - result) % 360; // compensate the mirror
-        } else { // back-facing
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
             result = (info.orientation - degrees + 360) % 360;
         }
         camera.setDisplayOrientation(result);
@@ -104,7 +123,6 @@ public class CameraUtils {
      * specify the dimensions of the encoded video).  If it fails to find a match it just
      * uses the default preview size for video.
      * <p>
-     * TODO: should do a best-fit match, e.g.
      * https://github.com/commonsguy/cwac-camera/blob/master/camera/src/com/commonsware/cwac/camera/CameraUtils.java
      */
     public static int[] choosePreviewSize(Camera.Parameters parms, int width, int height) {
@@ -133,4 +151,88 @@ public class CameraUtils {
         // else use whatever the default size is
         return new int[]{0, 0};
     }
+
+    public static void setExposureCompensation(Camera camera, float v) {
+        if (camera == null)
+            return;
+        Camera.Parameters parameters = camera.getParameters();
+        float min = parameters.getMinExposureCompensation();
+        float max = parameters.getMaxExposureCompensation();
+        parameters.setExposureCompensation((int) (v * (max - min) + min));
+        camera.setParameters(parameters);
+    }
+
+    public static void handleFocus(Camera camera, float x, float y, int width, int height, int cameraWidth, int cameraHeight) {
+        if (camera == null)
+            return;
+        try {
+            Rect focusRect = calculateTapArea(x / width * cameraWidth, y / height * cameraHeight, cameraWidth, cameraHeight);
+            camera.cancelAutoFocus();
+            Camera.Parameters params = camera.getParameters();
+            if (params.getMaxNumFocusAreas() > 0) {
+                List<Camera.Area> focusAreas = new ArrayList<>();
+                focusAreas.add(new Camera.Area(focusRect, 800));
+                params.setFocusAreas(focusAreas);
+            } else {
+                Log.e(TAG, "focus areas not supported");
+            }
+            final String currentFocusMode = params.getFocusMode();
+
+            List<String> supportedFocusModes = params.getSupportedFocusModes();
+            if (supportedFocusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO))
+                params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+            else if (supportedFocusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED))
+                params.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
+            else if (supportedFocusModes.contains(Camera.Parameters.FOCUS_MODE_MACRO))
+                params.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
+
+            camera.setParameters(params);
+            camera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                    camera.cancelAutoFocus();
+                    Camera.Parameters params = camera.getParameters();
+                    params.setFocusMode(currentFocusMode);
+                    camera.setParameters(params);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static float getExposureCompensation(Camera camera) {
+        if (camera == null)
+            return 0;
+        try {
+            float progress = camera.getParameters().getExposureCompensation();
+            float min = camera.getParameters().getMinExposureCompensation();
+            float max = camera.getParameters().getMaxExposureCompensation();
+            return (progress - min) / (max - min);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private static Rect calculateTapArea(float x, float y, int width, int height) {
+        int areaSize = 150;
+        int centerX = (int) (x / width * 2000 - 1000);
+        int centerY = (int) (y / height * 2000 - 1000);
+
+        int top = clamp(centerX - areaSize / 2);
+        int bottom = clamp(top + areaSize);
+        int left = clamp(centerY - areaSize / 2);
+        int right = clamp(left + areaSize);
+        RectF rectF = new RectF(left, top, right, bottom);
+        Matrix matrix = new Matrix();
+        matrix.setScale(1, -1);
+        matrix.mapRect(rectF);
+        return new Rect(Math.round(rectF.left), Math.round(rectF.top), Math.round(rectF.right), Math.round(rectF.bottom));
+    }
+
+    private static int clamp(int x) {
+        return x > 1000 ? 1000 : (x < -1000 ? -1000 : x);
+    }
+
 }

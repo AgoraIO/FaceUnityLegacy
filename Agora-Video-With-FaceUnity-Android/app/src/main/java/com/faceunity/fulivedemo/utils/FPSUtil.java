@@ -1,12 +1,10 @@
 package com.faceunity.fulivedemo.utils;
 
-import android.util.Log;
-
 /**
  * FPS工具类
  * Created by tujh on 2018/5/24.
  */
-public class FPSUtil {
+public final class FPSUtil {
     private static final String TAG = FPSUtil.class.getSimpleName();
     private static final int NANO_IN_ONE_MILLI_SECOND = 1000000;
 
@@ -18,11 +16,10 @@ public class FPSUtil {
      * @return
      */
     public static double fps() {
-        double fps = 0;
         long tmp = System.nanoTime();
-        fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND / (tmp - mLastFrameTimeStamp);
+        double fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND / (tmp - mLastFrameTimeStamp);
         mLastFrameTimeStamp = tmp;
-        Log.e(TAG, "FPS : " + fps);
+//        Log.e(TAG, "FPS : " + fps);
         return fps;
     }
 
@@ -41,8 +38,7 @@ public class FPSUtil {
             return 0;
         }
         mFPSFrameRate += time;
-        double fps = 0;
-        fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND * mFPSFrameRate / (System.nanoTime() - mStartTime);
+        double fps = 1000.0f * NANO_IN_ONE_MILLI_SECOND * mFPSFrameRate / (System.nanoTime() - mStartTime);
 //        Log.e(TAG, "FPS : " + fps);
         return fps;
     }

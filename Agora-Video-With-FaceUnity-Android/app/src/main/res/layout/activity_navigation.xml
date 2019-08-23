@@ -12,7 +12,9 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:lines="1" />
+        android:digits="@string/legal_characters_for_agora"
+        android:lines="1"
+        android:maxLines="1" />
 
     <Button
         android:layout_width="200dp"
