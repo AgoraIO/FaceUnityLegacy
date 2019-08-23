@@ -24,7 +24,7 @@ android {
 
     sourceSets {
         main.assets.srcDirs += ['src/main/assets', 'src/main/effects/bundle', 'src/main/makeup/bundle']
-        main.res.srcDirs += ['src/mian/res', 'src/main/effects/res', 'src/main/filters/res', 'src/main/makeup/res']
+        main.res.srcDirs += ['src/main/res', 'src/main/effects/res', 'src/main/filters/res', 'src/main/makeup/res']
     }
 }
 
