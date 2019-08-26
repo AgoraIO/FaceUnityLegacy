@@ -557,8 +557,8 @@
     [FUManager shareManager].faceShape = _demoBar.faceShape;
     [FUManager shareManager].enlargingLevel = _demoBar.enlargingLevel;
     [FUManager shareManager].thinningLevel = _demoBar.thinningLevel;
-    [FUManager shareManager].enlargingLevel = _demoBar.enlargingLevel;
-    [FUManager shareManager].thinningLevel = _demoBar.thinningLevel;
+    [FUManager shareManager].enlargingLevel = _demoBar.enlargingLevel_new;
+    [FUManager shareManager].thinningLevel = _demoBar.thinningLevel_new;
     [FUManager shareManager].jewLevel = _demoBar.chinLevel;
     [FUManager shareManager].foreheadLevel = _demoBar.foreheadLevel;
     [FUManager shareManager].noseLevel = _demoBar.noseLevel;
