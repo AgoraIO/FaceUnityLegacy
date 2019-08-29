@@ -17,8 +17,12 @@
 #import "KeyCenter.h"
 #import <FUAPIDemoBar/FUAPIDemoBar.h>
 #import <AgoraRtcEngineKit/AgoraRtcEngineKit.h>
+#import "FUMakeUpView.h"
+#import "FUMakeupSupModel.h"
+#import <MJExtension/MJExtension.h>
+#import "FUHairView.h"
 
-@interface RoomViewController ()<FUAPIDemoBarDelegate, FUCameraDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate> {
+@interface RoomViewController ()<FUAPIDemoBarDelegate, FUCameraDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate, FUMakeUpViewDelegate, FUHairViewDelegate> {
     BOOL faceBeautyMode;
 }
 
@@ -45,6 +49,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *cameraSwitchBtn;
 
 @property (weak, nonatomic) IBOutlet UITableView *modelTableView;
+@property (strong, nonatomic) FUMakeUpView *makeUpView;
+@property (strong, nonatomic) FUHairView *hairView;
 
 @property (nonatomic, strong) FULiveModel *model;
 
@@ -84,6 +90,9 @@
     self.itemsView.frame = frame;
     self.itemsView.delegate = self ;
     [self.view addSubview:self.itemsView];
+
+    [self setMakeUpView];
+    [self setHairView];
 
     [self loadAgoraKit];
 }
@@ -125,10 +134,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    if (self.model.type == FULiveModelTypeAnimoji) {
-        //        [[FUManager shareManager] setCalibrating];
-        [[FUManager shareManager] loadAnimojiFaxxBundle];
-    }
 
     if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
         [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"];
@@ -145,6 +150,30 @@
     }
 }
 
+- (void)setMakeUpView {
+    NSString *wholePath=[[NSBundle mainBundle] pathForResource:@"makeup_whole" ofType:@"json"];
+    NSData *wholeData=[[NSData alloc] initWithContentsOfFile:wholePath];
+    NSDictionary *wholeDic=[NSJSONSerialization JSONObjectWithData:wholeData options:NSJSONReadingMutableContainers error:nil];
+    NSArray *supArray = [FUMakeupSupModel mj_objectArrayWithKeyValuesArray:wholeDic[@"data"]];
+
+    self.makeUpView = [[FUMakeUpView alloc] init];
+     self.makeUpView.delegate = self;
+    [ self.makeUpView setWholeArray:supArray];
+     self.makeUpView.backgroundColor = [UIColor clearColor];
+     self.makeUpView.topView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+     self.makeUpView.bottomCollection.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+    [self.view addSubview: self.makeUpView];
+
+    _makeUpView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, 182);
+}
+
+- (void)setHairView {
+    self.hairView = [[FUHairView alloc] init];
+    self.hairView.delegate = self;
+    [self.view addSubview:self.hairView];
+    self.hairView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, 134);
+
+}
 - (void)updateToolBarWith:(FULiveModel *)model {
     faceBeautyMode = self.model.type == FULiveModelTypeBeautifyFace ;
 
@@ -157,6 +186,42 @@
 
         [self hiddenToolBarWith:NO];
 
+    }else if (self.model.type == FULiveModelTypeMakeUp) {
+
+
+        [self hiddenModelTableView:YES];
+        [self hiddenButtonsWith:YES];
+        [self hiddenItemsView:YES];
+
+        [[FUManager shareManager] loadFilter];
+        /* 初始状态 */
+        [[FUManager shareManager] loadMakeupType:@"new_face_tracker"];
+        [[FUManager shareManager] loadMakeupBundleWithName:@"face_makeup"];
+
+        NSString *wholePath=[[NSBundle mainBundle] pathForResource:@"makeup_whole" ofType:@"json"];
+        NSData *wholeData=[[NSData alloc] initWithContentsOfFile:wholePath];
+        NSDictionary *wholeDic=[NSJSONSerialization JSONObjectWithData:wholeData options:NSJSONReadingMutableContainers error:nil];
+        NSArray *supArray = [FUMakeupSupModel mj_objectArrayWithKeyValuesArray:wholeDic[@"data"]];
+        [_makeUpView setWholeArray:supArray];
+        _makeUpView.topView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+        _makeUpView.bottomCollection.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+        /* 美妆道具 */
+        [_makeUpView setSelSupItem:1];
+        [self hiddenMakeUpView:NO];
+        [self hiddenToolBarWith:YES];
+
+    }else if (self.model.type == FULiveModelTypeHair) {
+        [self hiddenModelTableView:YES];
+        [self hiddenButtonsWith:YES];
+        [self hiddenItemsView:YES];
+        [self hiddenHairView:NO];
+        /* 初始状态 */
+         [[FUManager shareManager] loadFilter];
+        [[FUManager shareManager] loadItem:@"hair_gradient"];
+        [[FUManager shareManager] setHairColor:0];
+        [[FUManager shareManager] setHairStrength:0.5];
+
+        self.hairView.itemsArray = self.model.items;
     } else {
         [self hiddenModelTableView:YES];
         [self hiddenButtonsWith:YES];
@@ -177,6 +242,10 @@
         }else if (self.model.type == FULiveModelTypeGestureRecognition) {
 
             //            [[FUManager shareManager] setLoc_xy_flip];
+        }
+        if (self.model.type == FULiveModelTypeAnimoji) {
+            [[FUManager shareManager] loadAnimojiFaxxBundle];
+            [[FUManager shareManager] set3DFlipH];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -409,6 +478,24 @@
     }];
 }
 
+- (void)hiddenMakeUpView:(BOOL)hidden {
+    self.makeUpView.alpha = hidden ? 1.0 : 0.0;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.performanceBtn.hidden = hidden;
+        self.makeUpView.transform =  hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.makeUpView.frame.size.height);
+        self.makeUpView.alpha = hidden ? 0.0 : 1.0;
+    }];
+}
+
+- (void)hiddenHairView:(BOOL)hidden {
+    self.hairView.alpha = hidden ? 1.0 : 0.0;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.performanceBtn.hidden = hidden;
+        self.hairView.transform =  hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.hairView.frame.size.height);
+        self.hairView.alpha = hidden ? 0.0 : 1.0;
+    }];
+}
+
 /**
  * Show the tool bar
  */
@@ -417,6 +504,8 @@
     [self hiddenToolBarWith:YES];
     [self hiddenItemsView:YES];
     [self hiddenModelTableView:NO];
+    [self hiddenMakeUpView:YES];
+    [self hiddenHairView:YES];
 }
 
 /**
@@ -432,6 +521,8 @@
     [self hiddenToolBarWith:YES];
     [self hiddenModelTableView:YES];
     [self hiddenItemsView:YES];
+    [self hiddenMakeUpView:YES];
+     [self hiddenHairView:YES];
 }
 
 - (IBAction)leaveBtnClick:(UIButton *)sender {
@@ -478,8 +569,12 @@
 
     [self.itemsView stopAnimation];
 
+    if (self.model.type == FULiveModelTypeHair) {
+
+    }
 
     if (self.model.type == FULiveModelTypeAnimoji) {
+         [[FUManager shareManager] loadFilterAnimoji:nil style:0];
         if ([item isEqualToString:@"noitem"]) {
 
             //            [[FUManager shareManager] removeCalibrating];
@@ -521,6 +616,75 @@
     });
 }
 
+#pragma mark - FUMakeUpView  Delegate
+/* 美妆样式图 */
+- (void)makeupViewDidSelectedNamaStr:(NSString *)namaStr imageName:(NSString *)imageName
+{
+     [[FUManager shareManager] setMakeupItemParamImage:[UIImage imageNamed:imageName]  param:namaStr];
+}
+/* 妆容颜色 */
+- (void)makeupViewDidSelectedNamaStr:(NSString *)namaStr valueArr:(NSArray *)valueArr
+{
+    [[FUManager shareManager] setMakeupItemStr:namaStr valueArr:valueArr];
+}
+// 滑动事件
+- (void)makeupViewDidChangeValue:(float)value namaValueStr:(NSString *)namaStr
+{
+    [[FUManager shareManager] setMakeupItemIntensity:value param:namaStr];
+}
+/* 当前样式的所有可选颜色 */
+- (void)makeupViewSelectiveColorArray:(NSArray <NSArray *> *)colors selColorIndex:(int)index
+{
+//    [_colourView setDataColors:colors];
+//    [_colourView setSelCell:index];
+}
+/* 切换的妆容t类型标题 */
+- (void)makeupViewDidSelTitle:(NSString *)nama
+{
+
+}
+
+/* 组合妆想要的滤镜 */
+- (void)makeupFilter:(NSString *)filterStr value:(float)filterValue
+{
+    if (!filterStr) {
+        return;
+    }
+    [FUManager shareManager].selectedFilter = filterStr ;
+    [FUManager shareManager].selectedFilterLevel = filterValue;
+
+}
+// 自定义选择
+- (void)makeupCustomShow:(BOOL)isShow
+{
+
+}
+
+- (void)makeupSelColorStata:(BOOL)stata
+{
+
+}
+
+#pragma mark - FUHairViewDelegate
+-(void)hairViewDidSelectedhairIndex:(NSInteger)index {
+    if (index == -1) {
+        [[FUManager shareManager] setHairColor:0];
+        [[FUManager shareManager] setHairStrength:0.0];
+    }else{
+        if(index < 5) {//渐变色
+            [[FUManager shareManager] setHairColor:(int)index];
+            [[FUManager shareManager] setHairStrength:self.hairView.slider.value];
+        }else{
+
+            [[FUManager shareManager] setHairColor:(int)index - 5];
+            [[FUManager shareManager] setHairStrength:self.hairView.slider.value];
+        }
+    }
+}
+
+-(void)hairViewChanageStrength:(float)strength{
+    [[FUManager shareManager] setHairStrength:strength];
+}
 
 #pragma mark - FUAPIDemoBar Delegate
 - (void)demoBarDidSelectedItem:(NSString *)item

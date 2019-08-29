@@ -97,26 +97,26 @@ static FUManager *shareManager = NULL;
 
 -(void)setupItmeHintData{
     self.hintDic = @{
-                @"hez_ztt_fu_mp":@"张嘴试试",
-                @"future_warrior":@"张嘴试试",
-                @"jet_mask":@"鼓腮帮子",
-                @"sdx2":@"皱眉触发",
-                @"luhantongkuan_ztt_fu":@"眨一眨眼",
-                @"qingqing_ztt_fu":@"嘟嘴试试",
-                @"xiaobianzi_zh_fu":@"微笑触发",
-                @"xiaoxueshen_ztt_fu":@"吹气触发",
-                @"hez_ztt_fu":@"张嘴试试",
-                @"ssd_thread_korheart":@"单手手指比心",
-                @"fu_zh_baoquan":@"双手抱拳",
-                @"fu_zh_hezxiong":@"双手合十",
-                @"fu_ztt_live520":@"双手比心",
-                @"ssd_thread_thumb":@"竖个拇指",
-                @"ssd_thread_six":@"比个六",
-                @"ssd_thread_cute":@"双拳靠近脸颊卖萌",
-                @"ctrl_rain":@"推出手掌",
-                @"ctrl_snow":@"推出手掌",
-                @"ctrl_flower":@"推出手掌",
-    };
+                     @"hez_ztt_fu_mp":@"张嘴试试",
+                     @"future_warrior":@"张嘴试试",
+                     @"jet_mask":@"鼓腮帮子",
+                     @"sdx2":@"皱眉触发",
+                     @"luhantongkuan_ztt_fu":@"眨一眨眼",
+                     @"qingqing_ztt_fu":@"嘟嘴试试",
+                     @"xiaobianzi_zh_fu":@"微笑触发",
+                     @"xiaoxueshen_ztt_fu":@"吹气触发",
+                     @"hez_ztt_fu":@"张嘴试试",
+                     @"ssd_thread_korheart":@"单手手指比心",
+                     @"fu_zh_baoquan":@"双手抱拳",
+                     @"fu_zh_hezxiong":@"双手合十",
+                     @"fu_ztt_live520":@"双手比心",
+                     @"ssd_thread_thumb":@"竖个拇指",
+                     @"ssd_thread_six":@"比个六",
+                     @"ssd_thread_cute":@"双拳靠近脸颊卖萌",
+                     @"ctrl_rain":@"推出手掌",
+                     @"ctrl_snow":@"推出手掌",
+                     @"ctrl_flower":@"推出手掌",
+                     };
 }
 
 -(void)setupFilterData{
@@ -1144,7 +1144,6 @@ static FUManager *shareManager = NULL;
     int module1 = fuGetModuleCode(1);
     
     if (!module) {
-        
         _dataSource = [NSMutableArray arrayWithCapacity:1];
         
         for (FULiveModel *model in modesArray) {
