@@ -2077,6 +2077,8 @@
 			baseConfigurationReference = 9910B47BC2A8C6AD39DA27CF /* Pods-AgoraWithFaceunity.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_LINK_OBJC_RUNTIME = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -2110,6 +2112,8 @@
 			baseConfigurationReference = C6310268C607B4F284A8C795 /* Pods-AgoraWithFaceunity.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_LINK_OBJC_RUNTIME = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;

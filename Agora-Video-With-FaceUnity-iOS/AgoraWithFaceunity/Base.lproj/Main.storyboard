@@ -77,15 +77,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                             </view>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ph-YS-jna">
-                                <rect key="frame" x="183" y="83" width="172" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Performance Preferred" image="Performance"/>
-                                <state key="selected" image="Performance_selected"/>
-                                <connections>
-                                    <action selector="performanceBtnClicked:" destination="1aU-Vc-5xA" eventType="touchUpInside" id="wIC-Fg-Cer"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0UA-9R-TWZ">
                                 <rect key="frame" x="315" y="23" width="50" height="50"/>
                                 <constraints>
@@ -259,7 +250,6 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="7ph-YS-jna" firstAttribute="top" secondItem="0UA-9R-TWZ" secondAttribute="bottom" constant="10" id="0N1-2z-NRx"/>
                             <constraint firstItem="9tj-W8-K6m" firstAttribute="leading" secondItem="BWY-up-Vwg" secondAttribute="trailing" constant="5" id="2Tp-UQ-LeE"/>
                             <constraint firstItem="p4n-j5-vXe" firstAttribute="leading" secondItem="fwH-jo-DBf" secondAttribute="leading" constant="20" id="2y9-4h-cRS"/>
                             <constraint firstItem="IiJ-UA-jwm" firstAttribute="top" secondItem="iFk-5k-65Z" secondAttribute="bottom" constant="5" id="3Ca-qo-kr6"/>
@@ -292,7 +282,6 @@
                             <constraint firstItem="IiJ-UA-jwm" firstAttribute="leading" secondItem="fwH-jo-DBf" secondAttribute="leadingMargin" constant="-20" id="eBr-8W-Y1H"/>
                             <constraint firstItem="je5-ck-yUU" firstAttribute="leading" secondItem="fwH-jo-DBf" secondAttribute="leadingMargin" id="eyp-Ws-1XY"/>
                             <constraint firstItem="vr4-DO-vtC" firstAttribute="centerY" secondItem="fwH-jo-DBf" secondAttribute="centerY" id="foC-yQ-hvE"/>
-                            <constraint firstItem="bpp-nw-ByW" firstAttribute="leading" secondItem="7ph-YS-jna" secondAttribute="trailing" constant="20" id="nhx-f3-NGv"/>
                             <constraint firstAttribute="trailing" secondItem="vye-t1-aLW" secondAttribute="trailing" id="qVy-Kd-QOd"/>
                             <constraint firstAttribute="trailing" secondItem="vr4-DO-vtC" secondAttribute="trailing" id="rXw-FG-QFB"/>
                             <constraint firstItem="9tj-W8-K6m" firstAttribute="centerY" secondItem="iFk-5k-65Z" secondAttribute="centerY" id="vHs-Ju-xgN"/>
@@ -315,7 +304,6 @@
                         <outlet property="modelTableView" destination="bpp-nw-ByW" id="zex-cB-zDm"/>
                         <outlet property="muteBtn" destination="9tj-W8-K6m" id="GpD-KI-ZdI"/>
                         <outlet property="noTrackLabel" destination="Ui6-Mh-Am7" id="xaR-eG-kvX"/>
-                        <outlet property="performanceBtn" destination="7ph-YS-jna" id="DUb-YJ-RdO"/>
                         <outlet property="tipLabel" destination="gyV-3Q-JOY" id="xNA-R1-Q50"/>
                         <outlet property="typeSegment" destination="p4n-j5-vXe" id="Reu-e7-7iX"/>
                     </connections>
@@ -393,8 +381,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Performance" width="24" height="24"/>
-        <image name="Performance_selected" width="24" height="24"/>
         <image name="bug" width="64" height="64"/>
         <image name="camera_btn_filter_normal" width="55" height="55"/>
         <image name="camera_btn_shotcut_normal" width="55" height="55"/>

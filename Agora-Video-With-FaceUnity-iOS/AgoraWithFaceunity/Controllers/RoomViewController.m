@@ -39,7 +39,6 @@
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *typeSegment;
 
-@property (weak, nonatomic) IBOutlet UIButton *performanceBtn;
 @property (weak, nonatomic) IBOutlet UIButton *barBtn;
 
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
@@ -133,8 +132,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-
     if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
         [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"];
     }
@@ -157,11 +154,11 @@
     NSArray *supArray = [FUMakeupSupModel mj_objectArrayWithKeyValuesArray:wholeDic[@"data"]];
 
     self.makeUpView = [[FUMakeUpView alloc] init];
-     self.makeUpView.delegate = self;
-    [ self.makeUpView setWholeArray:supArray];
-     self.makeUpView.backgroundColor = [UIColor clearColor];
-     self.makeUpView.topView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
-     self.makeUpView.bottomCollection.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+    self.makeUpView.delegate = self;
+    [self.makeUpView setWholeArray:supArray];
+    self.makeUpView.backgroundColor = [UIColor clearColor];
+    self.makeUpView.topView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
+    self.makeUpView.bottomCollection.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
     [self.view addSubview: self.makeUpView];
 
     _makeUpView.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width, 182);
@@ -188,7 +185,7 @@
 
     }else if (self.model.type == FULiveModelTypeMakeUp) {
 
-
+        [[FUManager shareManager] destoryItemAboutType:FUNamaHandleTypeFxaa];
         [self hiddenModelTableView:YES];
         [self hiddenButtonsWith:YES];
         [self hiddenItemsView:YES];
@@ -223,6 +220,9 @@
 
         self.hairView.itemsArray = self.model.items;
     } else {
+
+        [[FUManager shareManager] destoryItems];
+
         [self hiddenModelTableView:YES];
         [self hiddenButtonsWith:YES];
         [self hiddenToolBarWith:YES];
@@ -232,18 +232,20 @@
         NSString *selectItem = self.model.items.count > 0 ? self.model.items[0] : @"noitem" ;
 
         self.itemsView.selectedItem = selectItem ;
-
-        [[FUManager shareManager] loadItem: selectItem];
         [[FUManager shareManager] loadFilter];
+        [[FUManager shareManager] loadItem: selectItem];
+
 
         if (self.model.type == FULiveModelTypePortraitDrive) {
 
             [[FUManager shareManager] set3DFlipH];
         }else if (self.model.type == FULiveModelTypeGestureRecognition) {
 
-            //            [[FUManager shareManager] setLoc_xy_flip];
         }
+        
         if (self.model.type == FULiveModelTypeAnimoji) {
+
+            [[FUManager shareManager] destoryItemAboutType:FUNamaHandleTypeFxaa];
             [[FUManager shareManager] loadAnimojiFaxxBundle];
             [[FUManager shareManager] set3DFlipH];
         }
@@ -408,8 +410,6 @@
 
     _demoBar = demoBar;
 
-    //    _demoBar.performance = [FUManager shareManager].performance;
-
     [self demoBarSetBeautyDefultParams];
 }
 
@@ -453,7 +453,6 @@
 - (void)hiddenToolBarWith:(BOOL)hidden {
     self.demoBar.alpha = hidden ? 1.0 : 0.0;
     [UIView animateWithDuration:0.5 animations:^{
-        self.performanceBtn.hidden = hidden;
         self.demoBar.transform = hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.demoBar.frame.size.height);
         self.demoBar.alpha = hidden ? 0.0 : 1.0;
     }];
@@ -481,7 +480,6 @@
 - (void)hiddenMakeUpView:(BOOL)hidden {
     self.makeUpView.alpha = hidden ? 1.0 : 0.0;
     [UIView animateWithDuration:0.5 animations:^{
-        self.performanceBtn.hidden = hidden;
         self.makeUpView.transform =  hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.makeUpView.frame.size.height);
         self.makeUpView.alpha = hidden ? 0.0 : 1.0;
     }];
@@ -490,7 +488,6 @@
 - (void)hiddenHairView:(BOOL)hidden {
     self.hairView.alpha = hidden ? 1.0 : 0.0;
     [UIView animateWithDuration:0.5 animations:^{
-        self.performanceBtn.hidden = hidden;
         self.hairView.transform =  hidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -self.hairView.frame.size.height);
         self.hairView.alpha = hidden ? 0.0 : 1.0;
     }];
@@ -511,8 +508,7 @@
 /**
  * Hide the tool bar
  */
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches allObjects].firstObject;
     if (touch.view == self.demoBar || touch.view == self.modelTableView || touch.view == self.itemsView || !self.barBtn.hidden) {
         return;
@@ -522,7 +518,7 @@
     [self hiddenModelTableView:YES];
     [self hiddenItemsView:YES];
     [self hiddenMakeUpView:YES];
-     [self hiddenHairView:YES];
+    [self hiddenHairView:YES];
 }
 
 - (IBAction)leaveBtnClick:(UIButton *)sender {
@@ -574,14 +570,7 @@
     }
 
     if (self.model.type == FULiveModelTypeAnimoji) {
-         [[FUManager shareManager] loadFilterAnimoji:nil style:0];
-        if ([item isEqualToString:@"noitem"]) {
 
-            //            [[FUManager shareManager] removeCalibrating];
-        }else {
-
-            //            [[FUManager shareManager] setCalibrating];
-        }
     }
 
     if (self.model.type == FULiveModelTypeMusicFilter) {
@@ -730,21 +719,6 @@
 
     [FUManager shareManager].selectedFilter = _demoBar.selectedFilter ;
     [FUManager shareManager].selectedFilterLevel = _demoBar.selectedFilterLevel;
-}
-
-- (IBAction)performanceBtnClicked:(UIButton *)sender {
-    sender.selected = !sender.selected ;
-
-    self.demoBar.performance = sender.selected ;
-
-    //    [FUManager shareManager].performance = sender.selected;
-
-    [[FUManager shareManager] setBeautyDefaultParameters:FUBeautyModuleTypeSkin];
-
-    [FUManager shareManager].blurShape = sender.selected ? 1 : 0 ;
-    [FUManager shareManager].faceShape = sender.selected ? 3 : 4;;
-
-    [self demoBarSetBeautyDefultParams];
 }
 
 #pragma mark - FUCameraDelegate

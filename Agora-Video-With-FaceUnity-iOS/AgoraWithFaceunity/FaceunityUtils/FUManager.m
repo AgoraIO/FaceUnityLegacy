@@ -138,7 +138,7 @@ static FUManager *shareManager = NULL;
 
 
 /**销毁全部道具*/
-- (void)destoryItems{
+- (void)destoryItems {
     dispatch_async(asyncLoadQueue, ^{
          NSLog(@"strat Nama destroy all items ~");
         [FURenderer destroyAllItems];
@@ -155,8 +155,7 @@ static FUManager *shareManager = NULL;
 }
 
 
-- (void)destoryItemAboutType:(FUNamaHandleType)type;
-{
+- (void)destoryItemAboutType:(FUNamaHandleType)type {
     dispatch_async(asyncLoadQueue, ^{
         /**后销毁老道具句柄*/
         if (items[type] != 0) {
@@ -167,13 +166,12 @@ static FUManager *shareManager = NULL;
     });
 }
 
--(int)getHandleAboutType:(FUNamaHandleType)type{
+- (int)getHandleAboutType:(FUNamaHandleType)type {
     return items[type];
 }
 
 /* 抗锯齿 */
-- (void)loadAnimojiFaxxBundle
-{
+- (void)loadAnimojiFaxxBundle {
     dispatch_async(asyncLoadQueue, ^{
         /**先创建道具句柄*/
         NSString *path = [[NSBundle mainBundle] pathForResource:@"fxaa.bundle" ofType:nil];
@@ -190,8 +188,7 @@ static FUManager *shareManager = NULL;
     });
 }
 
-- (void)destoryAnimojiFaxxBundle
-{
+- (void)destoryAnimojiFaxxBundle {
     /**销毁老的道具句柄*/
     if (items[FUNamaHandleTypeFxaa] != 0) {
         NSLog(@"faceunity: destroy item");
@@ -201,8 +198,7 @@ static FUManager *shareManager = NULL;
 }
 
 /**加载手势识别道具，默认未不加载*/
-- (void)loadGesture
-{
+- (void)loadGesture {
     dispatch_async(asyncLoadQueue, ^{
         if (items[FUNamaHandleTypeGesture] != 0) {
             NSLog(@"faceunity: destroy gesture");
@@ -220,27 +216,24 @@ static FUManager *shareManager = NULL;
  isFlipTrack 翻转位置和旋转
  isFlipLight 翻转光照
  */
-- (void)set3DFlipH
-{
+- (void)set3DFlipH {
     [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"is3DFlipH" value:@(1)];
     [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"isFlipExpr" value:@(1)];
     [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"isFlipTrack" value:@(1)];
     [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"isFlipLight" value:@(1)];
 }
 
-- (void)setLoc_xy_flip
-{
+- (void)setLoc_xy_flip {
     [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"loc_x_flip" value:@(1)];
     [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"loc_y_flip" value:@(1)];
 }
 
-- (void)musicFilterSetMusicTime
-{
+- (void)musicFilterSetMusicTime  {
     [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"music_time" value:@([FUMusicPlayer sharePlayer].currentTime * 1000 + 50)];//需要加50ms的延迟
 }
 
 
--(void)setParamItemAboutType:(FUNamaHandleType)type name:(NSString *)paramName value:(float)value{
+- (void)setParamItemAboutType:(FUNamaHandleType)type name:(NSString *)paramName value:(float)value {
     if(items[type]){
        [FURenderer itemSetParam:items[type] withName:paramName value:@(value)];
     }
@@ -258,7 +251,7 @@ static FUManager *shareManager = NULL;
 }
 
 
--(void)setDefaultFilter{
+- (void)setDefaultFilter {
     self.selectedFilter = @"fennen1";
     self.selectedFilterLevel = 0.7;
 }
@@ -524,9 +517,7 @@ static FUManager *shareManager = NULL;
         [FURenderer itemSetParam:items[FUNamaHandleTypeItem] withName:@"rotMode" value:@(self.deviceOrientation)];
     }
     
-//    double *aaa = [self get4ElementsFormDeviceMotion];
-//    [FURenderer itemSetParamdv:items[FUNamaHandleTypeItem] withName:@"motion_rotation" value:aaa length:4];
-    
+
     
     /**设置美颜参数*/
     [self resetAllBeautyParams];
@@ -800,7 +791,6 @@ static FUManager *shareManager = NULL;
 }
 -(void)enterAvatar{
     dispatch_async(asyncLoadQueue, ^{
-//        [FURenderer itemSetParam:items[FUNamaHandleTypeAvtarHead] withName:@"setLazyBundle" value:@(1)];
         [FURenderer itemSetParam:items[FUNamaHandleTypeAvtarHead] withName:@"enter_facepup" value:@(1)];
     });
 }
@@ -808,7 +798,6 @@ static FUManager *shareManager = NULL;
 -(void)lazyAvatar{
     dispatch_async(asyncLoadQueue, ^{
         [FURenderer itemSetParam:items[FUNamaHandleTypeAvtarHead] withName:@"setLazyBundle" value:@(1)];
-      //  [FURenderer itemSetParam:items[FUNamaHandleTypeAvtarHead] withName:@"enter_facepup" value:@(1)];
     });
 }
 -(void)recomputeAvatar{
@@ -1159,7 +1148,6 @@ static FUManager *shareManager = NULL;
     _dataSource = [modesArray mutableCopy];
     
     for (FULiveModel *model in modesArray) {
-        
         if ([model.title isEqualToString:@"背景分割"] || [model.title isEqualToString:@"手势识别"]) {
             if ([self isLiteSDK]) {
                 continue ;
@@ -1167,22 +1155,16 @@ static FUManager *shareManager = NULL;
         }
         
         for (NSNumber *num in model.modules) {
-            
             BOOL isEable = module & [num intValue] ;
             /* 捏脸的后32位 暂时特殊判断 */
             if (model.type == FULiveModelTypeItems) {
                 isEable = module1 & [num intValue];
             }
-            
             if (isEable) {
-                
                 [_dataSource removeObject:model];
-                
                 model.enble = YES ;
-                
                 [_dataSource insertObject:model atIndex:insertIndex] ;
                 insertIndex ++ ;
-                
                 break ;
             }
         }
@@ -1191,7 +1173,6 @@ static FUManager *shareManager = NULL;
 
 
 -(NSArray<FULiveModel *> *)dataSource {
-    
     return _dataSource ;
 }
 
@@ -1234,10 +1215,7 @@ static FUManager *shareManager = NULL;
         } else if (acceleration.y >= 0.75) {
             orientation = 2;
         }
-    
 
-
-    
         if (self.deviceOrientation != orientation) {
             self.deviceOrientation = orientation ;
             return YES;
