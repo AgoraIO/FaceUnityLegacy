@@ -1047,7 +1047,8 @@ public class FURenderer implements OnFUControlListener {
             isNeedUpdateFaceBeauty = false;
         }
 
-        if (mItemsArray[ITEM_ARRAYS_EFFECT_INDEX] > 0 && mDefaultEffect.effectType() == Effect.EFFECT_TYPE_GESTURE) {
+        if (mItemsArray[ITEM_ARRAYS_EFFECT_INDEX] > 0 && mDefaultEffect != null &&
+                mDefaultEffect.effectType() == Effect.EFFECT_TYPE_GESTURE) {
             faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_EFFECT_INDEX], "rotMode", mRotMode);
         }
         //queueEvent的Runnable在此处被调用
