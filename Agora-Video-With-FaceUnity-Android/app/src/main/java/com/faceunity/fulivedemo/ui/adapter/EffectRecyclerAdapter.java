@@ -39,6 +39,11 @@ public class EffectRecyclerAdapter extends RecyclerView.Adapter<EffectRecyclerAd
         mEffectType = effectType;
         mEffects = EffectEnum.getEffectsByEffectType(mEffectType);
         mOnFUControlListener = onFUControlListener;
+
+        // Default effect item takes effect
+        if (mOnFUControlListener != null && (mEffects.size() - 1) >= mPositionSelect) {
+            mOnFUControlListener.onEffectSelected(mEffects.get(mPositionSelect));
+        }
     }
 
     @Override
