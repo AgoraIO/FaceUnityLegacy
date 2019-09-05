@@ -440,9 +440,9 @@
     dispatch_async(self.mCamera.videoCaptureQueue, ^{
         [[FUManager shareManager] destoryItems];
     });
-    [self.agoraKit setVideoSource:nil];
     [self.agoraKit leaveChannel:nil];
     [self.agoraKit stopPreview];
+    [self.agoraKit setVideoSource:nil];
     [self.localRenderView removeFromSuperview];
     if (self.count > 0) {
         [self.remoteRenderView removeFromSuperview];
@@ -663,21 +663,18 @@
 }
 
 - (void)willResignActive {
-    [_mCamera stopCapture];
     if (self.model.type == FULiveModelTypeMusicFilter) {
         [[FUMusicPlayer sharePlayer] pause] ;
     }
 }
 
 - (void)willEnterForeground {
-    [_mCamera startCapture];
     if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
         [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"] ;
     }
 }
 
 - (void)didBecomeActive {
-    [_mCamera startCapture];
     if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
         [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"] ;
     }
