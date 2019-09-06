@@ -71,7 +71,7 @@ public class VideoManager {
 
         if (mVideoCapture != null) {
             mFacing = Constant.CAMERA_FACING_INVALID;
-            mVideoCapture.deallocate();
+            mVideoCapture.deallocate(true);
             mVideoCapture = null;
         }
 
@@ -120,20 +120,19 @@ public class VideoManager {
                 break;
             case Constant.CAMERA_FACING_BACK:
                 stopCapture();
+                mVideoCapture.deallocate(false);
                 allocate(mWidth, mHeight, mFrameRate, Constant.CAMERA_FACING_FRONT);
-                mFacing = Constant.CAMERA_FACING_FRONT;
                 startCapture();
                 break;
             case Constant.CAMERA_FACING_FRONT:
                 stopCapture();
+                mVideoCapture.deallocate(false);
                 allocate(mWidth, mHeight, mFrameRate, Constant.CAMERA_FACING_BACK);
-                mFacing = Constant.CAMERA_FACING_BACK;
                 startCapture();
                 break;
             default:
                 Log.e(TAG, "no facing matched");
         }
-
     }
 
     public void connectEffectHandler(SinkConnector<VideoCaptureFrame> connector) {

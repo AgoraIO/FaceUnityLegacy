@@ -86,9 +86,11 @@ public abstract class VideoCapture implements SinkConnector<Integer> {
     // Blocks until it is guaranteed that no more frames are sent.
     public abstract void stopCaptureAndBlockUntilStopped();
 
-    public void deallocate() {
-        mSrcConnector.disconnect();
-        mTransmitConnector.disconnect();
+    public void deallocate(boolean disconnect) {
+        if (disconnect) {
+            mSrcConnector.disconnect();
+            mTransmitConnector.disconnect();
+        }
     }
 
     public void setMirrorMode(boolean mirror) {

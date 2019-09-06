@@ -273,8 +273,8 @@ public class VideoCaptureCamera
     }
 
     @Override
-    public void deallocate() {
-        Log.d(TAG, "deallocate");
+    public void deallocate(boolean disconnect) {
+        Log.d(TAG, "deallocate " + disconnect);
 
         if (mCamera == null) return;
 
@@ -289,11 +289,12 @@ public class VideoCaptureCamera
             int[] textures = new int[]{mTexId};
             GLES20.glDeleteTextures(1, textures, 0);
         }
+
         mCaptureFormat = null;
         mCamera.release();
         mCamera = null;
 
-        super.deallocate();
+        super.deallocate(disconnect);
     }
 
     private void setPreviewCallback(android.hardware.Camera.PreviewCallback cb) {

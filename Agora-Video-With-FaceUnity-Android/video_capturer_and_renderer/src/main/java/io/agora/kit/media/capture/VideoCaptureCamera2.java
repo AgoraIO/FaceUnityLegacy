@@ -506,16 +506,17 @@ public class VideoCaptureCamera2 extends VideoCapture {
     }
 
     @Override
-    public void deallocate() {
-        Log.d(TAG, "deallocate");
+    public void deallocate(boolean disconnect) {
+        Log.d(TAG, "deallocate " + disconnect);
 
         stopCaptureAndBlockUntilStopped();
+
         if (mTexId != -1) {
             int[] textures = new int[]{mTexId};
             GLES20.glDeleteTextures(1, textures, 0);
         }
 
-        super.deallocate();
+        super.deallocate(disconnect);
     }
 
     private byte[] YUV_420_888toNV21(Image image) {
