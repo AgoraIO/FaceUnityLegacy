@@ -93,6 +93,10 @@ public abstract class VideoCapture implements SinkConnector<Integer> {
         }
     }
 
+    public void deallocate() {
+        deallocate(true);
+    }
+
     public void setMirrorMode(boolean mirror) {
         mMirror = mirror;
     }

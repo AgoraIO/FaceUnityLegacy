@@ -71,7 +71,7 @@ public class VideoManager {
 
         if (mVideoCapture != null) {
             mFacing = Constant.CAMERA_FACING_INVALID;
-            mVideoCapture.deallocate(true);
+            mVideoCapture.deallocate();
             mVideoCapture = null;
         }
 
