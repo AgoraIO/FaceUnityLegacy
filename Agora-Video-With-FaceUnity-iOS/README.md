@@ -42,7 +42,6 @@ First, create a developer account at [Agora.io](https://dashboard.agora.io/signi
      return @"Your App ID";
 }
 ```
-Next, download the **Agora Video SDK** from [Agora.io SDK](https://www.agora.io/en/download/). Unzip the downloaded SDK package and copy the "libs/AgoraRtcEngineKit.framework" to the "AgoraWithFaceunity" folder.
 
 Contact [Faceunity](http://www.faceunity.com)  to get the certificate file replace the "authpack.h" file in the "/AgoraWithFaceunity/Faceunity" folder of this project.
 

@@ -33,6 +33,7 @@ git clone https://github.com/AgoraIO/FaceUnity.git
 cd FaceUnity/Agora-Video-With-FaceUnity-iOS/
 pod install 
 ```
+
 首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 KeyCenter.m
 
 ```
@@ -40,7 +41,6 @@ pod install
      return @"Your App ID";
 }
 ```
-然后在 [Agora.io SDK](https://www.agora.io/cn/download/) 下载 视频通话 + 直播 SDK，解压后将其中的 libs/AgoraRtcEngineKit.framework 复制到本项目的 “AgoraWithFaceunity” 文件夹下。
 
 请联系 [Faceunity](http://www.faceunity.com) 获取证书文件替换本项目/AgoraWithFaceunity/Faceunity 文件夹中的 ”authpack.h“ 文件。
 

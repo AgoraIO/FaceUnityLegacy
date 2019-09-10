@@ -7,4 +7,5 @@ target 'AgoraWithFaceunity' do
    pod 'Nama', '~> 6.2.0'
   # Pods for AgoraWithFaceunity
   pod 'MJExtension', '~>3.0.15.1'
+  pod 'AgoraRtcEngine_iOS'
 end
