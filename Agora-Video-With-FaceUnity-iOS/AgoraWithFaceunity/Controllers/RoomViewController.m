@@ -18,11 +18,15 @@
 #import <FUAPIDemoBar/FUAPIDemoBar.h>
 #import <AgoraRtcEngineKit/AgoraRtcEngineKit.h>
 
-@interface RoomViewController ()<FUAPIDemoBarDelegate, FUCameraDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate> {
+#import "VideoCapturer.h"
+
+@interface RoomViewController ()<FUAPIDemoBarDelegate, FUCameraDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, CameraVideoCapturerDelegate, UITableViewDataSource, UITableViewDelegate> {
     BOOL faceBeautyMode;
 }
 
 @property (nonatomic, strong) FUCamera *mCamera;   //Faceunity Camera
+
+@property (nonatomic, strong) VideoCapturer *myCapturer;
 
 @property (weak, nonatomic) IBOutlet UIView *containView;
 
@@ -47,6 +51,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *modelTableView;
 
 @property (nonatomic, strong) FULiveModel *model;
+
+@property (nonatomic, weak) FUOpenGLView *openView;
 
 #pragma Agora
 @property (nonatomic, strong) AgoraRtcEngineKit *agoraKit;    //Agora Engine
@@ -216,7 +222,7 @@
 - (void)loadAgoraKit {
     self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:[KeyCenter AppId] delegate:self];
     [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
-    [self.agoraKit setVideoEncoderConfiguration:[[AgoraVideoEncoderConfiguration alloc]initWithSize:AgoraVideoDimension640x360
+    [self.agoraKit setVideoEncoderConfiguration:[[AgoraVideoEncoderConfiguration alloc]initWithSize:AgoraVideoDimension1280x720
                                                                                           frameRate:AgoraVideoFrameRateFps15
                                                                                             bitrate:AgoraVideoBitrateStandard
                                                                                     orientationMode:AgoraVideoOutputOrientationModeAdaptative]];
@@ -255,11 +261,13 @@
 }
 
 - (void)shouldStart {
-    [self.mCamera startCapture];
+//    [self.mCamera startCapture];
+    [self.myCapturer startCapture];
 }
 
 - (void)shouldStop {
-    [self.mCamera stopCapture];
+//    [self.mCamera stopCapture];
+    [self.myCapturer stopCapture];
 }
 
 - (void)shouldDispose {
@@ -329,6 +337,14 @@
         _mCamera.delegate = self;
     }
     return _mCamera;
+}
+
+- (VideoCapturer *)myCapturer {
+    if (!_myCapturer) {
+        CameraVideoCapturer *camera = [[CameraVideoCapturer alloc] initWithDelegate:self];
+        _myCapturer = [[VideoCapturer alloc] initWithCapturer:camera width:720 height:1080 fps:15];
+    }
+    return _myCapturer;
 }
 
 /**
@@ -436,7 +452,8 @@
 
 - (IBAction)leaveBtnClick:(UIButton *)sender {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.mCamera stopCapture];
+//    [self.mCamera stopCapture];
+    [self.myCapturer stopCapture];
     dispatch_async(self.mCamera.videoCaptureQueue, ^{
         [[FUManager shareManager] destoryItems];
     });
@@ -455,7 +472,8 @@
 }
 
 - (IBAction)switchCameraBtnClick:(UIButton *)sender {
-    [_mCamera changeCameraInputDeviceisFront:!_mCamera.isFrontCamera];
+    [self.myCapturer switchCamera];
+//    [_mCamera changeCameraInputDeviceisFront:!_mCamera.isFrontCamera];
     
     //Change camera need to call below function
     [self.agoraKit switchCamera];
@@ -632,6 +650,11 @@
     // push video frame to agora
     [self.consumer consumePixelBuffer:pixelBuffer withTimestamp:CMSampleBufferGetPresentationTimeStamp(sampleBuffer) rotation:AgoraVideoRotationNone];
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+}
+
+- (void)capturer:(CameraVideoCapturer *)capturer didCaptureVideoFrame:(CMSampleBufferRef)frame {
+    CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(frame) ;
+    [self.consumer consumePixelBuffer:pixelBuffer withTimestamp:CMSampleBufferGetPresentationTimeStamp(frame) rotation:AgoraVideoRotationNone];
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {

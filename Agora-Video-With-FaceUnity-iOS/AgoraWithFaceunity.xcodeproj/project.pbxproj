@@ -31,6 +31,11 @@
 		0F7FAAFE20E09E1200EF49FD /* FUItemsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAAFD20E09E1200EF49FD /* FUItemsViewCell.m */; };
 		0F7FAB0120E0A4A000EF49FD /* FUCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAB0020E0A49F00EF49FD /* FUCamera.m */; };
 		0F7FAB0420E0D61E00EF49FD /* FUManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAB0320E0D61D00EF49FD /* FUManager.m */; };
+		0FCD2D272326F7C700F56797 /* CameraVideoCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FCD2D1E2326F7C700F56797 /* CameraVideoCapturer.m */; };
+		0FCD2D282326F7C700F56797 /* LogCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FCD2D212326F7C700F56797 /* LogCenter.m */; };
+		0FCD2D292326F7C700F56797 /* AgoraDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FCD2D222326F7C700F56797 /* AgoraDispatcher.m */; };
+		0FCD2D2A2326F7C700F56797 /* AVCaptureSession+DevicePosition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FCD2D232326F7C700F56797 /* AVCaptureSession+DevicePosition.mm */; };
+		0FCD2D2B2326F7C700F56797 /* VideoCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FCD2D262326F7C700F56797 /* VideoCapturer.m */; };
 		0FD4E2052105C747006E46A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0FD4E2072105C747006E46A1 /* Localizable.strings */; };
 		0FDB800620DA3C8E005D9C58 /* touhua_ztt_fu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8020DA3C8E005D9C58 /* touhua_ztt_fu.bundle */; };
 		0FDB800720DA3C8E005D9C58 /* yazui.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8120DA3C8E005D9C58 /* yazui.bundle */; };
@@ -209,6 +214,17 @@
 		0F7FAB0020E0A49F00EF49FD /* FUCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUCamera.m; sourceTree = "<group>"; };
 		0F7FAB0220E0D61D00EF49FD /* FUManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FUManager.h; sourceTree = "<group>"; };
 		0F7FAB0320E0D61D00EF49FD /* FUManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUManager.m; sourceTree = "<group>"; };
+		0FCD2D1C2326F7C700F56797 /* CameraVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraVideoCapturer.h; sourceTree = "<group>"; };
+		0FCD2D1D2326F7C700F56797 /* VideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCapturer.h; sourceTree = "<group>"; };
+		0FCD2D1E2326F7C700F56797 /* CameraVideoCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraVideoCapturer.m; sourceTree = "<group>"; };
+		0FCD2D202326F7C700F56797 /* AgoraDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraDispatcher.h; sourceTree = "<group>"; };
+		0FCD2D212326F7C700F56797 /* LogCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogCenter.m; sourceTree = "<group>"; };
+		0FCD2D222326F7C700F56797 /* AgoraDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraDispatcher.m; sourceTree = "<group>"; };
+		0FCD2D232326F7C700F56797 /* AVCaptureSession+DevicePosition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureSession+DevicePosition.mm"; sourceTree = "<group>"; };
+		0FCD2D242326F7C700F56797 /* LogCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogCenter.h; sourceTree = "<group>"; };
+		0FCD2D252326F7C700F56797 /* AVCaptureSession+DevicePosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureSession+DevicePosition.h"; sourceTree = "<group>"; };
+		0FCD2D262326F7C700F56797 /* VideoCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCapturer.m; sourceTree = "<group>"; };
+		0FCD2D2C2326F87300F56797 /* authpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authpack.h; path = Faceunity/authpack.h; sourceTree = "<group>"; };
 		0FD4E2022105C4D5006E46A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		0FD4E2062105C747006E46A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		0FD4E2082105C754006E46A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -329,7 +345,6 @@
 		0FDB7FF920DA3C8E005D9C58 /* jingongmen_zh_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = jingongmen_zh_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFA20DA3C8E005D9C58 /* sea_lm_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = sea_lm_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFB20DA3C8E005D9C58 /* xiandai_ztt_fu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiandai_ztt_fu.png; sourceTree = "<group>"; };
-		0FDB807A20DA3CB7005D9C58 /* authpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = authpack.h; sourceTree = "<group>"; };
 		0FDB807C20DA4633005D9C58 /* FULiveCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FULiveCell.h; sourceTree = "<group>"; };
 		0FDB807D20DA4633005D9C58 /* FULiveCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FULiveCell.m; sourceTree = "<group>"; };
 		0FDB807F20DA466C005D9C58 /* FULiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FULiveModel.m; sourceTree = "<group>"; };
@@ -407,10 +422,11 @@
 		0F29C65920525BC6000F8159 /* AgoraWithFaceunity */ = {
 			isa = PBXGroup;
 			children = (
-				0FDB807A20DA3CB7005D9C58 /* authpack.h */,
+				0FCD2D2C2326F87300F56797 /* authpack.h */,
 				0F280F95205666D100CF70CC /* KeyCenter.h */,
 				0F280F94205666D100CF70CC /* KeyCenter.m */,
 				0F29C66020525BC6000F8159 /* Main.storyboard */,
+				0FCD2D1B2326F7C700F56797 /* VideoCapturer */,
 				0F02C1F520561AB6006EF198 /* Controllers */,
 				0FDB7F7120DA3C8E005D9C58 /* Faceunity */,
 				0F29C6C320525C9E000F8159 /* FaceunityUtils */,
@@ -456,6 +472,31 @@
 				0F29C6D9205271C1000F8159 /* Accelerate.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0FCD2D1B2326F7C700F56797 /* VideoCapturer */ = {
+			isa = PBXGroup;
+			children = (
+				0FCD2D1D2326F7C700F56797 /* VideoCapturer.h */,
+				0FCD2D262326F7C700F56797 /* VideoCapturer.m */,
+				0FCD2D1C2326F7C700F56797 /* CameraVideoCapturer.h */,
+				0FCD2D1E2326F7C700F56797 /* CameraVideoCapturer.m */,
+				0FCD2D1F2326F7C700F56797 /* Helper */,
+			);
+			path = VideoCapturer;
+			sourceTree = "<group>";
+		};
+		0FCD2D1F2326F7C700F56797 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				0FCD2D242326F7C700F56797 /* LogCenter.h */,
+				0FCD2D212326F7C700F56797 /* LogCenter.m */,
+				0FCD2D202326F7C700F56797 /* AgoraDispatcher.h */,
+				0FCD2D222326F7C700F56797 /* AgoraDispatcher.m */,
+				0FCD2D252326F7C700F56797 /* AVCaptureSession+DevicePosition.h */,
+				0FCD2D232326F7C700F56797 /* AVCaptureSession+DevicePosition.mm */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		0FDB7F7120DA3C8E005D9C58 /* Faceunity */ = {
@@ -771,6 +812,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 0F29C64E20525BC6000F8159;
 			productRefGroup = 0F29C65820525BC6000F8159 /* Products */;
@@ -922,19 +964,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FCD2D272326F7C700F56797 /* CameraVideoCapturer.m in Sources */,
 				0F7FAAFB20E09DC400EF49FD /* FUItemsView.m in Sources */,
 				0F7FAB0420E0D61E00EF49FD /* FUManager.m in Sources */,
 				0F29C66A20525BC6000F8159 /* main.m in Sources */,
 				0FDB807E20DA4633005D9C58 /* FULiveCell.m in Sources */,
+				0FCD2D282326F7C700F56797 /* LogCenter.m in Sources */,
 				0FDB808120DA466C005D9C58 /* FULiveModel.m in Sources */,
 				0F7FAB0120E0A4A000EF49FD /* FUCamera.m in Sources */,
 				0F7FAAFE20E09E1200EF49FD /* FUItemsViewCell.m in Sources */,
+				0FCD2D2B2326F7C700F56797 /* VideoCapturer.m in Sources */,
 				0FDB808920DA4966005D9C58 /* FUOpenGLView.m in Sources */,
 				0FDB808D20DA4A71005D9C58 /* FUMusicPlayer.m in Sources */,
 				0F02C1F420550948006EF198 /* RoomViewController.m in Sources */,
 				0F280F96205666D100CF70CC /* KeyCenter.m in Sources */,
+				0FCD2D292326F7C700F56797 /* AgoraDispatcher.m in Sources */,
 				0F02C1F120550936006EF198 /* MainViewController.m in Sources */,
 				0F29C65C20525BC6000F8159 /* AppDelegate.m in Sources */,
+				0FCD2D2A2326F7C700F56797 /* AVCaptureSession+DevicePosition.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1088,7 +1135,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1118,7 +1165,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
