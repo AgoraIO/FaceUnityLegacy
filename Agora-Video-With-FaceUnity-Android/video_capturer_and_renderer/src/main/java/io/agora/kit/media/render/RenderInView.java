@@ -461,6 +461,7 @@ public class RenderInView extends BaseRender implements SurfaceHolder.Callback, 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         RenderHandler rh = mRenderThread.getHandler();
+        rh.removeCallbacksAndMessages(null);
         rh.sendSurfaceAvailable(surfaceHolder.getSurface());
     }
 
@@ -480,6 +481,7 @@ public class RenderInView extends BaseRender implements SurfaceHolder.Callback, 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
         RenderHandler rh = mRenderThread.getHandler();
+        rh.removeCallbacksAndMessages(null);
         rh.sendTextureViewAvailable(surfaceTexture, width, height);
     }
 
