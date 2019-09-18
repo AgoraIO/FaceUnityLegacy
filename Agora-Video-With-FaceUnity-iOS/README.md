@@ -33,6 +33,7 @@ Due to the need to use third-party capture when using beauty function, please re
 git clone https://github.com/AgoraIO/FaceUnity.git
 cd FaceUnity/Agora-Video-With-FaceUnity-iOS/
 pod install 
+Open AgoraWithFaceunity.xcworkspace in Xcode, connect iOS device, build and run.
 ```
 
 First, create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID. Update "KeyCenter.m" with your App ID. 
