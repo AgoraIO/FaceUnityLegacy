@@ -1,8 +1,8 @@
 //
-//  VideoCapturer.h
-//  RtmpStreamingKit
+//  CaptureManager.h
+//  TestProject
 //
-//  Created by Zhang Ji on 2019/9/8.
+//  Created by Zhang Ji on 2019/9/19.
 //  Copyright © 2019 Zhang Ji. All rights reserved.
 //
 
@@ -11,12 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VideoCapturer : NSObject
+@interface CaptureManager : NSObject
 
 - (instancetype)initWithCapturer:(CameraVideoCapturer *)capturer
                            width:(int)width
                           height:(int)height
-                             fps:(NSInteger)fps;
+                             fps:(int)fps;
 
 - (void)startCapture;
 - (void)stopCapture;

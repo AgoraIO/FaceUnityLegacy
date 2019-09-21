@@ -1,28 +1,28 @@
 //
-//  VideoCapturer.m
-//  RtmpStreamingKit
+//  CaptureManager.m
+//  TestProject
 //
-//  Created by Zhang Ji on 2019/9/8.
+//  Created by Zhang Ji on 2019/9/19.
 //  Copyright © 2019 Zhang Ji. All rights reserved.
 //
 
-#import "VideoCapturer.h"
-#import "Helper/LogCenter.h"
+#import "CaptureManager.h"
+#import "../Helper/LogCenter.h"
 
 const Float64 kFramerateLimit = 30.0;
 
-@implementation VideoCapturer {
+@implementation CaptureManager {
     CameraVideoCapturer *_capturer;
     int _width;
     int _height;
-    NSInteger _fps;
+    int _fps;
     BOOL _usingFrontCamera;
 }
 
 - (instancetype)initWithCapturer:(CameraVideoCapturer *)capturer
                            width:(int)width
                           height:(int)height
-                             fps:(NSInteger)fps {
+                             fps:(int)fps {
     if (self = [super init]) {
         _capturer = capturer;
         _width = width;
@@ -40,13 +40,11 @@ const Float64 kFramerateLimit = 30.0;
     AVCaptureDeviceFormat *format = [self selectFormatForDevice:device];
     
     if (format == nil) {
-        AgoraLogError(@"No valid formats for device %@", device);
-        NSAssert(NO, @"");
-        
+        NSAssert(NO, @"No valid formats for device %@", device);
         return;
     }
     
-    NSInteger fps = [self selectFpsForFormat:format];
+    int fps = [self selectFpsForFormat:format];
     
     [_capturer startCaptureWithDevice:device format:format fps:fps];
 }
@@ -95,7 +93,7 @@ const Float64 kFramerateLimit = 30.0;
     return selectedFormat;
 }
 
-- (NSInteger)selectFpsForFormat:(AVCaptureDeviceFormat *)format {
+- (int)selectFpsForFormat:(AVCaptureDeviceFormat *)format {
     Float64 maxSupportedFramerate = 0;
     for (AVFrameRateRange *fpsRange in format.videoSupportedFrameRateRanges) {
         maxSupportedFramerate = fmax(maxSupportedFramerate, fpsRange.maxFrameRate);

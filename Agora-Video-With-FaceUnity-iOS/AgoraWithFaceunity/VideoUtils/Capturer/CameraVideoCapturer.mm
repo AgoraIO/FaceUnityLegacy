@@ -9,16 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "CameraVideoCapturer.h"
 #import "AgoraDispatcher.h"
-
 #import "AVCaptureSession+DevicePosition.h"
-#import "Helper/LogCenter.h"
-
-typedef NS_ENUM(NSInteger, AgoraVideoRotation) {
-    AgoraVideoRotation_0 = 0,
-    AgoraVideoRotation_90 = 90,
-    AgoraVideoRotation_180 = 180,
-    AgoraVideoRotation_270 = 270,
-};
+#import "../VideoFrame/CustomCVPixelBuffer.h"
+#import "../Helper/LogCenter.h"
 
 @interface CameraVideoCapturer ()<AVCaptureVideoDataOutputSampleBufferDelegate>
 @property(nonatomic, readonly) dispatch_queue_t frameQueue;
@@ -34,8 +27,7 @@ typedef NS_ENUM(NSInteger, AgoraVideoRotation) {
     AVCaptureSession *_captureSession;
     FourCharCode _preferredOutputPixelFormat;
     FourCharCode _outputPixelFormat;
-    AVCaptureConnection *_videoConnection;
-    AgoraVideoRotation _rotation;
+    VideoRotation _rotation;
 #if TARGET_OS_IPHONE
     UIDeviceOrientation _orientation;
 #endif
@@ -53,12 +45,12 @@ typedef NS_ENUM(NSInteger, AgoraVideoRotation) {
     return [self initWithDelegate:nil captureSession:[[AVCaptureSession alloc] init]];
 }
 
-- (instancetype)initWithDelegate:(__weak id<CameraVideoCapturerDelegate>)delegate {
+- (instancetype)initWithDelegate:(__weak id<VideoCapturerDelegate>)delegate {
     return [self initWithDelegate:delegate captureSession:[[AVCaptureSession alloc] init]];
 }
 
 // This initializer is used for testing.
-- (instancetype)initWithDelegate:(__weak id<CameraVideoCapturerDelegate>)delegate
+- (instancetype)initWithDelegate:(__weak id<VideoCapturerDelegate>)delegate
                   captureSession:(AVCaptureSession *)captureSession {
     if (self = [super init]) {
         _delegate = delegate;
@@ -72,7 +64,7 @@ typedef NS_ENUM(NSInteger, AgoraVideoRotation) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 #if TARGET_OS_IPHONE
         _orientation = UIDeviceOrientationPortrait;
-        _rotation = AgoraVideoRotation_90;
+        _rotation = VideoRotation90;
         [center addObserver:self
                    selector:@selector(deviceOrientationDidChange:)
                        name:UIDeviceOrientationDidChangeNotification
@@ -138,7 +130,7 @@ __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0
 
 - (void)startCaptureWithDevice:(AVCaptureDevice *)device
                         format:(AVCaptureDeviceFormat *)format
-                           fps:(NSInteger)fps {
+                           fps:(int)fps {
     [self startCaptureWithDevice:device format:format fps:fps completionHandler:nil];
 }
 
@@ -148,7 +140,7 @@ __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0
 
 - (void)startCaptureWithDevice:(AVCaptureDevice *)device
                         format:(AVCaptureDeviceFormat *)format
-                           fps:(NSInteger)fps
+                           fps:(int)fps
              completionHandler:(nullable void (^)(NSError *))completionHandler {
     _willBeRunning = YES;
     
@@ -172,7 +164,6 @@ __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0
              return;
          }
          [self reconfigureCaptureSessionInput];
-         [self setupVideoConnection];
          [self updateOrientation];
          [self updateDeviceCaptureFormat:format fps:fps];
          [self updateVideoDataOutputPixelFormat:format];
@@ -190,7 +181,7 @@ __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0
     [AgoraDispatcher
      dispatchAsyncOnType:AgoraDispatcherTypeCaptureSession
      block:^{
-//         RTCLogInfo("Stop");
+         AgoraLogInfo("Stop");
          self.currentDevice = nil;
          for (AVCaptureDeviceInput *oldInput in [self.captureSession.inputs copy]) {
              [self.captureSession removeInput:oldInput];
@@ -240,7 +231,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     BOOL usingFrontCamera = NO;
     // Check the image's EXIF for the camera the image came from as the image could have been
     // delayed as we set alwaysDiscardsLateVideoFrames to NO.
-//    AVCaptureDevicePosition cameraPosition = [AVCaptureSession ]
     AVCaptureDevicePosition cameraPosition =
     [AVCaptureSession devicePositionForSampleBuffer:sampleBuffer];
     if (cameraPosition != AVCaptureDevicePositionUnspecified) {
@@ -250,18 +240,42 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         (AVCaptureDeviceInput *)((AVCaptureInputPort *)connection.inputPorts.firstObject).input;
         usingFrontCamera = AVCaptureDevicePositionFront == deviceInput.device.position;
     }
+    
+    NSDictionary* dic = [[NSBundle mainBundle]infoDictionary];
+    NSArray* array = dic[@"UISupportedInterfaceOrientations"];
+    
     switch (_orientation) {
         case UIDeviceOrientationPortrait:
-            _rotation = AgoraVideoRotation_90;
+            for (NSString* str in array) {
+                if ([str isEqual: @"UIInterfaceOrientationPortrait"]) {
+                    _rotation = VideoRotation90;
+                    break;
+                }
+            }
             break;
         case UIDeviceOrientationPortraitUpsideDown:
-            _rotation = AgoraVideoRotation_270;
+            for (NSString* str in array) {
+                if ([str isEqual: @"UIInterfaceOrientationUpsideDown"]) {
+                    _rotation = VideoRotation270;
+                    break;
+                }
+            }
             break;
         case UIDeviceOrientationLandscapeLeft:
-            _rotation = usingFrontCamera ? AgoraVideoRotation_180 : AgoraVideoRotation_0;
+            for (NSString* str in array) {
+                if ([str isEqual: @"UIInterfaceOrientationLandscapeLeft"]) {
+                    _rotation = usingFrontCamera ? VideoRotation180 : VideoRotationNone;
+                    break;
+                }
+            }
             break;
         case UIDeviceOrientationLandscapeRight:
-            _rotation = usingFrontCamera ? AgoraVideoRotation_0 : AgoraVideoRotation_180;
+            for (NSString* str in array) {
+                if ([str isEqual: @"UIInterfaceOrientationLandscapeRight"]) {
+                    _rotation = usingFrontCamera ? VideoRotationNone : VideoRotation180;
+                    break;
+                }
+            }
             break;
         case UIDeviceOrientationFaceUp:
         case UIDeviceOrientationFaceDown:
@@ -274,27 +288,27 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     _rotation = RTCVideoRotation_0;
 #endif
     
-//    RTCCVPixelBuffer *rtcPixelBuffer = [[RTCCVPixelBuffer alloc] initWithPixelBuffer:pixelBuffer];
-//    int64_t timeStampNs = CMTimeGetSeconds(CMSampleBufferGetPresentationTimeStamp(sampleBuffer)) *
-//    kNanosecondsPerSecond;
-//    RTCVideoFrame *videoFrame = [[RTCVideoFrame alloc] initWithBuffer:rtcPixelBuffer
-//                                                             rotation:_rotation
-//                                                          timeStampNs:timeStampNs];
-    [self.delegate capturer:self didCaptureVideoFrame:sampleBuffer];
-//    [self.delegate capturer:self didCaptureVideoFrame:videoFrame];
+    CustomCVPixelBuffer *customPixelBuffer = [[CustomCVPixelBuffer alloc] initWithPixelBuffer:pixelBuffer];
+    CMTime timeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+    
+    VideoFrame *videoFrame = [[VideoFrame alloc] initWithBuffer:customPixelBuffer
+                                                       rotation:_rotation
+                                                      timeStamp:timeStamp
+                                               usingFrontCamera:usingFrontCamera];
+    [self.delegate capturer:self didCaptureFrame:videoFrame];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
   didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection {
 #if TARGET_OS_IPHONE
-    CFStringRef droppedReason =
+    CFTypeRef droppedReason =
     CMGetAttachment(sampleBuffer, kCMSampleBufferAttachmentKey_DroppedFrameReason, nil);
 #else
     // DroppedFrameReason unavailable on macOS.
     CFStringRef droppedReason = nil;
 #endif
-//    RTCLogError(@"Dropped sample buffer. Reason: %@", (__bridge NSString *)droppedReason);
+    AgoraLogError(@"Dropped sample buffer. Reason: %@", (__bridge NSString *)droppedReason);
 }
 
 #pragma mark - AVCaptureSession notifications
@@ -302,34 +316,38 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (void)handleCaptureSessionInterruption:(NSNotification *)notification {
     NSString *reasonString = nil;
 #if TARGET_OS_IPHONE
-    NSNumber *reason = notification.userInfo[AVCaptureSessionInterruptionReasonKey];
-    if (reason) {
-        switch (reason.intValue) {
-            case AVCaptureSessionInterruptionReasonVideoDeviceNotAvailableInBackground:
-                reasonString = @"VideoDeviceNotAvailableInBackground";
-                break;
-            case AVCaptureSessionInterruptionReasonAudioDeviceInUseByAnotherClient:
-                reasonString = @"AudioDeviceInUseByAnotherClient";
-                break;
-            case AVCaptureSessionInterruptionReasonVideoDeviceInUseByAnotherClient:
-                reasonString = @"VideoDeviceInUseByAnotherClient";
-                break;
-            case AVCaptureSessionInterruptionReasonVideoDeviceNotAvailableWithMultipleForegroundApps:
-                reasonString = @"VideoDeviceNotAvailableWithMultipleForegroundApps";
-                break;
+    if (@available(iOS 9.0, *)) {
+        NSNumber *reason = notification.userInfo[AVCaptureSessionInterruptionReasonKey];
+        if (reason) {
+            switch (reason.intValue) {
+                case AVCaptureSessionInterruptionReasonVideoDeviceNotAvailableInBackground:
+                    reasonString = @"VideoDeviceNotAvailableInBackground";
+                    break;
+                case AVCaptureSessionInterruptionReasonAudioDeviceInUseByAnotherClient:
+                    reasonString = @"AudioDeviceInUseByAnotherClient";
+                    break;
+                case AVCaptureSessionInterruptionReasonVideoDeviceInUseByAnotherClient:
+                    reasonString = @"VideoDeviceInUseByAnotherClient";
+                    break;
+                case AVCaptureSessionInterruptionReasonVideoDeviceNotAvailableWithMultipleForegroundApps:
+                    reasonString = @"VideoDeviceNotAvailableWithMultipleForegroundApps";
+                    break;
+            }
         }
+    } else {
+        // Fallback on earlier versions
     }
 #endif
-//    RTCLog(@"Capture session interrupted: %@", reasonString);
+    AgoraLog(@"Capture session interrupted: %@", reasonString);
 }
 
 - (void)handleCaptureSessionInterruptionEnded:(NSNotification *)notification {
-//    RTCLog(@"Capture session interruption ended.");
+//    AgoraLog(@"Capture session interruption ended.");
 }
 
 - (void)handleCaptureSessionRuntimeError:(NSNotification *)notification {
     NSError *error = [notification.userInfo objectForKey:AVCaptureSessionErrorKey];
-//    RTCLogError(@"Capture session runtime error: %@", error);
+    AgoraLogError(@"Capture session runtime error: %@", error);
     
     [AgoraDispatcher dispatchAsyncOnType:AgoraDispatcherTypeCaptureSession
                                  block:^{
@@ -346,7 +364,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (void)handleCaptureSessionDidStartRunning:(NSNotification *)notification {
-//    RTCLog(@"Capture session started.");
+    AgoraLog(@"Capture session started.");
     
     [AgoraDispatcher dispatchAsyncOnType:AgoraDispatcherTypeCaptureSession
                                  block:^{
@@ -357,7 +375,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (void)handleCaptureSessionDidStopRunning:(NSNotification *)notification {
-//    RTCLog(@"Capture session stopped.");
+    AgoraLog(@"Capture session stopped.");
 }
 
 - (void)handleFatalError {
@@ -365,11 +383,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
      dispatchAsyncOnType:AgoraDispatcherTypeCaptureSession
      block:^{
          if (!self.hasRetriedOnFatalError) {
-//             RTCLogWarning(@"Attempting to recover from fatal capture error.");
+             AgoraLogWarning(@"Attempting to recover from fatal capture error.");
              [self handleNonFatalError];
              self.hasRetriedOnFatalError = YES;
          } else {
-//             RTCLogError(@"Previous fatal error recovery failed.");
+             AgoraLogError(@"Previous fatal error recovery failed.");
          }
      }];
 }
@@ -377,7 +395,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (void)handleNonFatalError {
     [AgoraDispatcher dispatchAsyncOnType:AgoraDispatcherTypeCaptureSession
                                  block:^{
-//                                     RTCLog(@"Restarting capture session after error.");
+                                     AgoraLog(@"Restarting capture session after error.");
                                      if (self.isRunning) {
                                          [self.captureSession startRunning];
                                      }
@@ -392,7 +410,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     [AgoraDispatcher dispatchAsyncOnType:AgoraDispatcherTypeCaptureSession
                                  block:^{
                                      if (self.isRunning && !self.captureSession.isRunning) {
-//                                         RTCLog(@"Restarting capture session on active.");
+                                         AgoraLog(@"Restarting capture session on active.");
                                          [self.captureSession startRunning];
                                      }
                                  }];
@@ -422,7 +440,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     // Add the output.
     if (![_captureSession canAddOutput:_videoDataOutput]) {
-//        RTCLogError(@"Video data output unsupported.");
+        AgoraLogError(@"Video data output unsupported.");
         return NO;
     }
     [_captureSession addOutput:_videoDataOutput];
@@ -450,13 +468,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     _videoDataOutput = videoDataOutput;
 }
 
-- (void) setupVideoConnection {
-    if (_videoDataOutput) {
-        _videoConnection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
-//         = videoConnection;
-    }
-}
-
 - (void)updateVideoDataOutputPixelFormat:(AVCaptureDeviceFormat *)format {
     FourCharCode mediaSubType = CMFormatDescriptionGetMediaSubType(format.formatDescription);
     if (![[self supportedPixelFormats] containsObject:@(mediaSubType)]) {
@@ -470,32 +481,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 }
 
-- (void)updateCaptureVideoOrientation {
-    if (_videoConnection) {
-        switch (_orientation) {
-            case UIInterfaceOrientationPortrait:
-                [_videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-                break;
-            case UIInterfaceOrientationPortraitUpsideDown:
-                [_videoConnection setVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
-                break;
-            case UIInterfaceOrientationLandscapeLeft:
-                [_videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
-                break;
-            case UIInterfaceOrientationLandscapeRight:
-                [_videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
-                break;
-                
-            default:
-                break;
-        }
-    }
-}
-
-
 #pragma mark - Private, called inside capture queue
 
-- (void)updateDeviceCaptureFormat:(AVCaptureDeviceFormat *)format fps:(NSInteger)fps {
+- (void)updateDeviceCaptureFormat:(AVCaptureDeviceFormat *)format fps:(int)fps {
     NSAssert([AgoraDispatcher isOnQueueForType:AgoraDispatcherTypeCaptureSession],
              @"updateDeviceCaptureFormat must be called on the capture queue.");
     @try {
@@ -514,7 +502,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     AVCaptureDeviceInput *input =
     [AVCaptureDeviceInput deviceInputWithDevice:_currentDevice error:&error];
     if (!input) {
-//        RTCLogError(@"Failed to create front camera input: %@", error.localizedDescription);
+        AgoraLogError(@"Failed to create front camera input: %@", error.localizedDescription);
         return;
     }
     [_captureSession beginConfiguration];
@@ -524,7 +512,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     if ([_captureSession canAddInput:input]) {
         [_captureSession addInput:input];
     } else {
-//        RTCLogError(@"Cannot add camera as an input to the session.");
+        AgoraLogError(@"Cannot add camera as an input to the session.");
     }
     [_captureSession commitConfiguration];
 }
@@ -533,7 +521,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSAssert([AgoraDispatcher isOnQueueForType:AgoraDispatcherTypeCaptureSession],
              @"updateOrientation must be called on the capture queue.");
     _orientation = [UIDevice currentDevice].orientation;
-    [self updateCaptureVideoOrientation];
 }
 
 - (NSSet<NSNumber *> *)supportedPixelFormats {

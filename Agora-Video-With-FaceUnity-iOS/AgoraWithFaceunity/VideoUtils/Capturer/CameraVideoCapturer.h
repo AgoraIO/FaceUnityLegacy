@@ -8,25 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import "VideoCapturer.h"
+#import "../VideoFrame/VideoFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CameraVideoCapturer;
-
-@protocol CameraVideoCapturerDelegate <NSObject>
-
--(void)capturer: (CameraVideoCapturer *)capturer didCaptureVideoFrame: (CMSampleBufferRef)frame;
-
-@end
-
-@interface CameraVideoCapturer : NSObject
+@interface CameraVideoCapturer : VideoCapturer
 
 // Capture session that is used for capturing. Valid from initialization to dealloc.
 @property(readonly, nonatomic) AVCaptureSession *captureSession;
-
-@property(nonatomic, weak) id<CameraVideoCapturerDelegate> delegate;
-
-- (instancetype)initWithDelegate:(id<CameraVideoCapturerDelegate>)delegate;
 
 // Returns list of available capture devices that support video capture.
 + (NSArray<AVCaptureDevice *> *)captureDevices;
@@ -42,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 // output. Otherwise, the format returned by `preferredOutputPixelFormat` will be used.
 - (void)startCaptureWithDevice:(AVCaptureDevice *)device
                         format:(AVCaptureDeviceFormat *)format
-                           fps:(NSInteger)fps
+                           fps:(int)fps
              completionHandler:(nullable void (^)(NSError *))completionHandler;
 // Stops the capture session asynchronously and notifies callback on completion.
 - (void)stopCaptureWithCompletionHandler:(nullable void (^)(void))completionHandler;
@@ -50,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Starts the capture session asynchronously.
 - (void)startCaptureWithDevice:(AVCaptureDevice *)device
                         format:(AVCaptureDeviceFormat *)format
-                           fps:(NSInteger)fps;
+                           fps:(int)fps;
 // Stops the capture session asynchronously.
 - (void)stopCapture;
 
