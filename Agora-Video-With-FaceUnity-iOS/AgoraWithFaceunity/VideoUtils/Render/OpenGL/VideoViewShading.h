@@ -9,8 +9,8 @@
 #ifndef VideoViewShading_h
 #define VideoViewShading_h
 
-#import "../../VideoFrame/VideoFrame.h"
-#import "../VideoRender.h"
+#import "VideoFrame.h"
+#import "VideoRender.h"
 
 @protocol VideoViewShading <NSObject>
 

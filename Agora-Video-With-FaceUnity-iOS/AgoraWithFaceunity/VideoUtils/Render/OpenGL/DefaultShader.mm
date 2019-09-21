@@ -12,7 +12,7 @@
 
 #import "OpenGLDefines.h"
 #import "Shader.h"
-#import "../../Helper/LogCenter.h"
+#import "LogCenter.h"
 
 //#include "absl/types/optional.h"
 static const int kYTextureUnit = 0;

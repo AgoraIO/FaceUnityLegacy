@@ -15,9 +15,7 @@
 #include <memory>
 
 #import "OpenGLDefines.h"
-
-//#include "rtc_base/checks.h"
-#include "../../Helper/LogCenter.h"
+#import "LogCenter.h"
 
 @implementation Shader
 

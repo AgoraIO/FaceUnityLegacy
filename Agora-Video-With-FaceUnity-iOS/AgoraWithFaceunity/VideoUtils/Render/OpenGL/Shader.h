@@ -6,7 +6,7 @@
 //  Copyright © 2019 Zhang Ji. All rights reserved.
 //
 
-#import "../../VideoFrame/VideoFrame.h"
+#import "VideoFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

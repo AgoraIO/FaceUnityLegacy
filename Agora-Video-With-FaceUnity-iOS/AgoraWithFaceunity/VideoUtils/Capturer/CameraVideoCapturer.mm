@@ -10,8 +10,8 @@
 #import "CameraVideoCapturer.h"
 #import "AgoraDispatcher.h"
 #import "AVCaptureSession+DevicePosition.h"
-#import "../VideoFrame/CustomCVPixelBuffer.h"
-#import "../Helper/LogCenter.h"
+#import "CustomCVPixelBuffer.h"
+#import "LogCenter.h"
 
 @interface CameraVideoCapturer ()<AVCaptureVideoDataOutputSampleBufferDelegate>
 @property(nonatomic, readonly) dispatch_queue_t frameQueue;

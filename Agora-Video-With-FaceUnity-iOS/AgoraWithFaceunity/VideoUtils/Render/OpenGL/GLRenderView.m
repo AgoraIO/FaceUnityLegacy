@@ -13,10 +13,10 @@
 #import "DisplayLinkTimer.h"
 #import "I420TextureCache.h"
 #import "NV12TextureCache.h"
-#import "../../Helper/LogCenter.h"
-#import "../../VideoFrame/VideoFrame.h"
-#import "../../VideoFrame/VideoFrameBuffer.h"
-#import "../../VideoFrame/CustomCVPixelBuffer.h"
+#import "LogCenter.h"
+#import "VideoFrame.h"
+#import "VideoFrameBuffer.h"
+#import "CustomCVPixelBuffer.h"
 
 @interface GLRenderView () <GLKViewDelegate>
 

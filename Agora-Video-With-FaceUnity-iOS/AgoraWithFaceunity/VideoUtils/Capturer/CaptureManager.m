@@ -7,7 +7,7 @@
 //
 
 #import "CaptureManager.h"
-#import "../Helper/LogCenter.h"
+#import "LogCenter.h"
 
 const Float64 kFramerateLimit = 30.0;
 

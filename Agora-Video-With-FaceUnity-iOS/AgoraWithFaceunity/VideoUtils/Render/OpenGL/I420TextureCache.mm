@@ -9,8 +9,8 @@
 #import "I420TextureCache.h"
 #import <OpenGLES/ES3/gl.h>
 
-#import "../../VideoFrame/I420Buffer.h"
-#import "../../VideoFrame/VideoFrameBuffer.h"
+#import "I420Buffer.h"
+#import "VideoFrameBuffer.h"
 
 #include <vector>
 

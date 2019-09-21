@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VideoViewShading.h"
-#import "../VideoRender.h"
+#import "VideoRender.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "VideoCapturer.h"
-#import "../VideoFrame/VideoFrame.h"
+#import "VideoFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

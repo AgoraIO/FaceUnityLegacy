@@ -7,9 +7,9 @@
 //
 
 #import "NV12TextureCache.h"
-#import "../../VideoFrame/VideoFrame.h"
-#import "../../VideoFrame/VideoFrameBuffer.h"
-#import "../../VideoFrame/CustomCVPixelBuffer.h"
+#import "VideoFrame.h"
+#import "VideoFrameBuffer.h"
+#import "CustomCVPixelBuffer.h"
 
 @implementation NV12TextureCache {
     CVOpenGLESTextureCacheRef _textureCache;

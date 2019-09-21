@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "../../VideoFrame/VideoFrame.h"
+#import "VideoFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

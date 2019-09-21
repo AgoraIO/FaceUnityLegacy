@@ -7,9 +7,9 @@
 //
 
 #import "CustomCVPixelBuffer.h"
-#import "../Helper/LogCenter.h"
+#import "LogCenter.h"
 
-#include "../Helper/third_party/libyuv/include/libyuv.h"
+#include "libyuv.h"
 
 #include <vector>
 //#include "../Helper/third_party/libyuv_rtc/include/webrtc_libyuv.h"
