@@ -19,8 +19,6 @@ const int64_t kNanosecondsPerSecond = 1000000000;
 }
 
 @synthesize buffer = _buffer;
-//@synthesize timeStampNs;
-//@synthesize timeStamp;
 
 - (int)width {
     return _buffer.width;

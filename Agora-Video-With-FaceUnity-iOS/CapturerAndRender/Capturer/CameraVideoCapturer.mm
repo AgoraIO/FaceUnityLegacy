@@ -457,7 +457,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     // device with the most efficient output format first. Find the first format that we support.
     NSMutableOrderedSet *availablePixelFormats =
     [NSMutableOrderedSet orderedSetWithArray:videoDataOutput.availableVideoCVPixelFormatTypes];
-    [availablePixelFormats intersectSet:[self supportedPixelFormats]];
+    [availablePixelFormats intersectSet:[CustomCVPixelBuffer supportedPixelFormats]];
     NSNumber *pixelFormat = availablePixelFormats.firstObject;
     NSAssert(pixelFormat, @"Output device has no supported formats.");
     
@@ -471,7 +471,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (void)updateVideoDataOutputPixelFormat:(AVCaptureDeviceFormat *)format {
     FourCharCode mediaSubType = CMFormatDescriptionGetMediaSubType(format.formatDescription);
-    if (![[self supportedPixelFormats] containsObject:@(mediaSubType)]) {
+    if (![[CustomCVPixelBuffer supportedPixelFormats] containsObject:@(mediaSubType)]) {
         mediaSubType = _preferredOutputPixelFormat;
     }
     
@@ -525,8 +525,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (NSSet<NSNumber *> *)supportedPixelFormats {
-    return [NSSet setWithObjects:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange),
-            @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange),
+//    return [NSSet setWithObjects:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange),
+//            @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange),
+//            @(kCVPixelFormatType_32BGRA),
+//            @(kCVPixelFormatType_32ARGB),
+//            nil];
+    
+    return [NSSet setWithObjects:
             @(kCVPixelFormatType_32BGRA),
             @(kCVPixelFormatType_32ARGB),
             nil];

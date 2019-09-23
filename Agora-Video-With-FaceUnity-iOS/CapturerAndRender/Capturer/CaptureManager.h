@@ -13,6 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CaptureManager : NSObject
 
+
+- (instancetype)initWithWidth:(int)width
+                       height:(int)height
+                          fps:(int)fps;
+
 - (instancetype)initWithCapturer:(CameraVideoCapturer *)capturer
                            width:(int)width
                           height:(int)height

@@ -19,8 +19,6 @@ extern GLuint CreateProgram(GLuint vertexShader, GLuint fragmentShader);
 extern GLuint CreateProgramFromFragmentSource(const char fragmentShaderSource[_Nonnull]);
 extern BOOL CreateVertexBuffer(GLuint* vertexBuffer, GLuint* vertexArray);
 extern void SetVertexData(VideoRotation rotation, BOOL mirrored, GLuint model, GLfloat widthAspito, GLfloat heightAspito);
-//extern void SetVertexData(VideoRotation rotation);
-
 
 @end
 

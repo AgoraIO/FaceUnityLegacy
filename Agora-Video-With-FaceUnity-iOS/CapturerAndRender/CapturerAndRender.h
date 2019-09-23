@@ -9,7 +9,7 @@
 #import "CaptureManager.h"
 #import "GLRenderView.h"
 #import "CameraVideoCapturer.h"
-//#import "CustomCVPixelBuffer.h"
+#import "CustomCVPixelBuffer.h"
 #import "VideoFrame.h"
 
 //! Project version number for CapturerAndRender.
@@ -19,5 +19,3 @@ FOUNDATION_EXPORT double CapturerAndRenderVersionNumber;
 FOUNDATION_EXPORT const unsigned char CapturerAndRenderVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <CapturerAndRender/PublicHeader.h>
-
-

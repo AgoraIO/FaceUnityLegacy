@@ -19,14 +19,27 @@ const Float64 kFramerateLimit = 30.0;
     BOOL _usingFrontCamera;
 }
 
+- (instancetype)initWithWidth:(int)width
+                       height:(int)height
+                          fps:(int)fps {
+    if (self = [super init]) {
+        _capturer = [[CameraVideoCapturer alloc] initWithDelegate:nil];
+        _width = width;
+        _height = height;
+        _fps = fps;
+        _usingFrontCamera = YES;
+    }
+    
+    return  self;
+}
 - (instancetype)initWithCapturer:(CameraVideoCapturer *)capturer
                            width:(int)width
                           height:(int)height
                              fps:(int)fps {
     if (self = [super init]) {
         _capturer = capturer;
-        _width = width;
-        _height = height;
+        _width = width >= height ? width : height;
+        _height = height >= width ? width : height;
         _fps = fps;
         _usingFrontCamera = YES;
     }

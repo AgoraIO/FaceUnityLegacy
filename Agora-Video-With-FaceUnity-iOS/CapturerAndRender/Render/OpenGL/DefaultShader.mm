@@ -14,7 +14,6 @@
 #import "Shader.h"
 #import "LogCenter.h"
 
-//#include "absl/types/optional.h"
 static const int kYTextureUnit = 0;
 static const int kUTextureUnit = 1;
 static const int kVTextureUnit = 2;
@@ -61,6 +60,15 @@ FRAGMENT_SHADER_OUT
 "                                     y + 1.770 * uv.x,\n"
 "                                     1.0);\n"
 "  }\n";
+
+static const char KRGBAFragmentShaderSource[] =
+SHADER_VERSION
+"uniform sampler2D inputImageTexture;\n"
+FRAGMENT_SHADER_IN "highp vec2 textureCoordinate;\n"
+FRAGMENT_SHADER_OUT
+"void main() {\n"
+"   " FRAGMENT_SHADER_COLOR " = vec4(texture2D(inputImageTexture, textureCoordinate).rgb,1.0);\n"
+" }\n";
 
 @implementation DefaultShader {
     GLuint _vertexBuffer;
@@ -192,31 +200,6 @@ FRAGMENT_SHADER_OUT
     
     glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + kVTextureUnit));
     glBindTexture(GL_TEXTURE_2D, vPlane);
-    
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-}
-
-- (void)applyShadingForFrameWithWidth:(int)width
-                               height:(int)height
-                             rotation:(VideoRotation)rotation
-                               yPlane:(GLuint)yPlane
-                              uvPlane:(GLuint)uvPlane {
-//    if (![self prepareVertexBufferWithRotation:rotation]) {
-//        return;
-//    }
-    
-    if (!_nv12Program && ![self createAndSetupNV12Program]) {
-        AgoraLog(@"Failed to setup NV12 shader");
-        return;
-    }
-    
-    glUseProgram(_nv12Program);
-    
-    glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + kYTextureUnit));
-    glBindTexture(GL_TEXTURE_2D, yPlane);
-    
-    glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + kUvTextureUnit));
-    glBindTexture(GL_TEXTURE_2D, uvPlane);
     
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
