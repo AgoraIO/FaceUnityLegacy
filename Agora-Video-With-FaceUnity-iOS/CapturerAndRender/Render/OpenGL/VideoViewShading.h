@@ -40,6 +40,15 @@
                                yPlane:(GLuint)yPlane
                               uvPlane:(GLuint)uvPlane;
 
+- (void)applyShadingForFrameWithWidth:(int)width
+                               height:(int)height
+                            viewWidth:(int)viewWidth
+                           viewHeight:(int)viewHeight
+                             rotation:(VideoRotation)rotation
+                          renderModel:(RenderModel)renderModel
+                             morrired:(BOOL)morrired
+                            rgbaPlane:(GLuint)rgbaPlane;
+
 @end
 
 #endif /* VideoViewShading_h */

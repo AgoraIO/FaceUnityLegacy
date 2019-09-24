@@ -64,10 +64,10 @@ FRAGMENT_SHADER_OUT
 static const char KRGBAFragmentShaderSource[] =
 SHADER_VERSION
 "uniform sampler2D inputImageTexture;\n"
-FRAGMENT_SHADER_IN "highp vec2 textureCoordinate;\n"
+FRAGMENT_SHADER_IN " highp vec2 v_texcoord;\n"
 FRAGMENT_SHADER_OUT
 "void main() {\n"
-"   " FRAGMENT_SHADER_COLOR " = vec4(texture2D(inputImageTexture, textureCoordinate).rgb,1.0);\n"
+"   " FRAGMENT_SHADER_COLOR " = vec4(texture2D(inputImageTexture, v_texcoord).bgr,1.0);\n"
 " }\n";
 
 @implementation DefaultShader {
@@ -80,11 +80,13 @@ FRAGMENT_SHADER_OUT
     
     GLuint _i420Program;
     GLuint _nv12Program;
+    GLuint _rgbaRrogram;
 }
 
 - (void)dealloc {
     glDeleteProgram(_i420Program);
     glDeleteProgram(_nv12Program);
+    glDeleteProgram(_rgbaRrogram);
     glDeleteBuffers(1, &_vertexBuffer);
     glDeleteVertexArrays(1, &_vertexArray);
 }
@@ -133,6 +135,27 @@ FRAGMENT_SHADER_OUT
     glUseProgram(_nv12Program);
     glUniform1i(ySampler, kYTextureUnit);
     glUniform1i(uvSampler, kUvTextureUnit);
+    
+    return YES;
+}
+
+- (BOOL)createAndSetupRGBAProgram {
+    NSAssert(!_rgbaRrogram, @"RGBA program already created");
+    _rgbaRrogram = CreateProgramFromFragmentSource(KRGBAFragmentShaderSource);
+    if (!_rgbaRrogram) {
+        return NO;
+    }
+    GLint displayInputTextureUniform = glGetUniformLocation(_rgbaRrogram, "inputImageTexture");
+    
+    if (displayInputTextureUniform < 0) {
+        AgoraLog(@"Failed to get uniform variable locations in RGBA shader");
+        glDeleteProgram(_rgbaRrogram);
+        _rgbaRrogram = 0;
+        return NO;
+    }
+    
+    glUseProgram(_rgbaRrogram);
+    glUniform1i(displayInputTextureUniform, 4);
     
     return YES;
 }
@@ -232,5 +255,34 @@ FRAGMENT_SHADER_OUT
     
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
+
+- (void)applyShadingForFrameWithWidth:(int)width
+                               height:(int)height
+                            viewWidth:(int)viewWidth
+                           viewHeight:(int)viewHeight
+                             rotation:(VideoRotation)rotation
+                          renderModel:(RenderModel)renderModel
+                             morrired:(BOOL)morrired
+                            rgbaPlane:(GLuint)rgbaPlane {
+    if (![self prepareVertexBufferWithWidth:width height:height viewWidth:viewWidth viewHeight:viewHeight rotation:rotation renderModel:renderModel morrired:morrired]) {
+        return;
+    }
+    
+    if (!_rgbaRrogram && ![self createAndSetupRGBAProgram]) {
+        AgoraLog(@"Failed to setup RGBA shader");
+        return;
+    }
+    
+    glUseProgram(_rgbaRrogram);
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, rgbaPlane);
+    
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+}
+
+- (void)applyShadingForFrameWithWidth:(int)width height:(int)height rotation:(VideoRotation)rotation yPlane:(GLuint)yPlane uvPlane:(GLuint)uvPlane {
+    
+}
+
 
 @end

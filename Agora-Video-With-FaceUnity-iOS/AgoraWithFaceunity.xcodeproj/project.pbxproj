@@ -146,6 +146,8 @@
 		0FBDA6712338192300BF523E /* scale_argb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDA62C2338192200BF523E /* scale_argb.cc */; };
 		0FBDA672233822D400BF523E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FBF73032224F3940054BAEE /* libc++.tbd */; };
 		0FBDA6732338264300BF523E /* AVCaptureSession+DevicePosition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A2B623355E9C0007C48D /* AVCaptureSession+DevicePosition.mm */; };
+		0FBDA676233983A100BF523E /* RGBATextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FBDA674233983A100BF523E /* RGBATextureCache.h */; };
+		0FBDA677233983A100BF523E /* RGBATextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDA675233983A100BF523E /* RGBATextureCache.m */; };
 		0FD4E2052105C747006E46A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0FD4E2072105C747006E46A1 /* Localizable.strings */; };
 		0FDB800620DA3C8E005D9C58 /* touhua_ztt_fu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8020DA3C8E005D9C58 /* touhua_ztt_fu.bundle */; };
 		0FDB800720DA3C8E005D9C58 /* yazui.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8120DA3C8E005D9C58 /* yazui.bundle */; };
@@ -417,6 +419,8 @@
 		0FBDA62A2338192200BF523E /* compare_gcc.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = compare_gcc.cc; sourceTree = "<group>"; };
 		0FBDA62B2338192200BF523E /* compare_neon64.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = compare_neon64.cc; sourceTree = "<group>"; };
 		0FBDA62C2338192200BF523E /* scale_argb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scale_argb.cc; sourceTree = "<group>"; };
+		0FBDA674233983A100BF523E /* RGBATextureCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RGBATextureCache.h; sourceTree = "<group>"; };
+		0FBDA675233983A100BF523E /* RGBATextureCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RGBATextureCache.m; sourceTree = "<group>"; };
 		0FC8A1DD23355E9B0007C48D /* CameraVideoCapturer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraVideoCapturer.mm; sourceTree = "<group>"; };
 		0FC8A1DE23355E9B0007C48D /* CaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureManager.m; sourceTree = "<group>"; };
 		0FC8A1DF23355E9B0007C48D /* CameraVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraVideoCapturer.h; sourceTree = "<group>"; };
@@ -887,6 +891,8 @@
 				0FC8A1F523355E9B0007C48D /* I420TextureCache.mm */,
 				0FC8A1F723355E9B0007C48D /* NV12TextureCache.h */,
 				0FC8A1F323355E9B0007C48D /* NV12TextureCache.m */,
+				0FBDA674233983A100BF523E /* RGBATextureCache.h */,
+				0FBDA675233983A100BF523E /* RGBATextureCache.m */,
 				0FC8A1EF23355E9B0007C48D /* Shader.h */,
 				0FC8A1F423355E9B0007C48D /* Shader.mm */,
 				0FC8A1FA23355E9B0007C48D /* DefaultShader.h */,
@@ -1222,6 +1228,7 @@
 				0FBDA6402338192200BF523E /* macros_msa.h in Headers */,
 				0FBDA5D12338183D00BF523E /* DefaultShader.h in Headers */,
 				0FBDA6392338192200BF523E /* convert_argb.h in Headers */,
+				0FBDA676233983A100BF523E /* RGBATextureCache.h in Headers */,
 				0FBDA63D2338192200BF523E /* convert_from.h in Headers */,
 				0FBDA6382338192200BF523E /* compare.h in Headers */,
 				0FBDA63F2338192200BF523E /* rotate_argb.h in Headers */,
@@ -1598,6 +1605,7 @@
 				0FBDA5DA2338186500BF523E /* VideoFrame.m in Sources */,
 				0FBDA6492338192200BF523E /* compare_win.cc in Sources */,
 				0FBDA64B2338192200BF523E /* row_win.cc in Sources */,
+				0FBDA677233983A100BF523E /* RGBATextureCache.m in Sources */,
 				0FBDA5DF2338188D00BF523E /* AgoraDispatcher.m in Sources */,
 				0FBDA5D82338186500BF523E /* CustomCVPixelBuffer.mm in Sources */,
 				0FBDA64A2338192200BF523E /* cpu_id.cc in Sources */,

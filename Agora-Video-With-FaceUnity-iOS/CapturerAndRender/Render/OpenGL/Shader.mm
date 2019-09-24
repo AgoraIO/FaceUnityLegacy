@@ -73,6 +73,10 @@ GLuint CreateProgram(GLuint vertexShader, GLuint fragmentShader) {
     GLint linkStatus = GL_FALSE;
     glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
     if (linkStatus == GL_FALSE) {
+        GLchar message[256];
+        glGetProgramInfoLog(program, sizeof(message), 0, &message[0]);
+        NSString *messageString = [NSString stringWithUTF8String:message];
+        NSLog(@"error %@", messageString);
         glDeleteProgram(program);
         program = 0;
     }

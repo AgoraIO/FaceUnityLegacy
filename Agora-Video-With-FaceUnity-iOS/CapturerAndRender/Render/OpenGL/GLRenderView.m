@@ -13,6 +13,7 @@
 #import "DisplayLinkTimer.h"
 #import "I420TextureCache.h"
 #import "NV12TextureCache.h"
+#import "RGBATextureCache.h"
 #import "LogCenter.h"
 #import "VideoFrame.h"
 #import "VideoFrameBuffer.h"
@@ -36,6 +37,7 @@
     id<VideoViewShading> _shader;
     NV12TextureCache *_nv12TextureCache;
     I420TextureCache *_i420TextureCache;
+    RGBATextureCache *_rgbaTextureCache;
     // As timestamps should be unique between frames, will store last
     // drawn frame timestamp instead of the whole frame to reduce memory usage.
     int64_t _lastDrawnFrameTimeStampNs;
@@ -170,39 +172,84 @@
     [self ensureGLContext];
     glClear(GL_COLOR_BUFFER_BIT);
     if ([frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
-        if (!_nv12TextureCache) {
-            _nv12TextureCache = [[NV12TextureCache alloc] initWithContext:_glContext];
-        }
-        if (_nv12TextureCache) {
-            [_nv12TextureCache uploadFrameToTextures:frame];
-            
-            RenderModel currentModel = self.currentRenderModel;
-
-            BOOL currentMorrired = false;
-            switch (self.currentMirrorModel) {
-                case MirrorModelNO:
-                    currentMorrired = false;
-                    break;
-                case MirrorModelYES:
-                    currentMorrired = true;
-                    break;
-                default:
-                    currentMorrired = frame.usingFrontCamera ? YES : NO;
-                    break;
+        CVPixelBufferRef pixelBuffer = frame.buffer.pixelBuffer;
+        const OSType srcPixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+        switch (srcPixelFormat) {
+            case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:
+            case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange: {
+                if (!_nv12TextureCache) {
+                    _nv12TextureCache = [[NV12TextureCache alloc] initWithContext:_glContext];
+                }
+                if (_nv12TextureCache) {
+                    [_nv12TextureCache uploadFrameToTextures:frame];
+                    
+                    RenderModel currentModel = self.currentRenderModel;
+                    
+                    BOOL currentMorrired = false;
+                    switch (self.currentMirrorModel) {
+                        case MirrorModelNO:
+                            currentMorrired = false;
+                            break;
+                        case MirrorModelYES:
+                            currentMorrired = true;
+                            break;
+                        default:
+                            currentMorrired = frame.usingFrontCamera ? YES : NO;
+                            break;
+                    }
+                    
+                    [_shader applyShadingForFrameWithWidth:frame.width
+                                                    height:frame.height
+                                                 viewWidth:self.bounds.size.width
+                                                viewHeight:self.bounds.size.height
+                                                  rotation:frame.rotation
+                                               renderModel:currentModel
+                                                  morrired:currentMorrired
+                                                    yPlane:_nv12TextureCache.yTexture
+                                                   uvPlane:_nv12TextureCache.uvTexture];
+                    [_nv12TextureCache releaseTextures];
+                    
+                    _lastDrawnFrameTimeStampNs = self.videoFrame.timeStampNs;
+                }
+                break;
             }
-
-            [_shader applyShadingForFrameWithWidth:frame.width
-                                            height:frame.height
-                                         viewWidth:self.bounds.size.width
-                                        viewHeight:self.bounds.size.height
-                                          rotation:frame.rotation
-                                       renderModel:currentModel
-                                          morrired:currentMorrired
-                                            yPlane:_nv12TextureCache.yTexture
-                                           uvPlane:_nv12TextureCache.uvTexture];
-            [_nv12TextureCache releaseTextures];
-            
-            _lastDrawnFrameTimeStampNs = self.videoFrame.timeStampNs;
+            case kCVPixelFormatType_32BGRA:
+            case kCVPixelFormatType_32ARGB: {
+                if (!_rgbaTextureCache) {
+                    _rgbaTextureCache = [[RGBATextureCache alloc] initWithContext:_glContext];
+                }
+                if (_rgbaTextureCache) {
+                    [_rgbaTextureCache uploadFrameToTextures:frame];
+                    
+                    RenderModel currentModel = self.currentRenderModel;
+                    
+                    BOOL currentMorrired = false;
+                    switch (self.currentMirrorModel) {
+                        case MirrorModelNO:
+                            currentMorrired = false;
+                            break;
+                        case MirrorModelYES:
+                            currentMorrired = true;
+                            break;
+                        default:
+                            currentMorrired = frame.usingFrontCamera ? YES : NO;
+                            break;
+                    }
+                    
+                    [_shader applyShadingForFrameWithWidth:frame.width
+                                                    height:frame.height
+                                                 viewWidth:self.bounds.size.width
+                                                viewHeight:self.bounds.size.height
+                                                  rotation:frame.rotation
+                                               renderModel:currentModel
+                                                  morrired:currentMorrired
+                                                 rgbaPlane:_rgbaTextureCache.rgbaTexture];
+                    [_rgbaTextureCache releaseTextures];
+                    
+                    _lastDrawnFrameTimeStampNs = self.videoFrame.timeStampNs;
+                }
+                break;
+            }
         }
     } else {
         if (!_i420TextureCache) {
