@@ -6,12 +6,19 @@
 //  Copyright © 2019 Zhang Ji. All rights reserved.
 //
 
-#import "CaptureManager.h"
+#import "CapturerManager.h"
+#import "CustomCVPixelBuffer.h"
+#import "CameraVideoCapturer.h"
 #import "LogCenter.h"
+#import "Connector.h"
 
 const Float64 kFramerateLimit = 30.0;
 
-@implementation CaptureManager {
+@interface CapturerManager() <VideoCapturerDelegate>
+
+@end
+
+@implementation CapturerManager {
     CameraVideoCapturer *_capturer;
     int _width;
     int _height;
@@ -21,31 +28,34 @@ const Float64 kFramerateLimit = 30.0;
 
 - (instancetype)initWithWidth:(int)width
                        height:(int)height
-                          fps:(int)fps {
+                          fps:(int)fps
+                    connector:(nullable id<Connector>)connector; {
     if (self = [super init]) {
-        _capturer = [[CameraVideoCapturer alloc] initWithDelegate:nil];
-        _width = width;
-        _height = height;
-        _fps = fps;
-        _usingFrontCamera = YES;
-    }
-    
-    return  self;
-}
-- (instancetype)initWithCapturer:(CameraVideoCapturer *)capturer
-                           width:(int)width
-                          height:(int)height
-                             fps:(int)fps {
-    if (self = [super init]) {
-        _capturer = capturer;
+        _capturer = [[CameraVideoCapturer alloc] initWithDelegate:self];
         _width = width >= height ? width : height;
         _height = height >= width ? width : height;
         _fps = fps;
         _usingFrontCamera = YES;
+        _connector = connector;
     }
     
     return  self;
 }
+
+//- (instancetype)initWithCapturer:(CameraVideoCapturer *)capturer
+//                           width:(int)width
+//                          height:(int)height
+//                             fps:(int)fps {
+//    if (self = [super init]) {
+//        _capturer = capturer;
+//        _width = width >= height ?K width : height;
+//        _height = height >= width ? width : height;
+//        _fps = fps;
+//        _usingFrontCamera = YES;
+//    }
+//
+//    return  self;
+//}
 
 - (void)startCapture {
     AVCaptureDevicePosition position = _usingFrontCamera ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
@@ -113,6 +123,21 @@ const Float64 kFramerateLimit = 30.0;
     }
     maxSupportedFramerate = fmin(maxSupportedFramerate, kFramerateLimit);
     return fmin(maxSupportedFramerate, _fps);
+}
+
+- (void)capturer:(VideoCapturer *)capturer didCaptureFrame:(VideoFrame *)frame {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([self.connector respondsToSelector:@selector(didOutputFrame:)]) {
+            [self.connector didOutputFrame:frame];
+        }
+        
+//        if ([self.connector respondsToSelector:@selector(didOutputPixelBuffer:withTimeStamp:rotation:)]) {
+//            if ([frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
+//                CustomCVPixelBuffer* buffer = frame.buffer;
+//                [self.connector didOutputPixelBuffer:buffer.pixelBuffer withTimeStamp:frame.timeStamp rotation:frame.rotation];
+//            }
+//        }
+    });
 }
 
 @end

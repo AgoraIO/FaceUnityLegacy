@@ -24,7 +24,7 @@ BOOL CFStringContainsString(CFStringRef theString, CFStringRef stringToFind) {
     CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(
                                                                 kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
     if (attachments) {
-        int size = CFDictionaryGetCount(attachments);
+        int size = (int)CFDictionaryGetCount(attachments);
         if (size > 0) {
             CFDictionaryRef cfExifDictVal = nil;
             if (CFDictionaryGetValueIfPresent(

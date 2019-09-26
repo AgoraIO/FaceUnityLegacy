@@ -172,7 +172,8 @@
     [self ensureGLContext];
     glClear(GL_COLOR_BUFFER_BIT);
     if ([frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
-        CVPixelBufferRef pixelBuffer = frame.buffer.pixelBuffer;
+        CustomCVPixelBuffer* buffer = frame.buffer;
+        CVPixelBufferRef pixelBuffer = buffer.pixelBuffer;
         const OSType srcPixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
         switch (srcPixelFormat) {
             case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:

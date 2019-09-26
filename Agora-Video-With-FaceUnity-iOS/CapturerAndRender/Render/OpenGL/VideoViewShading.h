@@ -25,13 +25,6 @@
 /** Callback for NV12 frames. Each plane is given as a texture. */
 - (void)applyShadingForFrameWithWidth:(int)width
                                height:(int)height
-                             rotation:(VideoRotation)rotation
-                               yPlane:(GLuint)yPlane
-                              uvPlane:(GLuint)uvPlane;
-
-/** Callback for NV12 frames. Each plane is given as a texture. */
-- (void)applyShadingForFrameWithWidth:(int)width
-                               height:(int)height
                             viewWidth:(int)viewWidth
                            viewHeight:(int)viewHeight
                              rotation:(VideoRotation)rotation
@@ -40,6 +33,7 @@
                                yPlane:(GLuint)yPlane
                               uvPlane:(GLuint)uvPlane;
 
+/** Callback for rgba frames. Each plane is given as a texture. */
 - (void)applyShadingForFrameWithWidth:(int)width
                                height:(int)height
                             viewWidth:(int)viewWidth

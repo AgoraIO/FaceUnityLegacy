@@ -41,8 +41,8 @@
         pixelBuffer:(CVPixelBufferRef)pixelBuffer
          planeIndex:(int)planeIndex
         pixelFormat:(GLenum)pixelFormat {
-    const int width = CVPixelBufferGetWidth(pixelBuffer);
-    const int height = CVPixelBufferGetHeight(pixelBuffer);
+    const int width = (int)CVPixelBufferGetWidth(pixelBuffer);
+    const int height = (int)CVPixelBufferGetHeight(pixelBuffer);
     
     if (*textureOut) {
         CFRelease(*textureOut);

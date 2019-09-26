@@ -16,9 +16,7 @@
 @property(nonatomic, readonly) int width;
 @property(nonatomic, readonly) int height;
 
-@property(nonatomic, readonly) CVPixelBufferRef pixelBuffer;
-
-- (id<I420Buffer>)toI420;
+//- (id<I420Buffer>)toI420;
 
 @end
 

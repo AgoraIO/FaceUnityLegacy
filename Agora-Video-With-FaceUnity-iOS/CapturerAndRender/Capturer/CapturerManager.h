@@ -7,21 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CameraVideoCapturer.h"
+#import <AVFoundation/AVFoundation.h>
+//#import "CameraVideoCapturer.h"
+#import "VideoFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CaptureManager : NSObject
+@class CapturerManager;
 
+@protocol Connector;
+
+@interface CapturerManager : NSObject
+
+@property(nonatomic, weak) id<Connector> connector;
 
 - (instancetype)initWithWidth:(int)width
                        height:(int)height
-                          fps:(int)fps;
-
-- (instancetype)initWithCapturer:(CameraVideoCapturer *)capturer
-                           width:(int)width
-                          height:(int)height
-                             fps:(int)fps;
+                          fps:(int)fps
+                    connector:(nullable id<Connector>)connector;
 
 - (void)startCapture;
 - (void)stopCapture;

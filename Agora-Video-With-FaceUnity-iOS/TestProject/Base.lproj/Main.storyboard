@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +20,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="448"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EWr-2W-0w4" customClass="GLRenderView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EWr-2W-0w4">
+                                <rect key="frame" x="0.0" y="448" width="414" height="448"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRj-fA-5yZ">
                                 <rect key="frame" x="0.0" y="448" width="414" height="448"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -56,11 +58,15 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="SMA-mn-YTq" secondAttribute="bottom" constant="20" id="EiX-DW-MXp"/>
                             <constraint firstItem="VSe-5a-6e2" firstAttribute="leading" secondItem="GXK-Dk-LYd" secondAttribute="trailing" constant="20" id="FvR-0K-mVH"/>
                             <constraint firstItem="qnr-CO-dww" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="IZi-uX-7FV"/>
+                            <constraint firstAttribute="bottom" secondItem="pRj-fA-5yZ" secondAttribute="bottom" id="MC2-Lr-zBq"/>
                             <constraint firstItem="qnr-CO-dww" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="PEs-r1-svd"/>
                             <constraint firstAttribute="bottom" secondItem="EWr-2W-0w4" secondAttribute="bottom" id="RTP-Na-1qx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qnr-CO-dww" secondAttribute="trailing" id="bxC-K0-s3c"/>
                             <constraint firstItem="SMA-mn-YTq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dVh-eO-DHn"/>
+                            <constraint firstItem="pRj-fA-5yZ" firstAttribute="top" secondItem="qnr-CO-dww" secondAttribute="bottom" id="eED-lu-CYK"/>
                             <constraint firstItem="EWr-2W-0w4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fXh-pa-Fkd"/>
+                            <constraint firstItem="pRj-fA-5yZ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="gk9-Ad-Rk7"/>
+                            <constraint firstItem="pRj-fA-5yZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kQu-29-4q9"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="EWr-2W-0w4" secondAttribute="trailing" id="mk3-4w-7Ql"/>
                             <constraint firstItem="qnr-CO-dww" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="1/2" id="xeC-M7-2wC"/>
                             <constraint firstItem="GXK-Dk-LYd" firstAttribute="leading" secondItem="SMA-mn-YTq" secondAttribute="trailing" constant="20" id="zUc-Gd-rTa"/>
@@ -68,12 +74,14 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="localView" destination="pRj-fA-5yZ" id="eph-d6-vI9"/>
                         <outlet property="renderView" destination="qnr-CO-dww" id="Vr9-eA-IFd"/>
                         <outlet property="renderView2" destination="EWr-2W-0w4" id="OJN-WO-yoj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="121.875"/>
         </scene>
     </scenes>
 </document>

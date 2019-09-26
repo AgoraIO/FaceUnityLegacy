@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class GLRenderView;
 @protocol VideoViewShading;
 
-
 @interface GLRenderView : UIView <VideoRender>
 
 @property(nonatomic, weak) id<VideoViewDelegate> delegate;

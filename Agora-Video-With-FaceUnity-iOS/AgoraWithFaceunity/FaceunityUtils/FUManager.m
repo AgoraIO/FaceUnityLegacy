@@ -13,8 +13,9 @@
 #import <sys/utsname.h>
 #import <CoreMotion/CoreMotion.h>
 #import "FUMusicPlayer.h"
+#import <CapturerAndRender/CapturerAndRender.h>
 
-@interface FUManager ()
+@interface FUManager () <Connector>
 {
     //MARK: Faceunity
     int items[4];
@@ -260,6 +261,10 @@ static FUManager *shareManager = NULL;
         [FURenderer setMaxFaces:1];
     }
     
+}
+
+- (void)setConnector:(id<Connector>)connector {
+    self.connector = connector;
 }
 
 /** destroy all items */
@@ -621,4 +626,35 @@ static FUManager *shareManager = NULL;
     if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
     return platform;
 }
+
+- (void)didOutputFrame:(VideoFrame *)frame {
+    if (![frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
+        return;
+    }
+
+    CustomCVPixelBuffer* buffer = frame.buffer;
+    CVPixelBufferRef pixelBuffer = buffer.pixelBuffer;
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    
+    [self renderItemsToPixelBuffer:pixelBuffer];
+    
+    if ([self.connector respondsToSelector:@selector(didOutputFrame:)]) {
+        [self.connector didOutputFrame:frame];
+    }
+    
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+}
+
+//- (void)didOutputPixelBuffer:(CVPixelBufferRef)pixelBuffer withTimeStamp:(CMTime)timeStamp rotation:(VideoRotation)rotation {
+//    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+//
+//    [self renderItemsToPixelBuffer:pixelBuffer];
+//
+//    if ([self.connector respondsToSelector:@selector(didOutputPixelBuffer:withTimeStamp:rotation:)]) {
+//        [self.connector didOutputPixelBuffer:pixelBuffer withTimeStamp:timeStamp rotation:rotation];
+//    }
+//
+//    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+//}
 @end

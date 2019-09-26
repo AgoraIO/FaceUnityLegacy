@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, VideoRotation) {
 
 /** Height without rotation applied. */
 @property(nonatomic, readonly) int height;
-@property(nonatomic, readonly) VideoRotation rotation;
+@property(nonatomic, assign) VideoRotation rotation;
 
 @property(nonatomic, readonly) CMTime timeStamp;
 
@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, VideoRotation) {
 /** Return a frame that is guaranteed to be I420, i.e. it is possible to access
  *  the YUV data on it.
  */
-- (VideoFrame *)newI420VideoFrame;
+//- (VideoFrame *)newI420VideoFrame;
 
 @end
 

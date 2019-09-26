@@ -256,7 +256,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             break;
         case UIDeviceOrientationPortraitUpsideDown:
             for (NSString* str in array) {
-                if ([str isEqual: @"UIInterfaceOrientationUpsideDown"]) {
+                if ([str isEqual: @"UIInterfaceOrientationPortraitUpsideDown"]) {
+//                    _orientation = VideoRotation180;
                     _rotation = VideoRotation270;
                     break;
                 }
@@ -286,9 +287,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 #else
     // No rotation on Mac.
-    _rotation = RTCVideoRotation_0;
 #endif
-    
     CustomCVPixelBuffer *customPixelBuffer = [[CustomCVPixelBuffer alloc] initWithPixelBuffer:pixelBuffer];
     CMTime timeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     
@@ -524,17 +523,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     _orientation = [UIDevice currentDevice].orientation;
 }
 
-- (NSSet<NSNumber *> *)supportedPixelFormats {
-//    return [NSSet setWithObjects:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange),
-//            @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange),
-//            @(kCVPixelFormatType_32BGRA),
-//            @(kCVPixelFormatType_32ARGB),
-//            nil];
-    
-    return [NSSet setWithObjects:
-            @(kCVPixelFormatType_32BGRA),
-            @(kCVPixelFormatType_32ARGB),
-            nil];
+- (void)setVideoOrientation {
+    AVCaptureConnection *videoConnection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
 }
 
 @end

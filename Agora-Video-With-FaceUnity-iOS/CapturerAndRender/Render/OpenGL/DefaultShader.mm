@@ -280,9 +280,4 @@ FRAGMENT_SHADER_OUT
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
-- (void)applyShadingForFrameWithWidth:(int)width height:(int)height rotation:(VideoRotation)rotation yPlane:(GLuint)yPlane uvPlane:(GLuint)uvPlane {
-    
-}
-
-
 @end
