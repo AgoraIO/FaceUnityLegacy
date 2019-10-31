@@ -256,8 +256,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             break;
         case UIDeviceOrientationPortraitUpsideDown:
             for (NSString* str in array) {
-                if ([str isEqual: @"UIInterfaceOrientationPortraitUpsideDown"]) {
-//                    _orientation = VideoRotation180;
+                if ([str isEqual: @"UIInterfaceOrientationUpsideDown"]) {
                     _rotation = VideoRotation270;
                     break;
                 }
@@ -287,7 +286,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 #else
     // No rotation on Mac.
+    _rotation = RTCVideoRotation_0;
 #endif
+    
     CustomCVPixelBuffer *customPixelBuffer = [[CustomCVPixelBuffer alloc] initWithPixelBuffer:pixelBuffer];
     CMTime timeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     
@@ -523,9 +524,51 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     _orientation = [UIDevice currentDevice].orientation;
 }
 
-- (void)setVideoOrientation {
-    AVCaptureConnection *videoConnection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
-    [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+- (NSSet<NSNumber *> *)supportedPixelFormats {
+//    return [NSSet setWithObjects:@(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange),
+//            @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange),
+//            @(kCVPixelFormatType_32BGRA),
+//            @(kCVPixelFormatType_32ARGB),
+//            nil];
+    
+    return [NSSet setWithObjects:
+            @(kCVPixelFormatType_32BGRA),
+            @(kCVPixelFormatType_32ARGB),
+            nil];
 }
-
+//BOOL CFStringContainsString(CFStringRef theString, CFStringRef stringToFind) {
+//    return CFStringFindWithOptions(theString,
+//                                   stringToFind,
+//                                   CFRangeMake(0, CFStringGetLength(theString)),
+//                                   kCFCompareCaseInsensitive,
+//                                   nil);
+//}
+//
+//-(AVCaptureDevicePosition)devicePositionForSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+//    // Check the image's EXIF for the camera the image came from.
+//    AVCaptureDevicePosition cameraPosition = AVCaptureDevicePositionUnspecified;
+//    CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(
+//                                                                kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
+//    if (attachments) {
+//        int size = CFDictionaryGetCount(attachments);
+//        if (size > 0) {
+//            CFDictionaryRef cfExifDictVal = nil;
+//            if (CFDictionaryGetValueIfPresent(
+//                                              attachments, (const void *)CFSTR("{Exif}"), (const void **)&cfExifDictVal)) {
+//                CFStringRef cfLensModelStrVal;
+//                if (CFDictionaryGetValueIfPresent(cfExifDictVal,
+//                                                  (const void *)CFSTR("LensModel"),
+//                                                  (const void **)&cfLensModelStrVal)) {
+//                    if (CFStringContainsString(cfLensModelStrVal, CFSTR("front"))) {
+//                        cameraPosition = AVCaptureDevicePositionFront;
+//                    } else if (CFStringContainsString(cfLensModelStrVal, CFSTR("back"))) {
+//                        cameraPosition = AVCaptureDevicePositionBack;
+//                    }
+//                }
+//            }
+//        }
+//        CFRelease(attachments);
+//    }
+//    return cameraPosition;
+//}
 @end

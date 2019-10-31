@@ -7,6 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09E90105236AE085000938D7 /* CaptureManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E900FF236AE085000938D7 /* CaptureManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E90106236AE085000938D7 /* CameraVideoCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E90100236AE085000938D7 /* CameraVideoCapturer.mm */; };
+		09E90107236AE085000938D7 /* CaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90101236AE085000938D7 /* CaptureManager.m */; };
+		09E90108236AE085000938D7 /* CameraVideoCapturer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90102236AE085000938D7 /* CameraVideoCapturer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E90109236AE085000938D7 /* VideoCapturer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90103236AE085000938D7 /* VideoCapturer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E9010A236AE085000938D7 /* VideoCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90104236AE085000938D7 /* VideoCapturer.m */; };
+		09E90137236AE19E000938D7 /* DefaultShader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E90116236AE19D000938D7 /* DefaultShader.mm */; };
+		09E90138236AE19E000938D7 /* Shader.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90117236AE19D000938D7 /* Shader.h */; };
+		09E90139236AE19E000938D7 /* GLRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90118236AE19D000938D7 /* GLRenderView.m */; };
+		09E9013A236AE19E000938D7 /* I420TextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90119236AE19D000938D7 /* I420TextureCache.h */; };
+		09E9013B236AE19E000938D7 /* DisplayLinkTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */; };
+		09E9013C236AE19E000938D7 /* NV12TextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011B236AE19D000938D7 /* NV12TextureCache.m */; };
+		09E9013D236AE19E000938D7 /* RGBATextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011C236AE19D000938D7 /* RGBATextureCache.m */; };
+		09E9013E236AE19E000938D7 /* Shader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011D236AE19D000938D7 /* Shader.mm */; };
+		09E9013F236AE19E000938D7 /* I420TextureCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011E236AE19D000938D7 /* I420TextureCache.mm */; };
+		09E90140236AE19E000938D7 /* VideoViewShading.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E9011F236AE19D000938D7 /* VideoViewShading.h */; };
+		09E90141236AE19E000938D7 /* NV12TextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90120236AE19D000938D7 /* NV12TextureCache.h */; };
+		09E90142236AE19E000938D7 /* DisplayLinkTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90121236AE19D000938D7 /* DisplayLinkTimer.h */; };
+		09E90143236AE19E000938D7 /* GLRenderView.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90122236AE19D000938D7 /* GLRenderView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E90144236AE19E000938D7 /* DefaultShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90123236AE19D000938D7 /* DefaultShader.h */; };
+		09E90145236AE19E000938D7 /* OpenGLDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90124236AE19D000938D7 /* OpenGLDefines.h */; };
+		09E90146236AE19E000938D7 /* RGBATextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90125236AE19D000938D7 /* RGBATextureCache.h */; };
+		09E9014C236AE19E000938D7 /* VideoRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E9012B236AE19E000938D7 /* VideoRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E90155236AE301000938D7 /* CustomCVPixelBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E9014E236AE301000938D7 /* CustomCVPixelBuffer.mm */; };
+		09E90156236AE301000938D7 /* CustomCVPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E9014F236AE301000938D7 /* CustomCVPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E90157236AE301000938D7 /* VideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90150236AE301000938D7 /* VideoFrame.m */; };
+		09E90158236AE301000938D7 /* I420Buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90151236AE301000938D7 /* I420Buffer.h */; };
+		09E90159236AE301000938D7 /* VideoFrameBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90152236AE301000938D7 /* VideoFrameBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E9015A236AE301000938D7 /* YUVPlanarBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90153236AE301000938D7 /* YUVPlanarBuffer.h */; };
+		09E9015B236AE301000938D7 /* VideoFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90154236AE301000938D7 /* VideoFrame.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09E9FDDD23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */; };
+		09E9FDDE23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */; };
+		09E9FDDF23668722000938D7 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDB23668721000938D7 /* libcrypto.a */; };
+		09E9FDE023668722000938D7 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDB23668721000938D7 /* libcrypto.a */; };
+		09E9FDE123668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */; };
+		09E9FDE223668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */; };
 		0F02C1F120550936006EF198 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F020550936006EF198 /* MainViewController.m */; };
 		0F02C1F420550948006EF198 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F320550948006EF198 /* RoomViewController.m */; };
 		0F02C1F620561CF6006EF198 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E520527DFC000F8159 /* CoreMedia.framework */; };
@@ -16,15 +52,11 @@
 		0F02C1FA20561D14006EF198 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6ED20527E2F000F8159 /* VideoToolbox.framework */; };
 		0F02C1FB20561D1B006EF198 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6EF20527E3A000F8159 /* AudioToolbox.framework */; };
 		0F0DE96C233AC4D20036843E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6D9205271C1000F8159 /* Accelerate.framework */; };
-		0F0DE96E233AC51E0036843E /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F0DE96D233AC51E0036843E /* AgoraRtcEngineKit.framework */; };
 		0F0DE96F233AC52C0036843E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E920527E15000F8159 /* CoreTelephony.framework */; };
 		0F0DE970233AC53A0036843E /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707BDE562269BD950040211C /* CoreML.framework */; };
 		0F0DE971233AC5470036843E /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6F320527E50000F8159 /* libresolv.tbd */; };
 		0F0DE972233AC5570036843E /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6ED20527E2F000F8159 /* VideoToolbox.framework */; };
 		0F0DE973233AC5610036843E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E320527DF4000F8159 /* SystemConfiguration.framework */; };
-		0F0DE977233ADE1E0036843E /* RenderManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F0DE975233ADE1E0036843E /* RenderManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0F0DE978233ADE1E0036843E /* RenderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F0DE976233ADE1E0036843E /* RenderManager.m */; };
-		0F112313233C1E2900414A13 /* Connector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F112312233C1E2200414A13 /* Connector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0F112314233C39CC00414A13 /* KeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F280F94205666D100CF70CC /* KeyCenter.m */; };
 		0F29C65C20525BC6000F8159 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F29C65B20525BC6000F8159 /* AppDelegate.m */; };
 		0F29C66220525BC6000F8159 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F29C66020525BC6000F8159 /* Main.storyboard */; };
@@ -52,34 +84,6 @@
 		0FBDA5BB2338160200BF523E /* CapturerAndRender.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0FBDA5B32338160200BF523E /* CapturerAndRender.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0FBDA5C02338172C00BF523E /* CapturerAndRender.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FBDA5B32338160200BF523E /* CapturerAndRender.framework */; };
 		0FBDA5C12338173900BF523E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6EB20527E23000F8159 /* AVFoundation.framework */; };
-		0FBDA5C22338182000BF523E /* CapturerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1DE23355E9B0007C48D /* CapturerManager.m */; };
-		0FBDA5C32338182400BF523E /* CameraVideoCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1DD23355E9B0007C48D /* CameraVideoCapturer.mm */; };
-		0FBDA5C42338182900BF523E /* VideoCapturer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1E023355E9B0007C48D /* VideoCapturer.h */; };
-		0FBDA5C52338182C00BF523E /* CapturerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1E123355E9B0007C48D /* CapturerManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FBDA5C62338183100BF523E /* CameraVideoCapturer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1DF23355E9B0007C48D /* CameraVideoCapturer.h */; };
-		0FBDA5C72338183100BF523E /* VideoCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1E223355E9B0007C48D /* VideoCapturer.m */; };
-		0FBDA5C82338183800BF523E /* VideoRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1EC23355E9B0007C48D /* VideoRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FBDA5C92338183D00BF523E /* GLRenderView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1F923355E9B0007C48D /* GLRenderView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FBDA5CA2338183D00BF523E /* GLRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1F023355E9B0007C48D /* GLRenderView.m */; };
-		0FBDA5CB2338183D00BF523E /* I420TextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1F123355E9B0007C48D /* I420TextureCache.h */; };
-		0FBDA5CC2338183D00BF523E /* I420TextureCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1F523355E9B0007C48D /* I420TextureCache.mm */; };
-		0FBDA5CD2338183D00BF523E /* NV12TextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1F723355E9B0007C48D /* NV12TextureCache.h */; };
-		0FBDA5CE2338183D00BF523E /* NV12TextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1F323355E9B0007C48D /* NV12TextureCache.m */; };
-		0FBDA5CF2338183D00BF523E /* Shader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1EF23355E9B0007C48D /* Shader.h */; };
-		0FBDA5D02338183D00BF523E /* Shader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1F423355E9B0007C48D /* Shader.mm */; };
-		0FBDA5D12338183D00BF523E /* DefaultShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1FA23355E9B0007C48D /* DefaultShader.h */; };
-		0FBDA5D22338183D00BF523E /* DefaultShader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1EE23355E9B0007C48D /* DefaultShader.mm */; };
-		0FBDA5D32338183D00BF523E /* DisplayLinkTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1F823355E9B0007C48D /* DisplayLinkTimer.h */; };
-		0FBDA5D42338183D00BF523E /* DisplayLinkTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1F223355E9B0007C48D /* DisplayLinkTimer.m */; };
-		0FBDA5D52338183D00BF523E /* VideoViewShading.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1F623355E9B0007C48D /* VideoViewShading.h */; };
-		0FBDA5D62338183D00BF523E /* OpenGLDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1FB23355E9B0007C48D /* OpenGLDefines.h */; };
-		0FBDA5D72338186500BF523E /* CustomCVPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1E723355E9B0007C48D /* CustomCVPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FBDA5D82338186500BF523E /* CustomCVPixelBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1EA23355E9B0007C48D /* CustomCVPixelBuffer.mm */; };
-		0FBDA5D92338186500BF523E /* VideoFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1E623355E9B0007C48D /* VideoFrame.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FBDA5DA2338186500BF523E /* VideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1E823355E9B0007C48D /* VideoFrame.m */; };
-		0FBDA5DB2338186500BF523E /* I420Buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1E923355E9B0007C48D /* I420Buffer.h */; };
-		0FBDA5DC2338186500BF523E /* VideoFrameBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1E423355E9B0007C48D /* VideoFrameBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FBDA5DD2338186500BF523E /* YUVPlanarBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1E523355E9B0007C48D /* YUVPlanarBuffer.h */; };
 		0FBDA5DE2338188D00BF523E /* AgoraDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1FE23355E9B0007C48D /* AgoraDispatcher.h */; };
 		0FBDA5DF2338188D00BF523E /* AgoraDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A2B523355E9C0007C48D /* AgoraDispatcher.m */; };
 		0FBDA5E02338188D00BF523E /* LogCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A2B723355E9C0007C48D /* LogCenter.h */; };
@@ -156,8 +160,6 @@
 		0FBDA6712338192300BF523E /* scale_argb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDA62C2338192200BF523E /* scale_argb.cc */; };
 		0FBDA672233822D400BF523E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FBF73032224F3940054BAEE /* libc++.tbd */; };
 		0FBDA6732338264300BF523E /* AVCaptureSession+DevicePosition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A2B623355E9C0007C48D /* AVCaptureSession+DevicePosition.mm */; };
-		0FBDA676233983A100BF523E /* RGBATextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FBDA674233983A100BF523E /* RGBATextureCache.h */; };
-		0FBDA677233983A100BF523E /* RGBATextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDA675233983A100BF523E /* RGBATextureCache.m */; };
 		0FD4E2052105C747006E46A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0FD4E2072105C747006E46A1 /* Localizable.strings */; };
 		0FDB800620DA3C8E005D9C58 /* touhua_ztt_fu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8020DA3C8E005D9C58 /* touhua_ztt_fu.bundle */; };
 		0FDB800720DA3C8E005D9C58 /* yazui.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8120DA3C8E005D9C58 /* yazui.bundle */; };
@@ -314,14 +316,43 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		09E900FF236AE085000938D7 /* CaptureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureManager.h; sourceTree = "<group>"; };
+		09E90100236AE085000938D7 /* CameraVideoCapturer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraVideoCapturer.mm; sourceTree = "<group>"; };
+		09E90101236AE085000938D7 /* CaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureManager.m; sourceTree = "<group>"; };
+		09E90102236AE085000938D7 /* CameraVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraVideoCapturer.h; sourceTree = "<group>"; };
+		09E90103236AE085000938D7 /* VideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCapturer.h; sourceTree = "<group>"; };
+		09E90104236AE085000938D7 /* VideoCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCapturer.m; sourceTree = "<group>"; };
+		09E90116236AE19D000938D7 /* DefaultShader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DefaultShader.mm; sourceTree = "<group>"; };
+		09E90117236AE19D000938D7 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
+		09E90118236AE19D000938D7 /* GLRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLRenderView.m; sourceTree = "<group>"; };
+		09E90119236AE19D000938D7 /* I420TextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = I420TextureCache.h; sourceTree = "<group>"; };
+		09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayLinkTimer.m; sourceTree = "<group>"; };
+		09E9011B236AE19D000938D7 /* NV12TextureCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NV12TextureCache.m; sourceTree = "<group>"; };
+		09E9011C236AE19D000938D7 /* RGBATextureCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGBATextureCache.m; sourceTree = "<group>"; };
+		09E9011D236AE19D000938D7 /* Shader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shader.mm; sourceTree = "<group>"; };
+		09E9011E236AE19D000938D7 /* I420TextureCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = I420TextureCache.mm; sourceTree = "<group>"; };
+		09E9011F236AE19D000938D7 /* VideoViewShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewShading.h; sourceTree = "<group>"; };
+		09E90120236AE19D000938D7 /* NV12TextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NV12TextureCache.h; sourceTree = "<group>"; };
+		09E90121236AE19D000938D7 /* DisplayLinkTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayLinkTimer.h; sourceTree = "<group>"; };
+		09E90122236AE19D000938D7 /* GLRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLRenderView.h; sourceTree = "<group>"; };
+		09E90123236AE19D000938D7 /* DefaultShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShader.h; sourceTree = "<group>"; };
+		09E90124236AE19D000938D7 /* OpenGLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLDefines.h; sourceTree = "<group>"; };
+		09E90125236AE19D000938D7 /* RGBATextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGBATextureCache.h; sourceTree = "<group>"; };
+		09E9012B236AE19E000938D7 /* VideoRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoRender.h; sourceTree = "<group>"; };
+		09E9014E236AE301000938D7 /* CustomCVPixelBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomCVPixelBuffer.mm; sourceTree = "<group>"; };
+		09E9014F236AE301000938D7 /* CustomCVPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCVPixelBuffer.h; sourceTree = "<group>"; };
+		09E90150236AE301000938D7 /* VideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoFrame.m; sourceTree = "<group>"; };
+		09E90151236AE301000938D7 /* I420Buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = I420Buffer.h; sourceTree = "<group>"; };
+		09E90152236AE301000938D7 /* VideoFrameBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrameBuffer.h; sourceTree = "<group>"; };
+		09E90153236AE301000938D7 /* YUVPlanarBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YUVPlanarBuffer.h; sourceTree = "<group>"; };
+		09E90154236AE301000938D7 /* VideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrame.h; sourceTree = "<group>"; };
+		09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtcCryptoLoader.framework; sourceTree = "<group>"; };
+		09E9FDDB23668721000938D7 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtcEngineKit.framework; sourceTree = "<group>"; };
 		0F02C1EF20550936006EF198 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		0F02C1F020550936006EF198 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		0F02C1F220550948006EF198 /* RoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		0F02C1F320550948006EF198 /* RoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
-		0F0DE96D233AC51E0036843E /* AgoraRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtcEngineKit.framework; path = TestProject/AgoraRtcEngineKit.framework; sourceTree = "<group>"; };
-		0F0DE975233ADE1E0036843E /* RenderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderManager.h; sourceTree = "<group>"; };
-		0F0DE976233ADE1E0036843E /* RenderManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RenderManager.m; sourceTree = "<group>"; };
-		0F112312233C1E2200414A13 /* Connector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connector.h; sourceTree = "<group>"; };
 		0F280F94205666D100CF70CC /* KeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyCenter.m; sourceTree = "<group>"; };
 		0F280F95205666D100CF70CC /* KeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyCenter.h; sourceTree = "<group>"; };
 		0F29C65720525BC6000F8159 /* AgoraWithFaceunity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgoraWithFaceunity.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -433,36 +464,6 @@
 		0FBDA62A2338192200BF523E /* compare_gcc.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = compare_gcc.cc; sourceTree = "<group>"; };
 		0FBDA62B2338192200BF523E /* compare_neon64.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = compare_neon64.cc; sourceTree = "<group>"; };
 		0FBDA62C2338192200BF523E /* scale_argb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scale_argb.cc; sourceTree = "<group>"; };
-		0FBDA674233983A100BF523E /* RGBATextureCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RGBATextureCache.h; sourceTree = "<group>"; };
-		0FBDA675233983A100BF523E /* RGBATextureCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RGBATextureCache.m; sourceTree = "<group>"; };
-		0FC8A1DD23355E9B0007C48D /* CameraVideoCapturer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraVideoCapturer.mm; sourceTree = "<group>"; };
-		0FC8A1DE23355E9B0007C48D /* CapturerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CapturerManager.m; sourceTree = "<group>"; };
-		0FC8A1DF23355E9B0007C48D /* CameraVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraVideoCapturer.h; sourceTree = "<group>"; };
-		0FC8A1E023355E9B0007C48D /* VideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCapturer.h; sourceTree = "<group>"; };
-		0FC8A1E123355E9B0007C48D /* CapturerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CapturerManager.h; sourceTree = "<group>"; };
-		0FC8A1E223355E9B0007C48D /* VideoCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCapturer.m; sourceTree = "<group>"; };
-		0FC8A1E423355E9B0007C48D /* VideoFrameBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrameBuffer.h; sourceTree = "<group>"; };
-		0FC8A1E523355E9B0007C48D /* YUVPlanarBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YUVPlanarBuffer.h; sourceTree = "<group>"; };
-		0FC8A1E623355E9B0007C48D /* VideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrame.h; sourceTree = "<group>"; };
-		0FC8A1E723355E9B0007C48D /* CustomCVPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCVPixelBuffer.h; sourceTree = "<group>"; };
-		0FC8A1E823355E9B0007C48D /* VideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoFrame.m; sourceTree = "<group>"; };
-		0FC8A1E923355E9B0007C48D /* I420Buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = I420Buffer.h; sourceTree = "<group>"; };
-		0FC8A1EA23355E9B0007C48D /* CustomCVPixelBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomCVPixelBuffer.mm; sourceTree = "<group>"; };
-		0FC8A1EC23355E9B0007C48D /* VideoRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoRender.h; sourceTree = "<group>"; };
-		0FC8A1EE23355E9B0007C48D /* DefaultShader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DefaultShader.mm; sourceTree = "<group>"; };
-		0FC8A1EF23355E9B0007C48D /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
-		0FC8A1F023355E9B0007C48D /* GLRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLRenderView.m; sourceTree = "<group>"; };
-		0FC8A1F123355E9B0007C48D /* I420TextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = I420TextureCache.h; sourceTree = "<group>"; };
-		0FC8A1F223355E9B0007C48D /* DisplayLinkTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayLinkTimer.m; sourceTree = "<group>"; };
-		0FC8A1F323355E9B0007C48D /* NV12TextureCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NV12TextureCache.m; sourceTree = "<group>"; };
-		0FC8A1F423355E9B0007C48D /* Shader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shader.mm; sourceTree = "<group>"; };
-		0FC8A1F523355E9B0007C48D /* I420TextureCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = I420TextureCache.mm; sourceTree = "<group>"; };
-		0FC8A1F623355E9B0007C48D /* VideoViewShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewShading.h; sourceTree = "<group>"; };
-		0FC8A1F723355E9B0007C48D /* NV12TextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NV12TextureCache.h; sourceTree = "<group>"; };
-		0FC8A1F823355E9B0007C48D /* DisplayLinkTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayLinkTimer.h; sourceTree = "<group>"; };
-		0FC8A1F923355E9B0007C48D /* GLRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLRenderView.h; sourceTree = "<group>"; };
-		0FC8A1FA23355E9B0007C48D /* DefaultShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShader.h; sourceTree = "<group>"; };
-		0FC8A1FB23355E9B0007C48D /* OpenGLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLDefines.h; sourceTree = "<group>"; };
 		0FC8A1FE23355E9B0007C48D /* AgoraDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraDispatcher.h; sourceTree = "<group>"; };
 		0FC8A1FF23355E9B0007C48D /* LogCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LogCenter.mm; sourceTree = "<group>"; };
 		0FC8A2B523355E9C0007C48D /* AgoraDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraDispatcher.m; sourceTree = "<group>"; };
@@ -616,11 +617,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09E9FDE123668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */,
 				707BDE572269BD950040211C /* CoreML.framework in Frameworks */,
 				2FBF73042224F3940054BAEE /* libc++.tbd in Frameworks */,
 				0F308541216DCED6002A1D28 /* FUAPIDemoBar.framework in Frameworks */,
 				0F02C1FB20561D1B006EF198 /* AudioToolbox.framework in Frameworks */,
+				09E9FDDF23668722000938D7 /* libcrypto.a in Frameworks */,
 				0F02C1FA20561D14006EF198 /* VideoToolbox.framework in Frameworks */,
+				09E9FDDD23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */,
 				0F02C1F920561D0D006EF198 /* AVFoundation.framework in Frameworks */,
 				0F02C1F820561D04006EF198 /* CoreTelephony.framework in Frameworks */,
 				0F02C1F620561CF6006EF198 /* CoreMedia.framework in Frameworks */,
@@ -638,12 +642,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09E9FDE223668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */,
 				0F0DE973233AC5610036843E /* SystemConfiguration.framework in Frameworks */,
+				09E9FDDE23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */,
 				0F0DE972233AC5570036843E /* VideoToolbox.framework in Frameworks */,
 				0F0DE971233AC5470036843E /* libresolv.tbd in Frameworks */,
 				0F0DE970233AC53A0036843E /* CoreML.framework in Frameworks */,
 				0F0DE96F233AC52C0036843E /* CoreTelephony.framework in Frameworks */,
-				0F0DE96E233AC51E0036843E /* AgoraRtcEngineKit.framework in Frameworks */,
+				09E9FDE023668722000938D7 /* libcrypto.a in Frameworks */,
 				0F0DE96C233AC4D20036843E /* Accelerate.framework in Frameworks */,
 				0FBDA672233822D400BF523E /* libc++.tbd in Frameworks */,
 				0FBDA5C12338173900BF523E /* AVFoundation.framework in Frameworks */,
@@ -661,6 +667,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09E90115236AE19D000938D7 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				09E90116236AE19D000938D7 /* DefaultShader.mm */,
+				09E90117236AE19D000938D7 /* Shader.h */,
+				09E90118236AE19D000938D7 /* GLRenderView.m */,
+				09E90119236AE19D000938D7 /* I420TextureCache.h */,
+				09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */,
+				09E9011B236AE19D000938D7 /* NV12TextureCache.m */,
+				09E9011C236AE19D000938D7 /* RGBATextureCache.m */,
+				09E9011D236AE19D000938D7 /* Shader.mm */,
+				09E9011E236AE19D000938D7 /* I420TextureCache.mm */,
+				09E9011F236AE19D000938D7 /* VideoViewShading.h */,
+				09E90120236AE19D000938D7 /* NV12TextureCache.h */,
+				09E90121236AE19D000938D7 /* DisplayLinkTimer.h */,
+				09E90122236AE19D000938D7 /* GLRenderView.h */,
+				09E90123236AE19D000938D7 /* DefaultShader.h */,
+				09E90124236AE19D000938D7 /* OpenGLDefines.h */,
+				09E90125236AE19D000938D7 /* RGBATextureCache.h */,
+			);
+			path = OpenGL;
+			sourceTree = "<group>";
+		};
 		0F02C1F520561AB6006EF198 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -730,7 +759,9 @@
 		0F29C6D8205271C0000F8159 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0F0DE96D233AC51E0036843E /* AgoraRtcEngineKit.framework */,
+				09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */,
+				09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */,
+				09E9FDDB23668721000938D7 /* libcrypto.a */,
 				707BDE562269BD950040211C /* CoreML.framework */,
 				2FBF73032224F3940054BAEE /* libc++.tbd */,
 				0F29C6F320527E50000F8159 /* libresolv.tbd */,
@@ -768,7 +799,6 @@
 			isa = PBXGroup;
 			children = (
 				0FBDA5B52338160200BF523E /* CapturerAndRender.h */,
-				0F112312233C1E2200414A13 /* Connector.h */,
 				0FC8A1DC23355E9B0007C48D /* Capturer */,
 				0FC8A1EB23355E9B0007C48D /* Render */,
 				0FC8A1E323355E9B0007C48D /* VideoFrame */,
@@ -872,12 +902,12 @@
 		0FC8A1DC23355E9B0007C48D /* Capturer */ = {
 			isa = PBXGroup;
 			children = (
-				0FC8A1E123355E9B0007C48D /* CapturerManager.h */,
-				0FC8A1DE23355E9B0007C48D /* CapturerManager.m */,
-				0FC8A1DF23355E9B0007C48D /* CameraVideoCapturer.h */,
-				0FC8A1DD23355E9B0007C48D /* CameraVideoCapturer.mm */,
-				0FC8A1E023355E9B0007C48D /* VideoCapturer.h */,
-				0FC8A1E223355E9B0007C48D /* VideoCapturer.m */,
+				09E900FF236AE085000938D7 /* CaptureManager.h */,
+				09E90101236AE085000938D7 /* CaptureManager.m */,
+				09E90102236AE085000938D7 /* CameraVideoCapturer.h */,
+				09E90100236AE085000938D7 /* CameraVideoCapturer.mm */,
+				09E90103236AE085000938D7 /* VideoCapturer.h */,
+				09E90104236AE085000938D7 /* VideoCapturer.m */,
 			);
 			path = Capturer;
 			sourceTree = "<group>";
@@ -885,13 +915,13 @@
 		0FC8A1E323355E9B0007C48D /* VideoFrame */ = {
 			isa = PBXGroup;
 			children = (
-				0FC8A1E723355E9B0007C48D /* CustomCVPixelBuffer.h */,
-				0FC8A1EA23355E9B0007C48D /* CustomCVPixelBuffer.mm */,
-				0FC8A1E623355E9B0007C48D /* VideoFrame.h */,
-				0FC8A1E823355E9B0007C48D /* VideoFrame.m */,
-				0FC8A1E923355E9B0007C48D /* I420Buffer.h */,
-				0FC8A1E523355E9B0007C48D /* YUVPlanarBuffer.h */,
-				0FC8A1E423355E9B0007C48D /* VideoFrameBuffer.h */,
+				09E90152236AE301000938D7 /* VideoFrameBuffer.h */,
+				09E90153236AE301000938D7 /* YUVPlanarBuffer.h */,
+				09E90154236AE301000938D7 /* VideoFrame.h */,
+				09E90150236AE301000938D7 /* VideoFrame.m */,
+				09E9014F236AE301000938D7 /* CustomCVPixelBuffer.h */,
+				09E9014E236AE301000938D7 /* CustomCVPixelBuffer.mm */,
+				09E90151236AE301000938D7 /* I420Buffer.h */,
 			);
 			path = VideoFrame;
 			sourceTree = "<group>";
@@ -899,35 +929,10 @@
 		0FC8A1EB23355E9B0007C48D /* Render */ = {
 			isa = PBXGroup;
 			children = (
-				0F0DE975233ADE1E0036843E /* RenderManager.h */,
-				0F0DE976233ADE1E0036843E /* RenderManager.m */,
-				0FC8A1EC23355E9B0007C48D /* VideoRender.h */,
-				0FC8A1ED23355E9B0007C48D /* OpenGL */,
+				09E90115236AE19D000938D7 /* OpenGL */,
+				09E9012B236AE19E000938D7 /* VideoRender.h */,
 			);
 			path = Render;
-			sourceTree = "<group>";
-		};
-		0FC8A1ED23355E9B0007C48D /* OpenGL */ = {
-			isa = PBXGroup;
-			children = (
-				0FC8A1F923355E9B0007C48D /* GLRenderView.h */,
-				0FC8A1F023355E9B0007C48D /* GLRenderView.m */,
-				0FC8A1F123355E9B0007C48D /* I420TextureCache.h */,
-				0FC8A1F523355E9B0007C48D /* I420TextureCache.mm */,
-				0FC8A1F723355E9B0007C48D /* NV12TextureCache.h */,
-				0FC8A1F323355E9B0007C48D /* NV12TextureCache.m */,
-				0FBDA674233983A100BF523E /* RGBATextureCache.h */,
-				0FBDA675233983A100BF523E /* RGBATextureCache.m */,
-				0FC8A1EF23355E9B0007C48D /* Shader.h */,
-				0FC8A1F423355E9B0007C48D /* Shader.mm */,
-				0FC8A1FA23355E9B0007C48D /* DefaultShader.h */,
-				0FC8A1EE23355E9B0007C48D /* DefaultShader.mm */,
-				0FC8A1F823355E9B0007C48D /* DisplayLinkTimer.h */,
-				0FC8A1F223355E9B0007C48D /* DisplayLinkTimer.m */,
-				0FC8A1F623355E9B0007C48D /* VideoViewShading.h */,
-				0FC8A1FB23355E9B0007C48D /* OpenGLDefines.h */,
-			);
-			path = OpenGL;
 			sourceTree = "<group>";
 		};
 		0FC8A1FD23355E9B0007C48D /* Helper */ = {
@@ -1238,50 +1243,48 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09E90156236AE301000938D7 /* CustomCVPixelBuffer.h in Headers */,
+				09E90159236AE301000938D7 /* VideoFrameBuffer.h in Headers */,
+				09E9015B236AE301000938D7 /* VideoFrame.h in Headers */,
+				09E90143236AE19E000938D7 /* GLRenderView.h in Headers */,
+				09E9014C236AE19E000938D7 /* VideoRender.h in Headers */,
+				09E90145236AE19E000938D7 /* OpenGLDefines.h in Headers */,
+				09E90109236AE085000938D7 /* VideoCapturer.h in Headers */,
+				09E90105236AE085000938D7 /* CaptureManager.h in Headers */,
+				09E90108236AE085000938D7 /* CameraVideoCapturer.h in Headers */,
 				0FBDA63E2338192200BF523E /* convert.h in Headers */,
-				0FBDA5D72338186500BF523E /* CustomCVPixelBuffer.h in Headers */,
-				0FBDA5C62338183100BF523E /* CameraVideoCapturer.h in Headers */,
-				0FBDA5C52338182C00BF523E /* CapturerManager.h in Headers */,
-				0FBDA5C92338183D00BF523E /* GLRenderView.h in Headers */,
 				0FBDA5E02338188D00BF523E /* LogCenter.h in Headers */,
-				0FBDA5D32338183D00BF523E /* DisplayLinkTimer.h in Headers */,
 				0FBDA6412338192200BF523E /* row.h in Headers */,
+				09E90141236AE19E000938D7 /* NV12TextureCache.h in Headers */,
+				09E9015A236AE301000938D7 /* YUVPlanarBuffer.h in Headers */,
 				0FBDA62D2338192200BF523E /* libyuv.h in Headers */,
-				0FBDA5CF2338183D00BF523E /* Shader.h in Headers */,
+				09E90138236AE19E000938D7 /* Shader.h in Headers */,
 				0FBDA6372338192200BF523E /* scale_argb.h in Headers */,
 				0FBDA6322338192200BF523E /* video_common.h in Headers */,
 				0FBDA6402338192200BF523E /* macros_msa.h in Headers */,
-				0FBDA5D12338183D00BF523E /* DefaultShader.h in Headers */,
+				09E90144236AE19E000938D7 /* DefaultShader.h in Headers */,
 				0FBDA6392338192200BF523E /* convert_argb.h in Headers */,
-				0FBDA676233983A100BF523E /* RGBATextureCache.h in Headers */,
 				0FBDA63D2338192200BF523E /* convert_from.h in Headers */,
+				09E9013A236AE19E000938D7 /* I420TextureCache.h in Headers */,
 				0FBDA6382338192200BF523E /* compare.h in Headers */,
 				0FBDA63F2338192200BF523E /* rotate_argb.h in Headers */,
-				0FBDA5C82338183800BF523E /* VideoRender.h in Headers */,
 				0FBDA6332338192200BF523E /* compare_row.h in Headers */,
+				09E90146236AE19E000938D7 /* RGBATextureCache.h in Headers */,
 				0FBDA6312338192200BF523E /* cpu_id.h in Headers */,
 				0FBDA63A2338192200BF523E /* rotate.h in Headers */,
-				0FBDA5C42338182900BF523E /* VideoCapturer.h in Headers */,
 				0FBDA6302338192200BF523E /* version.h in Headers */,
-				0FBDA5CD2338183D00BF523E /* NV12TextureCache.h in Headers */,
 				0FBDA5E22338188D00BF523E /* AVCaptureSession+DevicePosition.h in Headers */,
 				0FBDA63B2338192200BF523E /* convert_from_argb.h in Headers */,
-				0FBDA5DC2338186500BF523E /* VideoFrameBuffer.h in Headers */,
-				0FBDA5D52338183D00BF523E /* VideoViewShading.h in Headers */,
 				0FBDA5DE2338188D00BF523E /* AgoraDispatcher.h in Headers */,
-				0F112313233C1E2900414A13 /* Connector.h in Headers */,
 				0FBDA5B72338160200BF523E /* CapturerAndRender.h in Headers */,
 				0FBDA6362338192200BF523E /* planar_functions.h in Headers */,
 				0FBDA6352338192200BF523E /* rotate_row.h in Headers */,
-				0FBDA5DB2338186500BF523E /* I420Buffer.h in Headers */,
 				0FBDA6342338192200BF523E /* mjpeg_decoder.h in Headers */,
-				0FBDA5D62338183D00BF523E /* OpenGLDefines.h in Headers */,
+				09E90158236AE301000938D7 /* I420Buffer.h in Headers */,
 				0FBDA62E2338192200BF523E /* scale_row.h in Headers */,
-				0FBDA5DD2338186500BF523E /* YUVPlanarBuffer.h in Headers */,
+				09E90142236AE19E000938D7 /* DisplayLinkTimer.h in Headers */,
 				0FBDA62F2338192200BF523E /* scale.h in Headers */,
-				0F0DE977233ADE1E0036843E /* RenderManager.h in Headers */,
-				0FBDA5D92338186500BF523E /* VideoFrame.h in Headers */,
-				0FBDA5CB2338183D00BF523E /* I420TextureCache.h in Headers */,
+				09E90140236AE19E000938D7 /* VideoViewShading.h in Headers */,
 				0FBDA63C2338192200BF523E /* basic_types.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1349,8 +1352,9 @@
 		0F29C64F20525BC6000F8159 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = "";
 				LastUpgradeCheck = 0920;
-				ORGANIZATIONNAME = ZhangJi;
+				ORGANIZATIONNAME = Agora;
 				TargetAttributes = {
 					0F29C65620525BC6000F8159 = {
 						CreatedOnToolsVersion = 9.2;
@@ -1575,31 +1579,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FBDA6672338192300BF523E /* rotate_msa.cc in Sources */,
+				09E90139236AE19E000938D7 /* GLRenderView.m in Sources */,
 				0FBDA6662338192300BF523E /* compare_common.cc in Sources */,
+				09E90106236AE085000938D7 /* CameraVideoCapturer.mm in Sources */,
 				0FBDA6712338192300BF523E /* scale_argb.cc in Sources */,
 				0FBDA66B2338192300BF523E /* scale_mmi.cc in Sources */,
 				0FBDA66C2338192300BF523E /* convert_to_i420.cc in Sources */,
-				0F0DE978233ADE1E0036843E /* RenderManager.m in Sources */,
 				0FBDA65F2338192300BF523E /* convert_to_argb.cc in Sources */,
+				09E90157236AE301000938D7 /* VideoFrame.m in Sources */,
 				0FBDA6482338192200BF523E /* convert_jpeg.cc in Sources */,
 				0FBDA6572338192300BF523E /* row_common.cc in Sources */,
 				0FBDA6652338192300BF523E /* scale_win.cc in Sources */,
 				0FBDA6732338264300BF523E /* AVCaptureSession+DevicePosition.mm in Sources */,
 				0FBDA6592338192300BF523E /* rotate_gcc.cc in Sources */,
 				0FBDA6702338192300BF523E /* compare_neon64.cc in Sources */,
-				0FBDA5C72338183100BF523E /* VideoCapturer.m in Sources */,
 				0FBDA6582338192300BF523E /* scale_any.cc in Sources */,
 				0FBDA6462338192200BF523E /* row_mmi.cc in Sources */,
 				0FBDA6502338192300BF523E /* compare.cc in Sources */,
+				09E9013B236AE19E000938D7 /* DisplayLinkTimer.m in Sources */,
 				0FBDA6522338192300BF523E /* convert_from_argb.cc in Sources */,
 				0FBDA6442338192200BF523E /* rotate_any.cc in Sources */,
 				0FBDA64D2338192300BF523E /* row_neon.cc in Sources */,
-				0FBDA5C32338182400BF523E /* CameraVideoCapturer.mm in Sources */,
-				0FBDA5D02338183D00BF523E /* Shader.mm in Sources */,
+				09E90155236AE301000938D7 /* CustomCVPixelBuffer.mm in Sources */,
 				0FBDA6622338192300BF523E /* scale_msa.cc in Sources */,
 				0FBDA6532338192300BF523E /* compare_msa.cc in Sources */,
-				0FBDA5C22338182000BF523E /* CapturerManager.m in Sources */,
-				0FBDA5D42338183D00BF523E /* DisplayLinkTimer.m in Sources */,
 				0FBDA66A2338192300BF523E /* video_common.cc in Sources */,
 				0FBDA64E2338192300BF523E /* rotate_neon64.cc in Sources */,
 				0FBDA5E12338188D00BF523E /* LogCenter.mm in Sources */,
@@ -1610,14 +1613,14 @@
 				0FBDA6612338192300BF523E /* rotate_win.cc in Sources */,
 				0FBDA64C2338192200BF523E /* mjpeg_decoder.cc in Sources */,
 				0FBDA6562338192300BF523E /* convert_argb.cc in Sources */,
-				0FBDA5D22338183D00BF523E /* DefaultShader.mm in Sources */,
-				0FBDA5CE2338183D00BF523E /* NV12TextureCache.m in Sources */,
-				0FBDA5CC2338183D00BF523E /* I420TextureCache.mm in Sources */,
 				0FBDA6422338192200BF523E /* compare_mmi.cc in Sources */,
 				0FBDA64F2338192300BF523E /* scale.cc in Sources */,
+				09E9010A236AE085000938D7 /* VideoCapturer.m in Sources */,
 				0FBDA65E2338192300BF523E /* row_any.cc in Sources */,
+				09E90137236AE19E000938D7 /* DefaultShader.mm in Sources */,
 				0FBDA6472338192200BF523E /* scale_gcc.cc in Sources */,
 				0FBDA65C2338192300BF523E /* scale_common.cc in Sources */,
+				09E9013F236AE19E000938D7 /* I420TextureCache.mm in Sources */,
 				0FBDA65D2338192300BF523E /* rotate_mmi.cc in Sources */,
 				0FBDA6552338192300BF523E /* row_msa.cc in Sources */,
 				0FBDA6512338192300BF523E /* row_neon64.cc in Sources */,
@@ -1627,17 +1630,17 @@
 				0FBDA6542338192300BF523E /* planar_functions.cc in Sources */,
 				0FBDA65B2338192300BF523E /* convert_from.cc in Sources */,
 				0FBDA66F2338192300BF523E /* compare_gcc.cc in Sources */,
+				09E90107236AE085000938D7 /* CaptureManager.m in Sources */,
 				0FBDA6602338192300BF523E /* compare_neon.cc in Sources */,
 				0FBDA6432338192200BF523E /* rotate_common.cc in Sources */,
 				0FBDA6682338192300BF523E /* scale_neon.cc in Sources */,
-				0FBDA5DA2338186500BF523E /* VideoFrame.m in Sources */,
+				09E9013C236AE19E000938D7 /* NV12TextureCache.m in Sources */,
 				0FBDA6492338192200BF523E /* compare_win.cc in Sources */,
 				0FBDA64B2338192200BF523E /* row_win.cc in Sources */,
-				0FBDA677233983A100BF523E /* RGBATextureCache.m in Sources */,
+				09E9013E236AE19E000938D7 /* Shader.mm in Sources */,
 				0FBDA5DF2338188D00BF523E /* AgoraDispatcher.m in Sources */,
-				0FBDA5D82338186500BF523E /* CustomCVPixelBuffer.mm in Sources */,
+				09E9013D236AE19E000938D7 /* RGBATextureCache.m in Sources */,
 				0FBDA64A2338192200BF523E /* cpu_id.cc in Sources */,
-				0FBDA5CA2338183D00BF523E /* GLRenderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1815,12 +1818,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2ALK2JPWUB;
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/FaceunityUtils",
 					"$(PROJECT_DIR)/AgoraWithFaceunity",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/AgoraWithFaceunity/VideoUtils/Helper/third_party/libyuv/include\"";
 				INFOPLIST_FILE = AgoraWithFaceunity/Info.plist;
@@ -1830,6 +1834,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1850,12 +1855,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2ALK2JPWUB;
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/FaceunityUtils",
 					"$(PROJECT_DIR)/AgoraWithFaceunity",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/AgoraWithFaceunity/VideoUtils/Helper/third_party/libyuv/include\"";
 				INFOPLIST_FILE = AgoraWithFaceunity/Info.plist;
@@ -1865,6 +1871,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
 					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1884,14 +1891,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2ALK2JPWUB;
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TestProject",
+					"$(PROJECT_DIR)/AgoraWithFaceunity/FaceunityUtils",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = TestProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
+					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
+					"$(PROJECT_DIR)",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (
@@ -1910,14 +1925,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2ALK2JPWUB;
+				DEVELOPMENT_TEAM = 4578F4TGJA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TestProject",
+					"$(PROJECT_DIR)/AgoraWithFaceunity/FaceunityUtils",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = TestProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
+					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
+					"$(PROJECT_DIR)",
+				);
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1939,7 +1962,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2ALK2JPWUB;
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1971,7 +1994,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 2ALK2JPWUB;
+				DEVELOPMENT_TEAM = 48TB6ZZL5S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol VideoCapturerDelegate <NSObject>
 
-- (void)capturer: (VideoCapturer *)capturer didCaptureFrame: (VideoFrame*)frame;
+-(void)capturer: (VideoCapturer *)capturer didCaptureFrame: (VideoFrame*)frame;
 
 @end
 

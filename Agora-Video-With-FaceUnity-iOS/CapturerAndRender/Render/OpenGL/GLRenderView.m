@@ -97,6 +97,7 @@
     _glkView.delegate = self;
     _glkView.layer.masksToBounds = YES;
     _glkView.enableSetNeedsDisplay = NO;
+    _glkView.backgroundColor = UIColor.clearColor;
     [self addSubview:_glkView];
     
     // Listen to application state in order to clean up OpenGL before app goes
@@ -172,8 +173,7 @@
     [self ensureGLContext];
     glClear(GL_COLOR_BUFFER_BIT);
     if ([frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
-        CustomCVPixelBuffer* buffer = frame.buffer;
-        CVPixelBufferRef pixelBuffer = buffer.pixelBuffer;
+        CVPixelBufferRef pixelBuffer = frame.buffer.pixelBuffer;
         const OSType srcPixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
         switch (srcPixelFormat) {
             case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:

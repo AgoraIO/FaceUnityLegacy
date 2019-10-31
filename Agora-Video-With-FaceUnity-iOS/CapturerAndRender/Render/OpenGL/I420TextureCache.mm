@@ -113,34 +113,34 @@ static const GLsizei kNumTextures = kNumTexturesPerSet * kNumTextureSets;
 }
 
 - (void)uploadFrameToTextures:(VideoFrame *)frame {
-//    _currentTextureSet = (_currentTextureSet + 1) % kNumTextureSets;
-//
-//    id<I420Buffer> buffer = [frame.buffer toI420];
-//
-//    const int chromaWidth = buffer.chromaWidth;
-//    const int chromaHeight = buffer.chromaHeight;
-//    if (buffer.strideY != frame.width || buffer.strideU != chromaWidth ||
-//        buffer.strideV != chromaWidth) {
-//        _planeBuffer.resize(buffer.width * buffer.height);
-//    }
-//
-//    [self uploadPlane:buffer.dataY
-//              texture:self.yTexture
-//                width:buffer.width
-//               height:buffer.height
-//               stride:buffer.strideY];
-//
-//    [self uploadPlane:buffer.dataU
-//              texture:self.uTexture
-//                width:chromaWidth
-//               height:chromaHeight
-//               stride:buffer.strideU];
-//
-//    [self uploadPlane:buffer.dataV
-//              texture:self.vTexture
-//                width:chromaWidth
-//               height:chromaHeight
-//               stride:buffer.strideV];
+    _currentTextureSet = (_currentTextureSet + 1) % kNumTextureSets;
+    
+    id<I420Buffer> buffer = [frame.buffer toI420];
+    
+    const int chromaWidth = buffer.chromaWidth;
+    const int chromaHeight = buffer.chromaHeight;
+    if (buffer.strideY != frame.width || buffer.strideU != chromaWidth ||
+        buffer.strideV != chromaWidth) {
+        _planeBuffer.resize(buffer.width * buffer.height);
+    }
+    
+    [self uploadPlane:buffer.dataY
+              texture:self.yTexture
+                width:buffer.width
+               height:buffer.height
+               stride:buffer.strideY];
+    
+    [self uploadPlane:buffer.dataU
+              texture:self.uTexture
+                width:chromaWidth
+               height:chromaHeight
+               stride:buffer.strideU];
+    
+    [self uploadPlane:buffer.dataV
+              texture:self.vTexture
+                width:chromaWidth
+               height:chromaHeight
+               stride:buffer.strideV];
 }
 @end
 

@@ -15,7 +15,7 @@
 #import "FUMusicPlayer.h"
 #import <CapturerAndRender/CapturerAndRender.h>
 
-@interface FUManager () <Connector>
+@interface FUManager ()
 {
     //MARK: Faceunity
     int items[4];
@@ -639,9 +639,9 @@ static FUManager *shareManager = NULL;
     
     [self renderItemsToPixelBuffer:pixelBuffer];
     
-    if ([self.connector respondsToSelector:@selector(didOutputFrame:)]) {
-        [self.connector didOutputFrame:frame];
-    }
+//    if ([self.connector respondsToSelector:@selector(didOutputFrame:)]) {
+//        [self.connector didOutputFrame:frame];
+//    }
     
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 }

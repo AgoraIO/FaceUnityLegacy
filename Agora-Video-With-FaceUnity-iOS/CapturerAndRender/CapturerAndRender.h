@@ -6,12 +6,11 @@
 //  Copyright © 2019 ZhangJi. All rights reserved.
 //
 
-#import "RenderManager.h"
-#import "CapturerManager.h"
+#import "CaptureManager.h"
 #import "GLRenderView.h"
 #import "CustomCVPixelBuffer.h"
 #import "VideoFrame.h"
-#import "Connector.h"
+#import "VideoCapturer.h"
 
 //! Project version number for CapturerAndRender.
 FOUNDATION_EXPORT double CapturerAndRenderVersionNumber;

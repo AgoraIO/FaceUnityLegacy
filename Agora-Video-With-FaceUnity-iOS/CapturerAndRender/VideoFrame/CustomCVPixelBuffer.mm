@@ -7,12 +7,13 @@
 //
 
 #import "CustomCVPixelBuffer.h"
-//#import "VideoFrameBuffer.h"
+#import "VideoFrameBuffer.h"
 #import "LogCenter.h"
 
 #include "libyuv.h"
 
 #include <vector>
+//#include "../Helper/third_party/libyuv_rtc/include/webrtc_libyuv.h"
 
 @implementation CustomCVPixelBuffer {
     int _width;
@@ -39,10 +40,10 @@
 
 - (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer {
     return [self initWithPixelBuffer:pixelBuffer
-                        adaptedWidth:(int)CVPixelBufferGetWidth(pixelBuffer)
-                       adaptedHeight:(int)CVPixelBufferGetHeight(pixelBuffer)
-                           cropWidth:(int)CVPixelBufferGetWidth(pixelBuffer)
-                          cropHeight:(int)CVPixelBufferGetHeight(pixelBuffer)
+                        adaptedWidth:CVPixelBufferGetWidth(pixelBuffer)
+                       adaptedHeight:CVPixelBufferGetHeight(pixelBuffer)
+                           cropWidth:CVPixelBufferGetWidth(pixelBuffer)
+                          cropHeight:CVPixelBufferGetHeight(pixelBuffer)
                                cropX:0
                                cropY:0];
 }
@@ -58,8 +59,8 @@
         _width = adaptedWidth;
         _height = adaptedHeight;
         _pixelBuffer = pixelBuffer;
-        _bufferWidth = (int)CVPixelBufferGetWidth(_pixelBuffer);
-        _bufferHeight = (int)CVPixelBufferGetHeight(_pixelBuffer);
+        _bufferWidth = CVPixelBufferGetWidth(_pixelBuffer);
+        _bufferHeight = CVPixelBufferGetHeight(_pixelBuffer);
         _cropWidth = cropWidth;
         _cropHeight = cropHeight;
         // Can only crop at even pixels.

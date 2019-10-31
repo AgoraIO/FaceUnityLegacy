@@ -36,10 +36,6 @@ const int64_t kNanosecondsPerSecond = 1000000000;
     return _rotation;
 }
 
-- (void)setRotation:(VideoRotation)rotation {
-    _rotation = rotation;
-}
-
 - (CMTime)timeStamp {
     return _timeStamp;
 }
@@ -52,12 +48,12 @@ const int64_t kNanosecondsPerSecond = 1000000000;
     return _usingFrontCamera;
 }
 
-//- (VideoFrame *)newI420VideoFrame {
-//    return [[VideoFrame alloc] initWithBuffer:[_buffer toI420]
-//                                        rotation:_rotation
-//                                       timeStamp:_timeStamp
-//                             usingFrontCamera:NO];
-//}
+- (VideoFrame *)newI420VideoFrame {
+    return [[VideoFrame alloc] initWithBuffer:[_buffer toI420]
+                                        rotation:_rotation
+                                       timeStamp:_timeStamp
+                             usingFrontCamera:NO];
+}
 
 
 - (instancetype)initWithBuffer:(id<VideoFrameBuffer>)buffer
