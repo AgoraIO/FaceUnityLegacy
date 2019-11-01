@@ -13,7 +13,6 @@
 #include "libyuv.h"
 
 #include <vector>
-//#include "../Helper/third_party/libyuv_rtc/include/webrtc_libyuv.h"
 
 @implementation CustomCVPixelBuffer {
     int _width;

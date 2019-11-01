@@ -37,12 +37,6 @@
 		09E90159236AE301000938D7 /* VideoFrameBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90152236AE301000938D7 /* VideoFrameBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		09E9015A236AE301000938D7 /* YUVPlanarBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90153236AE301000938D7 /* YUVPlanarBuffer.h */; };
 		09E9015B236AE301000938D7 /* VideoFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90154236AE301000938D7 /* VideoFrame.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E9FDDD23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */; };
-		09E9FDDE23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */; };
-		09E9FDDF23668722000938D7 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDB23668721000938D7 /* libcrypto.a */; };
-		09E9FDE023668722000938D7 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDB23668721000938D7 /* libcrypto.a */; };
-		09E9FDE123668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */; };
-		09E9FDE223668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */; };
 		0F02C1F120550936006EF198 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F020550936006EF198 /* MainViewController.m */; };
 		0F02C1F420550948006EF198 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F320550948006EF198 /* RoomViewController.m */; };
 		0F02C1F620561CF6006EF198 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E520527DFC000F8159 /* CoreMedia.framework */; };
@@ -346,9 +340,6 @@
 		09E90152236AE301000938D7 /* VideoFrameBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrameBuffer.h; sourceTree = "<group>"; };
 		09E90153236AE301000938D7 /* YUVPlanarBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YUVPlanarBuffer.h; sourceTree = "<group>"; };
 		09E90154236AE301000938D7 /* VideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrame.h; sourceTree = "<group>"; };
-		09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtcCryptoLoader.framework; sourceTree = "<group>"; };
-		09E9FDDB23668721000938D7 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
-		09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtcEngineKit.framework; sourceTree = "<group>"; };
 		0F02C1EF20550936006EF198 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		0F02C1F020550936006EF198 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		0F02C1F220550948006EF198 /* RoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
@@ -617,14 +608,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09E9FDE123668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */,
 				707BDE572269BD950040211C /* CoreML.framework in Frameworks */,
 				2FBF73042224F3940054BAEE /* libc++.tbd in Frameworks */,
 				0F308541216DCED6002A1D28 /* FUAPIDemoBar.framework in Frameworks */,
 				0F02C1FB20561D1B006EF198 /* AudioToolbox.framework in Frameworks */,
-				09E9FDDF23668722000938D7 /* libcrypto.a in Frameworks */,
 				0F02C1FA20561D14006EF198 /* VideoToolbox.framework in Frameworks */,
-				09E9FDDD23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */,
 				0F02C1F920561D0D006EF198 /* AVFoundation.framework in Frameworks */,
 				0F02C1F820561D04006EF198 /* CoreTelephony.framework in Frameworks */,
 				0F02C1F620561CF6006EF198 /* CoreMedia.framework in Frameworks */,
@@ -642,14 +630,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09E9FDE223668722000938D7 /* AgoraRtcEngineKit.framework in Frameworks */,
 				0F0DE973233AC5610036843E /* SystemConfiguration.framework in Frameworks */,
-				09E9FDDE23668722000938D7 /* AgoraRtcCryptoLoader.framework in Frameworks */,
 				0F0DE972233AC5570036843E /* VideoToolbox.framework in Frameworks */,
 				0F0DE971233AC5470036843E /* libresolv.tbd in Frameworks */,
 				0F0DE970233AC53A0036843E /* CoreML.framework in Frameworks */,
 				0F0DE96F233AC52C0036843E /* CoreTelephony.framework in Frameworks */,
-				09E9FDE023668722000938D7 /* libcrypto.a in Frameworks */,
 				0F0DE96C233AC4D20036843E /* Accelerate.framework in Frameworks */,
 				0FBDA672233822D400BF523E /* libc++.tbd in Frameworks */,
 				0FBDA5C12338173900BF523E /* AVFoundation.framework in Frameworks */,
@@ -670,22 +655,22 @@
 		09E90115236AE19D000938D7 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				09E90123236AE19D000938D7 /* DefaultShader.h */,
 				09E90116236AE19D000938D7 /* DefaultShader.mm */,
 				09E90117236AE19D000938D7 /* Shader.h */,
+				09E9011D236AE19D000938D7 /* Shader.mm */,
+				09E90122236AE19D000938D7 /* GLRenderView.h */,
 				09E90118236AE19D000938D7 /* GLRenderView.m */,
 				09E90119236AE19D000938D7 /* I420TextureCache.h */,
-				09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */,
-				09E9011B236AE19D000938D7 /* NV12TextureCache.m */,
-				09E9011C236AE19D000938D7 /* RGBATextureCache.m */,
-				09E9011D236AE19D000938D7 /* Shader.mm */,
 				09E9011E236AE19D000938D7 /* I420TextureCache.mm */,
-				09E9011F236AE19D000938D7 /* VideoViewShading.h */,
 				09E90120236AE19D000938D7 /* NV12TextureCache.h */,
-				09E90121236AE19D000938D7 /* DisplayLinkTimer.h */,
-				09E90122236AE19D000938D7 /* GLRenderView.h */,
-				09E90123236AE19D000938D7 /* DefaultShader.h */,
-				09E90124236AE19D000938D7 /* OpenGLDefines.h */,
+				09E9011B236AE19D000938D7 /* NV12TextureCache.m */,
 				09E90125236AE19D000938D7 /* RGBATextureCache.h */,
+				09E9011C236AE19D000938D7 /* RGBATextureCache.m */,
+				09E9011F236AE19D000938D7 /* VideoViewShading.h */,
+				09E90121236AE19D000938D7 /* DisplayLinkTimer.h */,
+				09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */,
+				09E90124236AE19D000938D7 /* OpenGLDefines.h */,
 			);
 			path = OpenGL;
 			sourceTree = "<group>";
@@ -759,9 +744,6 @@
 		0F29C6D8205271C0000F8159 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				09E9FDDA23668720000938D7 /* AgoraRtcCryptoLoader.framework */,
-				09E9FDDC23668722000938D7 /* AgoraRtcEngineKit.framework */,
-				09E9FDDB23668721000938D7 /* libcrypto.a */,
 				707BDE562269BD950040211C /* CoreML.framework */,
 				2FBF73032224F3940054BAEE /* libc++.tbd */,
 				0F29C6F320527E50000F8159 /* libresolv.tbd */,

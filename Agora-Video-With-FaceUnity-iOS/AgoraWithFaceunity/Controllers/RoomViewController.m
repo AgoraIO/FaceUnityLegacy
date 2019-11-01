@@ -154,7 +154,7 @@
 
 - (CaptureManager *)captureManager {
     if (!_captureManager) {
-        _captureManager = [[CaptureManager alloc] initWithCapturer:self.videoCapture width:720 height:1280 fps:24];
+        _captureManager = [[CaptureManager alloc] initWithCapturer:self.videoCapture width:480 height:640 fps:15];
     }
     return _captureManager;
 }
@@ -257,7 +257,6 @@
 }
 
 - (void) setupLocalView {
-//    UIView *renderView = [[UIView alloc] initWithFrame:self.view.frame];
     GLRenderView *renderView = [[GLRenderView alloc] initWithFrame:self.view.frame];
     [self.containView insertSubview:renderView atIndex:0];
     if (self.localCanvas == nil) {
@@ -267,8 +266,7 @@
     self.localCanvas.renderMode = AgoraVideoRenderModeFit;
     [self.agoraKit setupLocalVideo:self.localCanvas];
     self.localRenderView = renderView;
-//    [renderView setMirrorModel:MirrorModelNO];
-//
+
     self.renderView = renderView;
 }
 
@@ -464,7 +462,7 @@
 }
 
 - (IBAction)changeCaptureFormat:(UISegmentedControl *)sender {
-//    _mCamera.captureFormat = _mCamera.captureFormat == kCVPixelFormatType_32BGRA ? kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange : kCVPixelFormatType_32ARGB;
+
 }
 
 - (IBAction)switchCameraBtnClick:(UIButton *)sender {
@@ -636,7 +634,7 @@
 
     NSString *ratioStr = [NSString stringWithFormat:@"%dX%d", frameWidth, frameHeight];
     dispatch_async(dispatch_get_main_queue(), ^{
-        /**判断是否检测到人脸*/
+
         self.noTrackLabel.hidden = [[FUManager shareManager] isTracking];
 
         CGFloat fps = 1.0 / frameTime ;
@@ -645,9 +643,6 @@
         }
         self.buglyLabel.text = [NSString stringWithFormat:@"resolution:\n %@\nfps: %.0f \nrender time:\n %.0fms", ratioStr, fps, renderTime * 1000.0];
 
-        // 根据人脸中心点实时调节摄像头曝光参数及聚焦参数
-        CGPoint center = [[FUManager shareManager] getFaceCenterInFrameSize:frameSize];;
-//        self.mCamera.exposurePoint = CGPointMake(center.y,self.mCamera.isFrontCamera ? center.x:1-center.x);
     });
 
     AgoraVideoRotation agoraRotation = AgoraVideoRotationNone;
