@@ -94,11 +94,6 @@
     [self loadAgoraKit];
 }
 
-- (void)dealloc
-{
-    NSLog(@"%s", __func__);
-}
-
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
@@ -236,7 +231,7 @@
 - (void)loadAgoraKit {
     self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:[KeyCenter AppId] delegate:self];
     [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
-    [self.agoraKit setVideoEncoderConfiguration:[[AgoraVideoEncoderConfiguration alloc]initWithSize:AgoraVideoDimension1280x720
+    [self.agoraKit setVideoEncoderConfiguration:[[AgoraVideoEncoderConfiguration alloc]initWithSize:AgoraVideoDimension640x480
                                                                                           frameRate:AgoraVideoFrameRateFps15
                                                                                             bitrate:AgoraVideoBitrateStandard
                                                                                     orientationMode:AgoraVideoOutputOrientationModeAdaptative]];
@@ -256,14 +251,15 @@
     [self.agoraKit joinChannelByToken:nil channelId:self.channelName info:nil uid:0 joinSuccess:nil];
 }
 
-- (void) setupLocalView {
+- (void)setupLocalView {
     GLRenderView *renderView = [[GLRenderView alloc] initWithFrame:self.view.frame];
     [self.containView insertSubview:renderView atIndex:0];
     if (self.localCanvas == nil) {
         self.localCanvas = [[AgoraRtcVideoCanvas alloc] init];
     }
     self.localCanvas.view = renderView;
-    self.localCanvas.renderMode = AgoraVideoRenderModeFit;
+    self.localCanvas.renderMode = AgoraVideoRenderModeHidden;
+    // set render view
     [self.agoraKit setupLocalVideo:self.localCanvas];
     self.localRenderView = renderView;
 
@@ -461,9 +457,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)changeCaptureFormat:(UISegmentedControl *)sender {
 
-}
 
 - (IBAction)switchCameraBtnClick:(UIButton *)sender {
 
@@ -597,6 +591,7 @@
 
 
 #pragma mark - VideoCapturerDelegate
+// Video frame data source
 -(void)capturer:(VideoCapturer *)capturer didCaptureFrame: (VideoFrame*)frame
 {
     if (![frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
@@ -659,7 +654,9 @@
         default:
             break;
     }
+    // render video frame
     [self.renderView renderFrame:frame];
+    // push pixelBuffer to agora server
     [self.consumer consumePixelBuffer:pixelBuffer withTimestamp:frame.timeStamp rotation:agoraRotation];
 
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
