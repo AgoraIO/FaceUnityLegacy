@@ -236,11 +236,15 @@
 }
 
 - (void)shouldStart {
-    [self.mCamera startCapture];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.mCamera startCapture];
+    });
 }
 
 - (void)shouldStop {
-    [self.mCamera stopCapture];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.mCamera stopCapture];
+    });
 }
 
 - (void)shouldDispose {
