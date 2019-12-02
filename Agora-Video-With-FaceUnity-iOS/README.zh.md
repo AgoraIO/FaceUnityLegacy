@@ -20,11 +20,11 @@ Faceunity
 
 本项目采用了 Faceunity 提供的视频采集，美颜，本地渲染等视频前处理功能，使用了 Agora 提供的声音采集，编码，传输，解码和远端渲染功能。
 
-Faceunity 美颜功能实现请参考 [Faceunity 官方文档](http://www.faceunity.com/technical/)
+Faceunity 美颜功能实现请参考 [Faceunity 官方文档](http://www.faceunity.com/docs_develop/#/markdown/integrate/introduction)
 
-Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/2.1.2/product/Interactive%20Broadcast/API%20Reference/live_video_ios?platform=iOS)
+Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/Interactive%20Broadcast/API%20Reference/oc/docs/headers/Agora-Objective-C-API-Overview.html)
 
-由于在使用美颜的时候需要使用第三方采集，请特别参考[自定义设备API](https://docs.agora.io/cn/2.1.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#agoravideosourceprotocol)  或者 [自采集API](https://docs.agora.io/cn/2.1.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#agoravideosourceprotocol)
+由于在使用美颜的时候需要使用第三方采集，请特别参考[自定义设备API](https://docs.agora.io/cn/Interactive%20Broadcast/raw_data_video_android?platform=Android)  或者 [自采集API](https://docs.agora.io/cn/Interactive%20Broadcast/raw_data_video_android?platform=Android)
 
 ## 运行示例程序
 首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 KeyCenter.m
