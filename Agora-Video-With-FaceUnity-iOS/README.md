@@ -21,9 +21,9 @@ Faceunity
 
 This project uses the video pre-processing functions provided by Faceunity such as video capture, beauty, and local rendering, and uses Agora's functions of voice collection, encoding, transmission, decoding, and remote rendering.
 
-Faceunity beauty function please refer to. [Faceunity Document](http://www.faceunity.com/technical/)
+Faceunity beauty function please refer to. [Faceunity Document](http://www.faceunity.com/docs_develop/#/markdown/integrate/introduction)
 
-Agora function implementation please refer to [Agora Document](https://docs.agora.io/en/2.1.2/product/Interactive%20Broadcast/API%20Reference/live_video_ios?platform=iOS)
+Agora function implementation please refer to [Agora Document](https://docs.agora.io/cn/Interactive%20Broadcast/API%20Reference/oc/docs/headers/Agora-Objective-C-API-Overview.html)
 
 Due to the need to use third-party capture when using beauty function, please refer to [Customized Media Source API](https://docs.agora.io/en/2.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#agoravideosourceprotocol)  or [Configuring the External Data API](https://docs.agora.io/en/2.2/product/Interactive%20Broadcast/API%20Reference/custom_live_ios?platform=iOS#configuring-the-external-data-api)
 
