@@ -13,7 +13,6 @@
 #import <sys/utsname.h>
 #import <CoreMotion/CoreMotion.h>
 #import "FUMusicPlayer.h"
-#import <CapturerAndRender/CapturerAndRender.h>
 
 @interface FUManager ()
 {
@@ -627,24 +626,24 @@ static FUManager *shareManager = NULL;
     return platform;
 }
 
-- (void)didOutputFrame:(VideoFrame *)frame {
-    if (![frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
-        return;
-    }
-
-    CustomCVPixelBuffer* buffer = frame.buffer;
-    CVPixelBufferRef pixelBuffer = buffer.pixelBuffer;
-    
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    
-    [self renderItemsToPixelBuffer:pixelBuffer];
-    
-//    if ([self.connector respondsToSelector:@selector(didOutputFrame:)]) {
-//        [self.connector didOutputFrame:frame];
+//- (void)didOutputFrame:(VideoFrame *)frame {
+//    if (![frame.buffer isKindOfClass:[CustomCVPixelBuffer class]]) {
+//        return;
 //    }
-    
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-}
+//
+//    CustomCVPixelBuffer* buffer = frame.buffer;
+//    CVPixelBufferRef pixelBuffer = buffer.pixelBuffer;
+//    
+//    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+//    
+//    [self renderItemsToPixelBuffer:pixelBuffer];
+//    
+////    if ([self.connector respondsToSelector:@selector(didOutputFrame:)]) {
+////        [self.connector didOutputFrame:frame];
+////    }
+//    
+//    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+//}
 
 //- (void)didOutputPixelBuffer:(CVPixelBufferRef)pixelBuffer withTimeStamp:(CMTime)timeStamp rotation:(VideoRotation)rotation {
 //    CVPixelBufferLockBaseAddress(pixelBuffer, 0);

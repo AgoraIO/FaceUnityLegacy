@@ -7,58 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		09DF66D22383954E00E83DFB /* libyuv.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66BA2383954E00E83DFB /* libyuv.h */; };
-		09DF66D32383954E00E83DFB /* scale_row.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66BC2383954E00E83DFB /* scale_row.h */; };
-		09DF66D42383954E00E83DFB /* scale.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66BD2383954E00E83DFB /* scale.h */; };
-		09DF66D52383954E00E83DFB /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66BE2383954E00E83DFB /* version.h */; };
-		09DF66D62383954E00E83DFB /* cpu_id.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66BF2383954E00E83DFB /* cpu_id.h */; };
-		09DF66D72383954E00E83DFB /* video_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C02383954E00E83DFB /* video_common.h */; };
-		09DF66D82383954E00E83DFB /* compare_row.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C12383954E00E83DFB /* compare_row.h */; };
-		09DF66D92383954E00E83DFB /* mjpeg_decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C22383954E00E83DFB /* mjpeg_decoder.h */; };
-		09DF66DA2383954E00E83DFB /* rotate_row.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C32383954E00E83DFB /* rotate_row.h */; };
-		09DF66DB2383954E00E83DFB /* planar_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C42383954E00E83DFB /* planar_functions.h */; };
-		09DF66DC2383954E00E83DFB /* scale_argb.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C52383954E00E83DFB /* scale_argb.h */; };
-		09DF66DD2383954E00E83DFB /* compare.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C62383954E00E83DFB /* compare.h */; };
-		09DF66DE2383954E00E83DFB /* convert_argb.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C72383954E00E83DFB /* convert_argb.h */; };
-		09DF66DF2383954E00E83DFB /* rotate.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C82383954E00E83DFB /* rotate.h */; };
-		09DF66E02383954E00E83DFB /* convert_from_argb.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66C92383954E00E83DFB /* convert_from_argb.h */; };
-		09DF66E12383954E00E83DFB /* basic_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66CA2383954E00E83DFB /* basic_types.h */; };
-		09DF66E22383954E00E83DFB /* convert_from.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66CB2383954E00E83DFB /* convert_from.h */; };
-		09DF66E32383954E00E83DFB /* convert.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66CC2383954E00E83DFB /* convert.h */; };
-		09DF66E42383954E00E83DFB /* rotate_argb.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66CD2383954E00E83DFB /* rotate_argb.h */; };
-		09DF66E52383954E00E83DFB /* macros_msa.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66CE2383954E00E83DFB /* macros_msa.h */; };
-		09DF66E62383954E00E83DFB /* row.h in Headers */ = {isa = PBXBuildFile; fileRef = 09DF66CF2383954E00E83DFB /* row.h */; };
-		09DF66E72383954E00E83DFB /* libyuv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09DF66D12383954E00E83DFB /* libyuv.a */; };
-		09E90105236AE085000938D7 /* CaptureManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E900FF236AE085000938D7 /* CaptureManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E90106236AE085000938D7 /* CameraVideoCapturer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E90100236AE085000938D7 /* CameraVideoCapturer.mm */; };
-		09E90107236AE085000938D7 /* CaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90101236AE085000938D7 /* CaptureManager.m */; };
-		09E90108236AE085000938D7 /* CameraVideoCapturer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90102236AE085000938D7 /* CameraVideoCapturer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E90109236AE085000938D7 /* VideoCapturer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90103236AE085000938D7 /* VideoCapturer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E9010A236AE085000938D7 /* VideoCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90104236AE085000938D7 /* VideoCapturer.m */; };
-		09E90137236AE19E000938D7 /* DefaultShader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E90116236AE19D000938D7 /* DefaultShader.mm */; };
-		09E90138236AE19E000938D7 /* Shader.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90117236AE19D000938D7 /* Shader.h */; };
-		09E90139236AE19E000938D7 /* GLRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90118236AE19D000938D7 /* GLRenderView.m */; };
-		09E9013A236AE19E000938D7 /* I420TextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90119236AE19D000938D7 /* I420TextureCache.h */; };
-		09E9013B236AE19E000938D7 /* DisplayLinkTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */; };
-		09E9013C236AE19E000938D7 /* NV12TextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011B236AE19D000938D7 /* NV12TextureCache.m */; };
-		09E9013D236AE19E000938D7 /* RGBATextureCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011C236AE19D000938D7 /* RGBATextureCache.m */; };
-		09E9013E236AE19E000938D7 /* Shader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011D236AE19D000938D7 /* Shader.mm */; };
-		09E9013F236AE19E000938D7 /* I420TextureCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E9011E236AE19D000938D7 /* I420TextureCache.mm */; };
-		09E90140236AE19E000938D7 /* VideoViewShading.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E9011F236AE19D000938D7 /* VideoViewShading.h */; };
-		09E90141236AE19E000938D7 /* NV12TextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90120236AE19D000938D7 /* NV12TextureCache.h */; };
-		09E90142236AE19E000938D7 /* DisplayLinkTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90121236AE19D000938D7 /* DisplayLinkTimer.h */; };
-		09E90143236AE19E000938D7 /* GLRenderView.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90122236AE19D000938D7 /* GLRenderView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E90144236AE19E000938D7 /* DefaultShader.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90123236AE19D000938D7 /* DefaultShader.h */; };
-		09E90145236AE19E000938D7 /* OpenGLDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90124236AE19D000938D7 /* OpenGLDefines.h */; };
-		09E90146236AE19E000938D7 /* RGBATextureCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90125236AE19D000938D7 /* RGBATextureCache.h */; };
-		09E9014C236AE19E000938D7 /* VideoRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E9012B236AE19E000938D7 /* VideoRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E90155236AE301000938D7 /* CustomCVPixelBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 09E9014E236AE301000938D7 /* CustomCVPixelBuffer.mm */; };
-		09E90156236AE301000938D7 /* CustomCVPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E9014F236AE301000938D7 /* CustomCVPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E90157236AE301000938D7 /* VideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E90150236AE301000938D7 /* VideoFrame.m */; };
-		09E90158236AE301000938D7 /* I420Buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90151236AE301000938D7 /* I420Buffer.h */; };
-		09E90159236AE301000938D7 /* VideoFrameBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90152236AE301000938D7 /* VideoFrameBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		09E9015A236AE301000938D7 /* YUVPlanarBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90153236AE301000938D7 /* YUVPlanarBuffer.h */; };
-		09E9015B236AE301000938D7 /* VideoFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 09E90154236AE301000938D7 /* VideoFrame.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		09807C402396555600E34D1B /* AGMFaceUnityFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 09807C3F2396555600E34D1B /* AGMFaceUnityFilter.m */; };
 		0F02C1F120550936006EF198 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F020550936006EF198 /* MainViewController.m */; };
 		0F02C1F420550948006EF198 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F320550948006EF198 /* RoomViewController.m */; };
 		0F02C1F620561CF6006EF198 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E520527DFC000F8159 /* CoreMedia.framework */; };
@@ -67,12 +16,6 @@
 		0F02C1F920561D0D006EF198 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6EB20527E23000F8159 /* AVFoundation.framework */; };
 		0F02C1FA20561D14006EF198 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6ED20527E2F000F8159 /* VideoToolbox.framework */; };
 		0F02C1FB20561D1B006EF198 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6EF20527E3A000F8159 /* AudioToolbox.framework */; };
-		0F0DE96C233AC4D20036843E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6D9205271C1000F8159 /* Accelerate.framework */; };
-		0F0DE96F233AC52C0036843E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E920527E15000F8159 /* CoreTelephony.framework */; };
-		0F0DE970233AC53A0036843E /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707BDE562269BD950040211C /* CoreML.framework */; };
-		0F0DE971233AC5470036843E /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6F320527E50000F8159 /* libresolv.tbd */; };
-		0F0DE972233AC5570036843E /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6ED20527E2F000F8159 /* VideoToolbox.framework */; };
-		0F0DE973233AC5610036843E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6E320527DF4000F8159 /* SystemConfiguration.framework */; };
 		0F112314233C39CC00414A13 /* KeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F280F94205666D100CF70CC /* KeyCenter.m */; };
 		0F29C65C20525BC6000F8159 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F29C65B20525BC6000F8159 /* AppDelegate.m */; };
 		0F29C66220525BC6000F8159 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F29C66020525BC6000F8159 /* Main.storyboard */; };
@@ -89,24 +32,6 @@
 		0F7FAAFE20E09E1200EF49FD /* FUItemsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAAFD20E09E1200EF49FD /* FUItemsViewCell.m */; };
 		0F7FAB0120E0A4A000EF49FD /* FUCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAB0020E0A49F00EF49FD /* FUCamera.m */; };
 		0F7FAB0420E0D61E00EF49FD /* FUManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FAB0320E0D61D00EF49FD /* FUManager.m */; };
-		0FBDA59C2338133500BF523E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDA59B2338133500BF523E /* AppDelegate.m */; };
-		0FBDA59F2338133500BF523E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDA59E2338133500BF523E /* ViewController.m */; };
-		0FBDA5A22338133500BF523E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0FBDA5A02338133500BF523E /* Main.storyboard */; };
-		0FBDA5A42338133600BF523E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0FBDA5A32338133600BF523E /* Assets.xcassets */; };
-		0FBDA5A72338133700BF523E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0FBDA5A52338133700BF523E /* LaunchScreen.storyboard */; };
-		0FBDA5AA2338133700BF523E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FBDA5A92338133700BF523E /* main.m */; };
-		0FBDA5B72338160200BF523E /* CapturerAndRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FBDA5B52338160200BF523E /* CapturerAndRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FBDA5BA2338160200BF523E /* CapturerAndRender.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FBDA5B32338160200BF523E /* CapturerAndRender.framework */; };
-		0FBDA5BB2338160200BF523E /* CapturerAndRender.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0FBDA5B32338160200BF523E /* CapturerAndRender.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0FBDA5C02338172C00BF523E /* CapturerAndRender.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FBDA5B32338160200BF523E /* CapturerAndRender.framework */; };
-		0FBDA5C12338173900BF523E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F29C6EB20527E23000F8159 /* AVFoundation.framework */; };
-		0FBDA5DE2338188D00BF523E /* AgoraDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A1FE23355E9B0007C48D /* AgoraDispatcher.h */; };
-		0FBDA5DF2338188D00BF523E /* AgoraDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A2B523355E9C0007C48D /* AgoraDispatcher.m */; };
-		0FBDA5E02338188D00BF523E /* LogCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A2B723355E9C0007C48D /* LogCenter.h */; };
-		0FBDA5E12338188D00BF523E /* LogCenter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A1FF23355E9B0007C48D /* LogCenter.mm */; };
-		0FBDA5E22338188D00BF523E /* AVCaptureSession+DevicePosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FC8A2B823355E9C0007C48D /* AVCaptureSession+DevicePosition.h */; };
-		0FBDA672233822D400BF523E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FBF73032224F3940054BAEE /* libc++.tbd */; };
-		0FBDA6732338264300BF523E /* AVCaptureSession+DevicePosition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8A2B623355E9C0007C48D /* AVCaptureSession+DevicePosition.mm */; };
 		0FD4E2052105C747006E46A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0FD4E2072105C747006E46A1 /* Localizable.strings */; };
 		0FDB800620DA3C8E005D9C58 /* touhua_ztt_fu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8020DA3C8E005D9C58 /* touhua_ztt_fu.bundle */; };
 		0FDB800720DA3C8E005D9C58 /* yazui.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0FDB7F8120DA3C8E005D9C58 /* yazui.bundle */; };
@@ -238,16 +163,6 @@
 		707BDE572269BD950040211C /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 707BDE562269BD950040211C /* CoreML.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		0FBDA5B82338160200BF523E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0F29C64F20525BC6000F8159 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0FBDA5B22338160200BF523E;
-			remoteInfo = CapturerAndRender;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		0F29C6F92052DACE000F8159 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -255,7 +170,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0FBDA5BB2338160200BF523E /* CapturerAndRender.framework in CopyFiles */,
 				0F308540216DB831002A1D28 /* FUAPIDemoBar.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,58 +177,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		09DF66BA2383954E00E83DFB /* libyuv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libyuv.h; sourceTree = "<group>"; };
-		09DF66BC2383954E00E83DFB /* scale_row.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scale_row.h; sourceTree = "<group>"; };
-		09DF66BD2383954E00E83DFB /* scale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scale.h; sourceTree = "<group>"; };
-		09DF66BE2383954E00E83DFB /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
-		09DF66BF2383954E00E83DFB /* cpu_id.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpu_id.h; sourceTree = "<group>"; };
-		09DF66C02383954E00E83DFB /* video_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = video_common.h; sourceTree = "<group>"; };
-		09DF66C12383954E00E83DFB /* compare_row.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compare_row.h; sourceTree = "<group>"; };
-		09DF66C22383954E00E83DFB /* mjpeg_decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mjpeg_decoder.h; sourceTree = "<group>"; };
-		09DF66C32383954E00E83DFB /* rotate_row.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rotate_row.h; sourceTree = "<group>"; };
-		09DF66C42383954E00E83DFB /* planar_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = planar_functions.h; sourceTree = "<group>"; };
-		09DF66C52383954E00E83DFB /* scale_argb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scale_argb.h; sourceTree = "<group>"; };
-		09DF66C62383954E00E83DFB /* compare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compare.h; sourceTree = "<group>"; };
-		09DF66C72383954E00E83DFB /* convert_argb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = convert_argb.h; sourceTree = "<group>"; };
-		09DF66C82383954E00E83DFB /* rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rotate.h; sourceTree = "<group>"; };
-		09DF66C92383954E00E83DFB /* convert_from_argb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = convert_from_argb.h; sourceTree = "<group>"; };
-		09DF66CA2383954E00E83DFB /* basic_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basic_types.h; sourceTree = "<group>"; };
-		09DF66CB2383954E00E83DFB /* convert_from.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = convert_from.h; sourceTree = "<group>"; };
-		09DF66CC2383954E00E83DFB /* convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = convert.h; sourceTree = "<group>"; };
-		09DF66CD2383954E00E83DFB /* rotate_argb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rotate_argb.h; sourceTree = "<group>"; };
-		09DF66CE2383954E00E83DFB /* macros_msa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros_msa.h; sourceTree = "<group>"; };
-		09DF66CF2383954E00E83DFB /* row.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = row.h; sourceTree = "<group>"; };
-		09DF66D12383954E00E83DFB /* libyuv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libyuv.a; sourceTree = "<group>"; };
-		09E900FF236AE085000938D7 /* CaptureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureManager.h; sourceTree = "<group>"; };
-		09E90100236AE085000938D7 /* CameraVideoCapturer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraVideoCapturer.mm; sourceTree = "<group>"; };
-		09E90101236AE085000938D7 /* CaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureManager.m; sourceTree = "<group>"; };
-		09E90102236AE085000938D7 /* CameraVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraVideoCapturer.h; sourceTree = "<group>"; };
-		09E90103236AE085000938D7 /* VideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCapturer.h; sourceTree = "<group>"; };
-		09E90104236AE085000938D7 /* VideoCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCapturer.m; sourceTree = "<group>"; };
-		09E90116236AE19D000938D7 /* DefaultShader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DefaultShader.mm; sourceTree = "<group>"; };
-		09E90117236AE19D000938D7 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
-		09E90118236AE19D000938D7 /* GLRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLRenderView.m; sourceTree = "<group>"; };
-		09E90119236AE19D000938D7 /* I420TextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = I420TextureCache.h; sourceTree = "<group>"; };
-		09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayLinkTimer.m; sourceTree = "<group>"; };
-		09E9011B236AE19D000938D7 /* NV12TextureCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NV12TextureCache.m; sourceTree = "<group>"; };
-		09E9011C236AE19D000938D7 /* RGBATextureCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGBATextureCache.m; sourceTree = "<group>"; };
-		09E9011D236AE19D000938D7 /* Shader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shader.mm; sourceTree = "<group>"; };
-		09E9011E236AE19D000938D7 /* I420TextureCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = I420TextureCache.mm; sourceTree = "<group>"; };
-		09E9011F236AE19D000938D7 /* VideoViewShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewShading.h; sourceTree = "<group>"; };
-		09E90120236AE19D000938D7 /* NV12TextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NV12TextureCache.h; sourceTree = "<group>"; };
-		09E90121236AE19D000938D7 /* DisplayLinkTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayLinkTimer.h; sourceTree = "<group>"; };
-		09E90122236AE19D000938D7 /* GLRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLRenderView.h; sourceTree = "<group>"; };
-		09E90123236AE19D000938D7 /* DefaultShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShader.h; sourceTree = "<group>"; };
-		09E90124236AE19D000938D7 /* OpenGLDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLDefines.h; sourceTree = "<group>"; };
-		09E90125236AE19D000938D7 /* RGBATextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGBATextureCache.h; sourceTree = "<group>"; };
-		09E9012B236AE19E000938D7 /* VideoRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoRender.h; sourceTree = "<group>"; };
-		09E9014E236AE301000938D7 /* CustomCVPixelBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomCVPixelBuffer.mm; sourceTree = "<group>"; };
-		09E9014F236AE301000938D7 /* CustomCVPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCVPixelBuffer.h; sourceTree = "<group>"; };
-		09E90150236AE301000938D7 /* VideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoFrame.m; sourceTree = "<group>"; };
-		09E90151236AE301000938D7 /* I420Buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = I420Buffer.h; sourceTree = "<group>"; };
-		09E90152236AE301000938D7 /* VideoFrameBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrameBuffer.h; sourceTree = "<group>"; };
-		09E90153236AE301000938D7 /* YUVPlanarBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YUVPlanarBuffer.h; sourceTree = "<group>"; };
-		09E90154236AE301000938D7 /* VideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFrame.h; sourceTree = "<group>"; };
+		09807C3E2396555600E34D1B /* AGMFaceUnityFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGMFaceUnityFilter.h; sourceTree = "<group>"; };
+		09807C3F2396555600E34D1B /* AGMFaceUnityFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGMFaceUnityFilter.m; sourceTree = "<group>"; };
 		0F02C1EF20550936006EF198 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		0F02C1F020550936006EF198 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		0F02C1F220550948006EF198 /* RoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
@@ -348,25 +212,6 @@
 		0F7FAB0020E0A49F00EF49FD /* FUCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUCamera.m; sourceTree = "<group>"; };
 		0F7FAB0220E0D61D00EF49FD /* FUManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FUManager.h; sourceTree = "<group>"; };
 		0F7FAB0320E0D61D00EF49FD /* FUManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUManager.m; sourceTree = "<group>"; };
-		0FBDA5982338133500BF523E /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0FBDA59A2338133500BF523E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		0FBDA59B2338133500BF523E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0FBDA59D2338133500BF523E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		0FBDA59E2338133500BF523E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		0FBDA5A12338133500BF523E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		0FBDA5A32338133600BF523E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0FBDA5A62338133700BF523E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		0FBDA5A82338133700BF523E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0FBDA5A92338133700BF523E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		0FBDA5B32338160200BF523E /* CapturerAndRender.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CapturerAndRender.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0FBDA5B52338160200BF523E /* CapturerAndRender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CapturerAndRender.h; sourceTree = "<group>"; };
-		0FBDA5B62338160200BF523E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0FC8A1FE23355E9B0007C48D /* AgoraDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraDispatcher.h; sourceTree = "<group>"; };
-		0FC8A1FF23355E9B0007C48D /* LogCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LogCenter.mm; sourceTree = "<group>"; };
-		0FC8A2B523355E9C0007C48D /* AgoraDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraDispatcher.m; sourceTree = "<group>"; };
-		0FC8A2B623355E9C0007C48D /* AVCaptureSession+DevicePosition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureSession+DevicePosition.mm"; sourceTree = "<group>"; };
-		0FC8A2B723355E9C0007C48D /* LogCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogCenter.h; sourceTree = "<group>"; };
-		0FC8A2B823355E9C0007C48D /* AVCaptureSession+DevicePosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureSession+DevicePosition.h"; sourceTree = "<group>"; };
 		0FCD2D2C2326F87300F56797 /* authpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authpack.h; path = Faceunity/authpack.h; sourceTree = "<group>"; };
 		0FD4E2022105C4D5006E46A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		0FD4E2062105C747006E46A1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -528,113 +373,12 @@
 				0F29C6E420527DF4000F8159 /* SystemConfiguration.framework in Frameworks */,
 				0F29C6E220527D4A000F8159 /* AgoraRtcEngineKit.framework in Frameworks */,
 				0F29C6DA205271C1000F8159 /* Accelerate.framework in Frameworks */,
-				0FBDA5BA2338160200BF523E /* CapturerAndRender.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0FBDA5952338133500BF523E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0F0DE973233AC5610036843E /* SystemConfiguration.framework in Frameworks */,
-				0F0DE972233AC5570036843E /* VideoToolbox.framework in Frameworks */,
-				0F0DE971233AC5470036843E /* libresolv.tbd in Frameworks */,
-				0F0DE970233AC53A0036843E /* CoreML.framework in Frameworks */,
-				0F0DE96F233AC52C0036843E /* CoreTelephony.framework in Frameworks */,
-				0F0DE96C233AC4D20036843E /* Accelerate.framework in Frameworks */,
-				0FBDA672233822D400BF523E /* libc++.tbd in Frameworks */,
-				0FBDA5C12338173900BF523E /* AVFoundation.framework in Frameworks */,
-				0FBDA5C02338172C00BF523E /* CapturerAndRender.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0FBDA5B02338160200BF523E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				09DF66E72383954E00E83DFB /* libyuv.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09DF66B82383954E00E83DFB /* libyuv */ = {
-			isa = PBXGroup;
-			children = (
-				09DF66B92383954E00E83DFB /* include */,
-				09DF66D02383954E00E83DFB /* lib */,
-			);
-			path = libyuv;
-			sourceTree = "<group>";
-		};
-		09DF66B92383954E00E83DFB /* include */ = {
-			isa = PBXGroup;
-			children = (
-				09DF66BA2383954E00E83DFB /* libyuv.h */,
-				09DF66BB2383954E00E83DFB /* libyuv */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		09DF66BB2383954E00E83DFB /* libyuv */ = {
-			isa = PBXGroup;
-			children = (
-				09DF66BC2383954E00E83DFB /* scale_row.h */,
-				09DF66BD2383954E00E83DFB /* scale.h */,
-				09DF66BE2383954E00E83DFB /* version.h */,
-				09DF66BF2383954E00E83DFB /* cpu_id.h */,
-				09DF66C02383954E00E83DFB /* video_common.h */,
-				09DF66C12383954E00E83DFB /* compare_row.h */,
-				09DF66C22383954E00E83DFB /* mjpeg_decoder.h */,
-				09DF66C32383954E00E83DFB /* rotate_row.h */,
-				09DF66C42383954E00E83DFB /* planar_functions.h */,
-				09DF66C52383954E00E83DFB /* scale_argb.h */,
-				09DF66C62383954E00E83DFB /* compare.h */,
-				09DF66C72383954E00E83DFB /* convert_argb.h */,
-				09DF66C82383954E00E83DFB /* rotate.h */,
-				09DF66C92383954E00E83DFB /* convert_from_argb.h */,
-				09DF66CA2383954E00E83DFB /* basic_types.h */,
-				09DF66CB2383954E00E83DFB /* convert_from.h */,
-				09DF66CC2383954E00E83DFB /* convert.h */,
-				09DF66CD2383954E00E83DFB /* rotate_argb.h */,
-				09DF66CE2383954E00E83DFB /* macros_msa.h */,
-				09DF66CF2383954E00E83DFB /* row.h */,
-			);
-			path = libyuv;
-			sourceTree = "<group>";
-		};
-		09DF66D02383954E00E83DFB /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				09DF66D12383954E00E83DFB /* libyuv.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		09E90115236AE19D000938D7 /* OpenGL */ = {
-			isa = PBXGroup;
-			children = (
-				09E90123236AE19D000938D7 /* DefaultShader.h */,
-				09E90116236AE19D000938D7 /* DefaultShader.mm */,
-				09E90121236AE19D000938D7 /* DisplayLinkTimer.h */,
-				09E9011A236AE19D000938D7 /* DisplayLinkTimer.m */,
-				09E90122236AE19D000938D7 /* GLRenderView.h */,
-				09E90118236AE19D000938D7 /* GLRenderView.m */,
-				09E90119236AE19D000938D7 /* I420TextureCache.h */,
-				09E9011E236AE19D000938D7 /* I420TextureCache.mm */,
-				09E90120236AE19D000938D7 /* NV12TextureCache.h */,
-				09E9011B236AE19D000938D7 /* NV12TextureCache.m */,
-				09E90124236AE19D000938D7 /* OpenGLDefines.h */,
-				09E90125236AE19D000938D7 /* RGBATextureCache.h */,
-				09E9011C236AE19D000938D7 /* RGBATextureCache.m */,
-				09E90117236AE19D000938D7 /* Shader.h */,
-				09E9011D236AE19D000938D7 /* Shader.mm */,
-				09E9011F236AE19D000938D7 /* VideoViewShading.h */,
-			);
-			path = OpenGL;
-			sourceTree = "<group>";
-		};
 		0F02C1F520561AB6006EF198 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -642,6 +386,8 @@
 				0F02C1F020550936006EF198 /* MainViewController.m */,
 				0F02C1F220550948006EF198 /* RoomViewController.h */,
 				0F02C1F320550948006EF198 /* RoomViewController.m */,
+				09807C3E2396555600E34D1B /* AGMFaceUnityFilter.h */,
+				09807C3F2396555600E34D1B /* AGMFaceUnityFilter.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -649,9 +395,7 @@
 		0F29C64E20525BC6000F8159 = {
 			isa = PBXGroup;
 			children = (
-				0FBDA5B42338160200BF523E /* CapturerAndRender */,
 				0F29C65920525BC6000F8159 /* AgoraWithFaceunity */,
-				0FBDA5992338133500BF523E /* TestProject */,
 				0F29C65820525BC6000F8159 /* Products */,
 				0F29C6D8205271C0000F8159 /* Frameworks */,
 			);
@@ -661,8 +405,6 @@
 			isa = PBXGroup;
 			children = (
 				0F29C65720525BC6000F8159 /* AgoraWithFaceunity.app */,
-				0FBDA5982338133500BF523E /* TestProject.app */,
-				0FBDA5B32338160200BF523E /* CapturerAndRender.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -719,93 +461,6 @@
 				0F29C6D9205271C1000F8159 /* Accelerate.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		0FBDA5992338133500BF523E /* TestProject */ = {
-			isa = PBXGroup;
-			children = (
-				0FBDA59A2338133500BF523E /* AppDelegate.h */,
-				0FBDA59B2338133500BF523E /* AppDelegate.m */,
-				0FBDA59D2338133500BF523E /* ViewController.h */,
-				0FBDA59E2338133500BF523E /* ViewController.m */,
-				0FBDA5A02338133500BF523E /* Main.storyboard */,
-				0FBDA5A32338133600BF523E /* Assets.xcassets */,
-				0FBDA5A52338133700BF523E /* LaunchScreen.storyboard */,
-				0FBDA5A82338133700BF523E /* Info.plist */,
-				0FBDA5A92338133700BF523E /* main.m */,
-			);
-			path = TestProject;
-			sourceTree = "<group>";
-		};
-		0FBDA5B42338160200BF523E /* CapturerAndRender */ = {
-			isa = PBXGroup;
-			children = (
-				0FBDA5B52338160200BF523E /* CapturerAndRender.h */,
-				0FC8A1DC23355E9B0007C48D /* Capturer */,
-				0FC8A1EB23355E9B0007C48D /* Render */,
-				0FC8A1E323355E9B0007C48D /* VideoFrame */,
-				0FC8A1FD23355E9B0007C48D /* Helper */,
-				0FBDA5B62338160200BF523E /* Info.plist */,
-			);
-			path = CapturerAndRender;
-			sourceTree = "<group>";
-		};
-		0FC8A1DC23355E9B0007C48D /* Capturer */ = {
-			isa = PBXGroup;
-			children = (
-				09E900FF236AE085000938D7 /* CaptureManager.h */,
-				09E90101236AE085000938D7 /* CaptureManager.m */,
-				09E90102236AE085000938D7 /* CameraVideoCapturer.h */,
-				09E90100236AE085000938D7 /* CameraVideoCapturer.mm */,
-				09E90103236AE085000938D7 /* VideoCapturer.h */,
-				09E90104236AE085000938D7 /* VideoCapturer.m */,
-			);
-			path = Capturer;
-			sourceTree = "<group>";
-		};
-		0FC8A1E323355E9B0007C48D /* VideoFrame */ = {
-			isa = PBXGroup;
-			children = (
-				09E9014F236AE301000938D7 /* CustomCVPixelBuffer.h */,
-				09E9014E236AE301000938D7 /* CustomCVPixelBuffer.mm */,
-				09E90151236AE301000938D7 /* I420Buffer.h */,
-				09E90154236AE301000938D7 /* VideoFrame.h */,
-				09E90150236AE301000938D7 /* VideoFrame.m */,
-				09E90152236AE301000938D7 /* VideoFrameBuffer.h */,
-				09E90153236AE301000938D7 /* YUVPlanarBuffer.h */,
-			);
-			path = VideoFrame;
-			sourceTree = "<group>";
-		};
-		0FC8A1EB23355E9B0007C48D /* Render */ = {
-			isa = PBXGroup;
-			children = (
-				09E90115236AE19D000938D7 /* OpenGL */,
-				09E9012B236AE19E000938D7 /* VideoRender.h */,
-			);
-			path = Render;
-			sourceTree = "<group>";
-		};
-		0FC8A1FD23355E9B0007C48D /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-				0FC8A20023355E9B0007C48D /* third_party */,
-				0FC8A1FE23355E9B0007C48D /* AgoraDispatcher.h */,
-				0FC8A2B523355E9C0007C48D /* AgoraDispatcher.m */,
-				0FC8A2B723355E9C0007C48D /* LogCenter.h */,
-				0FC8A1FF23355E9B0007C48D /* LogCenter.mm */,
-				0FC8A2B823355E9C0007C48D /* AVCaptureSession+DevicePosition.h */,
-				0FC8A2B623355E9C0007C48D /* AVCaptureSession+DevicePosition.mm */,
-			);
-			path = Helper;
-			sourceTree = "<group>";
-		};
-		0FC8A20023355E9B0007C48D /* third_party */ = {
-			isa = PBXGroup;
-			children = (
-				09DF66B82383954E00E83DFB /* libyuv */,
-			);
-			path = third_party;
 			sourceTree = "<group>";
 		};
 		0FDB7F7120DA3C8E005D9C58 /* Faceunity */ = {
@@ -1080,59 +735,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		0FBDA5AE2338160200BF523E /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				09E90156236AE301000938D7 /* CustomCVPixelBuffer.h in Headers */,
-				09DF66D52383954E00E83DFB /* version.h in Headers */,
-				09E90159236AE301000938D7 /* VideoFrameBuffer.h in Headers */,
-				09E9015B236AE301000938D7 /* VideoFrame.h in Headers */,
-				09E90143236AE19E000938D7 /* GLRenderView.h in Headers */,
-				09E9014C236AE19E000938D7 /* VideoRender.h in Headers */,
-				09E90145236AE19E000938D7 /* OpenGLDefines.h in Headers */,
-				09DF66D72383954E00E83DFB /* video_common.h in Headers */,
-				09E90109236AE085000938D7 /* VideoCapturer.h in Headers */,
-				09DF66E12383954E00E83DFB /* basic_types.h in Headers */,
-				09DF66DA2383954E00E83DFB /* rotate_row.h in Headers */,
-				09E90105236AE085000938D7 /* CaptureManager.h in Headers */,
-				09DF66D82383954E00E83DFB /* compare_row.h in Headers */,
-				09E90108236AE085000938D7 /* CameraVideoCapturer.h in Headers */,
-				0FBDA5E02338188D00BF523E /* LogCenter.h in Headers */,
-				09DF66D92383954E00E83DFB /* mjpeg_decoder.h in Headers */,
-				09E90141236AE19E000938D7 /* NV12TextureCache.h in Headers */,
-				09E9015A236AE301000938D7 /* YUVPlanarBuffer.h in Headers */,
-				09E90138236AE19E000938D7 /* Shader.h in Headers */,
-				09DF66D62383954E00E83DFB /* cpu_id.h in Headers */,
-				09DF66D22383954E00E83DFB /* libyuv.h in Headers */,
-				09E90144236AE19E000938D7 /* DefaultShader.h in Headers */,
-				09DF66DF2383954E00E83DFB /* rotate.h in Headers */,
-				09E9013A236AE19E000938D7 /* I420TextureCache.h in Headers */,
-				09DF66D32383954E00E83DFB /* scale_row.h in Headers */,
-				09DF66DE2383954E00E83DFB /* convert_argb.h in Headers */,
-				09DF66DC2383954E00E83DFB /* scale_argb.h in Headers */,
-				09E90146236AE19E000938D7 /* RGBATextureCache.h in Headers */,
-				09DF66E22383954E00E83DFB /* convert_from.h in Headers */,
-				0FBDA5E22338188D00BF523E /* AVCaptureSession+DevicePosition.h in Headers */,
-				09DF66E62383954E00E83DFB /* row.h in Headers */,
-				0FBDA5DE2338188D00BF523E /* AgoraDispatcher.h in Headers */,
-				0FBDA5B72338160200BF523E /* CapturerAndRender.h in Headers */,
-				09DF66E32383954E00E83DFB /* convert.h in Headers */,
-				09DF66E52383954E00E83DFB /* macros_msa.h in Headers */,
-				09DF66D42383954E00E83DFB /* scale.h in Headers */,
-				09E90158236AE301000938D7 /* I420Buffer.h in Headers */,
-				09E90142236AE19E000938D7 /* DisplayLinkTimer.h in Headers */,
-				09DF66E02383954E00E83DFB /* convert_from_argb.h in Headers */,
-				09DF66DB2383954E00E83DFB /* planar_functions.h in Headers */,
-				09DF66E42383954E00E83DFB /* rotate_argb.h in Headers */,
-				09DF66DD2383954E00E83DFB /* compare.h in Headers */,
-				09E90140236AE19E000938D7 /* VideoViewShading.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		0F29C65620525BC6000F8159 /* AgoraWithFaceunity */ = {
 			isa = PBXNativeTarget;
@@ -1146,47 +748,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				0FBDA5B92338160200BF523E /* PBXTargetDependency */,
 			);
 			name = AgoraWithFaceunity;
 			productName = AgoraWithFaceunity;
 			productReference = 0F29C65720525BC6000F8159 /* AgoraWithFaceunity.app */;
 			productType = "com.apple.product-type.application";
-		};
-		0FBDA5972338133500BF523E /* TestProject */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0FBDA5AD2338133700BF523E /* Build configuration list for PBXNativeTarget "TestProject" */;
-			buildPhases = (
-				0FBDA5942338133500BF523E /* Sources */,
-				0FBDA5952338133500BF523E /* Frameworks */,
-				0FBDA5962338133500BF523E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = TestProject;
-			productName = TestProject;
-			productReference = 0FBDA5982338133500BF523E /* TestProject.app */;
-			productType = "com.apple.product-type.application";
-		};
-		0FBDA5B22338160200BF523E /* CapturerAndRender */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0FBDA5BC2338160200BF523E /* Build configuration list for PBXNativeTarget "CapturerAndRender" */;
-			buildPhases = (
-				0FBDA5AE2338160200BF523E /* Headers */,
-				0FBDA5AF2338160200BF523E /* Sources */,
-				0FBDA5B02338160200BF523E /* Frameworks */,
-				0FBDA5B12338160200BF523E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = CapturerAndRender;
-			productName = CapturerAndRender;
-			productReference = 0FBDA5B32338160200BF523E /* CapturerAndRender.framework */;
-			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -1200,14 +766,6 @@
 				TargetAttributes = {
 					0F29C65620525BC6000F8159 = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
-					0FBDA5972338133500BF523E = {
-						CreatedOnToolsVersion = 10.3;
-						ProvisioningStyle = Automatic;
-					};
-					0FBDA5B22338160200BF523E = {
-						CreatedOnToolsVersion = 10.3;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1227,8 +785,6 @@
 			projectRoot = "";
 			targets = (
 				0F29C65620525BC6000F8159 /* AgoraWithFaceunity */,
-				0FBDA5972338133500BF523E /* TestProject */,
-				0FBDA5B22338160200BF523E /* CapturerAndRender */,
 			);
 		};
 /* End PBXProject section */
@@ -1366,23 +922,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0FBDA5962338133500BF523E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0FBDA5A72338133700BF523E /* LaunchScreen.storyboard in Resources */,
-				0FBDA5A42338133600BF523E /* Assets.xcassets in Resources */,
-				0FBDA5A22338133500BF523E /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0FBDA5B12338160200BF523E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1401,52 +940,13 @@
 				0FDB808920DA4966005D9C58 /* FUOpenGLView.m in Sources */,
 				0FDB808D20DA4A71005D9C58 /* FUMusicPlayer.m in Sources */,
 				0F02C1F420550948006EF198 /* RoomViewController.m in Sources */,
+				09807C402396555600E34D1B /* AGMFaceUnityFilter.m in Sources */,
 				0F02C1F120550936006EF198 /* MainViewController.m in Sources */,
 				0F29C65C20525BC6000F8159 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0FBDA5942338133500BF523E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0FBDA59F2338133500BF523E /* ViewController.m in Sources */,
-				0FBDA5AA2338133700BF523E /* main.m in Sources */,
-				0FBDA59C2338133500BF523E /* AppDelegate.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0FBDA5AF2338160200BF523E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				09E90139236AE19E000938D7 /* GLRenderView.m in Sources */,
-				09E90106236AE085000938D7 /* CameraVideoCapturer.mm in Sources */,
-				09E90157236AE301000938D7 /* VideoFrame.m in Sources */,
-				0FBDA6732338264300BF523E /* AVCaptureSession+DevicePosition.mm in Sources */,
-				09E9013B236AE19E000938D7 /* DisplayLinkTimer.m in Sources */,
-				09E90155236AE301000938D7 /* CustomCVPixelBuffer.mm in Sources */,
-				0FBDA5E12338188D00BF523E /* LogCenter.mm in Sources */,
-				09E9010A236AE085000938D7 /* VideoCapturer.m in Sources */,
-				09E90137236AE19E000938D7 /* DefaultShader.mm in Sources */,
-				09E9013F236AE19E000938D7 /* I420TextureCache.mm in Sources */,
-				09E90107236AE085000938D7 /* CaptureManager.m in Sources */,
-				09E9013C236AE19E000938D7 /* NV12TextureCache.m in Sources */,
-				09E9013E236AE19E000938D7 /* Shader.mm in Sources */,
-				0FBDA5DF2338188D00BF523E /* AgoraDispatcher.m in Sources */,
-				09E9013D236AE19E000938D7 /* RGBATextureCache.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0FBDA5B92338160200BF523E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0FBDA5B22338160200BF523E /* CapturerAndRender */;
-			targetProxy = 0FBDA5B82338160200BF523E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0F29C66020525BC6000F8159 /* Main.storyboard */ = {
@@ -1462,22 +962,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				0F29C66620525BC6000F8159 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		0FBDA5A02338133500BF523E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0FBDA5A12338133500BF523E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0FBDA5A52338133700BF523E /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0FBDA5A62338133700BF523E /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1679,144 +1163,6 @@
 			};
 			name = Release;
 		};
-		0FBDA5AB2338133700BF523E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 48TB6ZZL5S;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/TestProject",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/FaceunityUtils",
-					"$(PROJECT_DIR)",
-				);
-				INFOPLIST_FILE = TestProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
-					"$(PROJECT_DIR)",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.TestProject;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		0FBDA5AC2338133700BF523E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4578F4TGJA;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/TestProject",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/FaceunityUtils",
-					"$(PROJECT_DIR)",
-				);
-				INFOPLIST_FILE = TestProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS-lite",
-					"$(PROJECT_DIR)/AgoraWithFaceunity/Faceunity/FaceUnity-SDK-iOS",
-					"$(PROJECT_DIR)",
-				);
-				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.TestProject;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		0FBDA5BD2338160200BF523E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 48TB6ZZL5S;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/CapturerAndRender/Helper/third_party/libyuv/include";
-				INFOPLIST_FILE = CapturerAndRender/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/CapturerAndRender/Helper/third_party/libyuv/lib",
-					"$(PROJECT_DIR)/CapturerAndRender/Helper/third_party/libyuv/lib",
-				);
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.CapturerAndRender;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		0FBDA5BE2338160200BF523E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 48TB6ZZL5S;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/CapturerAndRender/Helper/third_party/libyuv/include";
-				INFOPLIST_FILE = CapturerAndRender/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/CapturerAndRender/Helper/third_party/libyuv/lib",
-					"$(PROJECT_DIR)/CapturerAndRender/Helper/third_party/libyuv/lib",
-				);
-				MACH_O_TYPE = staticlib;
-				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = io.agora.CapturerAndRender;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1834,24 +1180,6 @@
 			buildConfigurations = (
 				0F29C68420525BC7000F8159 /* Debug */,
 				0F29C68520525BC7000F8159 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0FBDA5AD2338133700BF523E /* Build configuration list for PBXNativeTarget "TestProject" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0FBDA5AB2338133700BF523E /* Debug */,
-				0FBDA5AC2338133700BF523E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0FBDA5BC2338160200BF523E /* Build configuration list for PBXNativeTarget "CapturerAndRender" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0FBDA5BD2338160200BF523E /* Debug */,
-				0FBDA5BE2338160200BF523E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
