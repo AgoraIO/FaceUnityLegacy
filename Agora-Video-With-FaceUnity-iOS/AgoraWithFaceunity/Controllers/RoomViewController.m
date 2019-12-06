@@ -366,6 +366,7 @@
     [self.videoRnderer stop];
 }
 
+
 - (void)shouldDispose {
 
 }
@@ -558,6 +559,7 @@
     //Change camera need to call below function
     [self.agoraKit switchCamera];
     [[FUManager shareManager] onCameraChange];
+    [self setCaptureVideoOrientation];
 }
 
 - (IBAction)muteBtnClick:(UIButton *)sender {
@@ -568,6 +570,27 @@
 
 - (IBAction)buglyBtnClick:(UIButton *)sender {
     self.buglyLabel.hidden = !self.buglyLabel.hidden;
+}
+
+- (void)setCaptureVideoOrientation {
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortrait];
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark --- FUItemsViewDelegate
