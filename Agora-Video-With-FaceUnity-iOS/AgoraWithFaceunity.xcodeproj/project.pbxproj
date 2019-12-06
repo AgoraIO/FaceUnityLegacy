@@ -333,6 +333,7 @@
 		0FDB7FF920DA3C8E005D9C58 /* jingongmen_zh_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = jingongmen_zh_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFA20DA3C8E005D9C58 /* sea_lm_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = sea_lm_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFB20DA3C8E005D9C58 /* xiandai_ztt_fu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiandai_ztt_fu.png; sourceTree = "<group>"; };
+		0FDB807A20DA3CB7005D9C58 /* authpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authpack.h; path = Faceunity/authpack.h; sourceTree = "<group>"; };
 		0FDB807C20DA4633005D9C58 /* FULiveCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FULiveCell.h; sourceTree = "<group>"; };
 		0FDB807D20DA4633005D9C58 /* FULiveCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FULiveCell.m; sourceTree = "<group>"; };
 		0FDB807F20DA466C005D9C58 /* FULiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FULiveModel.m; sourceTree = "<group>"; };
