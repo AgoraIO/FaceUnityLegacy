@@ -25,9 +25,6 @@
     BOOL faceBeautyMode;
 }
 
-//@property (nonatomic, strong) CaptureManager *captureManager;
-//@property (nonatomic, strong) CameraVideoCapturer *videoCapture;
-
 @property (weak, nonatomic) IBOutlet UIView *containView;
 
 @property (weak, nonatomic) IBOutlet FUAPIDemoBar *demoBar;    //Tool Bar
@@ -51,8 +48,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *modelTableView;
 
 @property (nonatomic, strong) FULiveModel *model;
-
-//@property (nonatomic, weak) GLRenderView *renderView;
 
 
 #pragma Agora
@@ -362,13 +357,11 @@
 }
 
 - (void)shouldStart {
-//    [self.captureManager startCapture];
     [self.cameraCapturer start];
     [self.videoRnderer start];
 }
 
 - (void)shouldStop {
-//    [self.captureManager stopCapture];
     [self.cameraCapturer stop];
     [self.videoRnderer stop];
 }
