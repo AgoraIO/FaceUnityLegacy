@@ -272,4 +272,69 @@ public abstract class GlUtil {
             return mvp;
         }
     }
+
+    /**
+     * Get a transformation matrix that adjust the target texture
+     * on to a display surface, with a rotation possibly.
+     * The image content may be cropped for not being distorted.
+     * @param viewWidth the width of drawing view
+     * @param viewHeight the height of drawing view
+     * @param texWidth width of the texture
+     * @param texHeight height of the texture
+     * @param shouldSwap whether the texture should swap width and height
+     * @param rotation rotation in degrees counter-clockwise that
+     *                 the texture should be rotated
+     * @return the vertex transform matrix
+     */
+    public static float[] getVertexMatrix(int viewWidth, int viewHeight,
+                                          int texWidth, int texHeight,
+                                          boolean shouldSwap, int rotation) {
+        float[] matrix = new float[16];
+
+        // texture images are rotated around
+        // the z-axis counter-clockwise
+        Matrix.setRotateM(matrix, 0, rotation, 0, 0, 1);
+
+        float ratioV = viewWidth / (float) viewHeight;
+
+        int texW = texWidth;
+        int texH = texHeight;
+
+        if (shouldSwap) {
+            texW = texHeight;
+            texH = texWidth;
+        }
+
+        float ratioT = texW / (float) texH;
+        if (ratioV == ratioT) return matrix;
+
+        float[] scaleMatrix = new float[16];
+        Matrix.setIdentityM(scaleMatrix, 0);
+        float remainRatio;
+
+        if (ratioV < ratioT) {
+            // The texture image is wider than the display view,
+            // we must crop out the both sides of the texture
+            // by scaling the values of X component.
+            float actualTexW = ratioV * texH;
+            remainRatio = texW / actualTexW;
+            Matrix.scaleM(scaleMatrix, 0, remainRatio, 1, 1);
+        } else {
+            // The display view is wider than the texture image,
+            // we must crop out the top and bottom of the
+            // texture by scaling the values of Y component
+            float actualTexH = texW / ratioV;
+            remainRatio = texH / actualTexH;
+            Matrix.scaleM(scaleMatrix, 0, 1, remainRatio, 1);
+        }
+
+        float[] result = new float[16];
+        // Note, according the way this multiplication works,
+        // the rhs matrix should be the transformation that is
+        // performed first, the rotation here.
+        // And lhs should be the transformation performed next,
+        // in this case, the scaling.
+        Matrix.multiplyMM(result, 0, scaleMatrix, 0, matrix, 0);
+        return result;
+    }
 }

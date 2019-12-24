@@ -6,6 +6,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
+import android.view.WindowManager;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,7 @@ import io.agora.kit.media.gles.ProgramTexture2d;
 import io.agora.kit.media.gles.ProgramTextureOES;
 import io.agora.kit.media.gles.core.GlUtil;
 import io.agora.kit.media.util.FPSUtil;
+import io.agora.kit.media.util.RotationUtil;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -49,6 +51,8 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
     private ProgramTexture2d mFullFrameRectTexture2D;
     private ProgramTextureOES mTextureOES;
 
+    private int mDisplayRotation;
+
     private GLSurfaceView.Renderer mGLRenderer = new GLSurfaceView.Renderer() {
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             mFullFrameRectTexture2D = new ProgramTexture2d();
@@ -63,13 +67,17 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
             GLES20.glViewport(0, 0, width, height);
             mViewWidth = width;
             mViewHeight = height;
-            if (mNeedsDraw) {
-                mMVP = GlUtil.changeMVPMatrix(GlUtil.IDENTITY_MATRIX, mViewWidth, mViewHeight,
-                        mVideoCaptureFrame.mFormat.getHeight(), mVideoCaptureFrame.mFormat.getWidth());
-            }
+            mMVPInit = false;
+            mDisplayRotation = getDisplayRotation();
             mFPSUtil.resetLimit();
 
             Log.e(TAG, "onSurfaceChanged gl " + gl + " " + width + " " + height + " " + mGLSurfaceView + " " + mGLRenderer);
+        }
+
+        private int getDisplayRotation() {
+            WindowManager manager = (WindowManager) mContext.
+                    getSystemService(Context.WINDOW_SERVICE);
+            return RotationUtil.getRotation(manager.getDefaultDisplay().getRotation());
         }
 
         public void onDrawFrame(GL10 gl) {
@@ -94,8 +102,15 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
                 mEffectTextureId = mFrameConnector.onDataAvailable(frame);
 
                 if (!mMVPInit) {
-                    mMVP = GlUtil.changeMVPMatrix(GlUtil.IDENTITY_MATRIX, mViewWidth, mViewHeight,
-                            frame.mFormat.getHeight(), frame.mFormat.getWidth());
+                    // The texture transform matrix will help adjust the
+                    // direction of texture to the direction of views,
+                    // because of which, the clockwise rotation for the
+                    // images to be upright is fortunately the display
+                    // rotation.
+                    mMVP = GlUtil.getVertexMatrix(mViewWidth, mViewHeight,
+                            frame.mFormat.getWidth(), frame.mFormat.getHeight(),
+                            shouldSwapWH(frame.mRotation, mDisplayRotation),
+                            rotateDegree(frame.mRotation));
                     mMVPInit = true;
                 }
 
@@ -118,6 +133,30 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
                 if (mRequestDestroy) {
                     doDestroy();
                 }
+            }
+        }
+
+        private boolean shouldSwapWH(int texRotation, int surfaceRotation) {
+            if (texRotation == 0 || texRotation == 180) {
+                // The texture itself does not need to rotate (because
+                // the camera orientation has been fixed, for example),
+                // or it should be rotated 180, in which case
+                // the texture will not swap its width and height.
+                return false;
+            }
+
+            // By default, the images from camera are horizontal,
+            // which means if the surface is portrait, the images
+            // must swap their width and height to be displayed
+            // appropriately
+            return surfaceRotation == 0 || surfaceRotation == 180;
+        }
+
+        private int rotateDegree(int texRotation) {
+            if (texRotation == 90 || texRotation == 270) {
+                return mDisplayRotation;
+            } else {
+                return 0;
             }
         }
     };
