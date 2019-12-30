@@ -51,7 +51,16 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
     private ProgramTexture2d mFullFrameRectTexture2D;
     private ProgramTextureOES mTextureOES;
 
+    // Display rotation is the angle in degrees from natural
+    // orientation to the current surface orientation
+    // counter-clockwise
     private int mDisplayRotation;
+
+    // Clockwise angle in degrees by which the current
+    // surface rotates to natural orientation.
+    // The sum of display and counter-display rotations
+    // should be 360
+    private int mCounterDisplayRotation;
 
     private GLSurfaceView.Renderer mGLRenderer = new GLSurfaceView.Renderer() {
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -69,6 +78,7 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
             mViewHeight = height;
             mMVPInit = false;
             mDisplayRotation = getDisplayRotation();
+            mCounterDisplayRotation = (360 - mDisplayRotation) % 360;
             mFPSUtil.resetLimit();
 
             Log.e(TAG, "onSurfaceChanged gl " + gl + " " + width + " " + height + " " + mGLSurfaceView + " " + mGLRenderer);
@@ -109,8 +119,8 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
                     // rotation.
                     mMVP = GlUtil.getVertexMatrix(mViewWidth, mViewHeight,
                             frame.mFormat.getWidth(), frame.mFormat.getHeight(),
-                            shouldSwapWH(frame.mRotation, mDisplayRotation),
-                            rotateDegree(frame.mRotation));
+                            shouldSwapWH(frame.mCameraRotation, mDisplayRotation),
+                            rotateDegree(frame.mCameraRotation));
                     mMVPInit = true;
                 }
 
@@ -126,6 +136,9 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
                     mFullFrameRectTexture2D.drawFrame(frame.mTextureId, frame.mTexMatrix, mMVP);
                 }
 
+                // Tells the rtc engine how to adjust images rotation
+                // that is caused by the surface rotation
+                frame.mSurfaceRotation = mCounterDisplayRotation;
                 mTransmitConnector.onDataAvailable(frame);
 
                 mFPSUtil.limit();

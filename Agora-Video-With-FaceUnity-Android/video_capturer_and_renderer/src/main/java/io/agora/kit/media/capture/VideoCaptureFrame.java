@@ -6,12 +6,12 @@ import android.opengl.Matrix;
 import java.util.Arrays;
 
 public class VideoCaptureFrame {
-    public static final int NO_TEXTURE = -1;
     public static final float[] DEFAULT_MATRIX = new float[16];
     public VideoCaptureFormat mFormat;
-    public int mTextureId = NO_TEXTURE;
+    public int mTextureId;
     public float[] mTexMatrix;
-    public int mRotation;
+    public int mCameraRotation;
+    public int mSurfaceRotation;
     public long mTimeStamp;
     public byte[] mImage;
     public SurfaceTexture mSurfaceTexture;
@@ -22,7 +22,7 @@ public class VideoCaptureFrame {
         mTextureId = textureId;
         mImage = image;
         mTimeStamp = ts;
-        mRotation = rotation;
+        mCameraRotation = rotation;
         mSurfaceTexture = texture;
         mMirror = mirror;
 
@@ -37,7 +37,8 @@ public class VideoCaptureFrame {
     public String toString() {
         return "VideoCaptureFrame{" +
                 "mFormat=" + mFormat +
-                ", mRotation=" + mRotation +
+                ", mCameraRotation=" + mCameraRotation +
+                ", mSurfaceRotation" + mSurfaceRotation +
                 ", mMirror=" + mMirror +
                 ", mTimeStamp=" + mTimeStamp +
                 ", mTextureId=" + mTextureId +
