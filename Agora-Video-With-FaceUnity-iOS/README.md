@@ -19,7 +19,7 @@ Faceunity
 - Switch camera
 
 
-This project uses the video pre-processing functions provided by Faceunity such as video capture, beauty, and local rendering, and uses Agora's functions of voice collection, encoding, transmission, decoding, and remote rendering.
+This project adopts the video beauty pre-processing function provided by Faceunity, Uses the audio collection, encoding, transmission, decoding and rendering functions provided by Agora's, and uses the video collection function provided by Agora Module.
 
 Faceunity beauty function please refer to. [Faceunity Document](http://www.faceunity.com/docs_develop_en/#/)
 
