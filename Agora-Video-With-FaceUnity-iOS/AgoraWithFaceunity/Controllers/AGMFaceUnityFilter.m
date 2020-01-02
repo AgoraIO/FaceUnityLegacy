@@ -11,11 +11,9 @@
 
 @implementation AGMFaceUnityFilter
 
-- (void)onFrame:(AGMVideoFrame *)videoFrame
-{
+- (void)onFrame:(AGMVideoFrame *)videoFrame {
 #pragma mark 写入滤镜处理
     AGMCVPixelBuffer *AGMPixelBuffer = videoFrame.buffer;
-
     
     if (_didCompletion) {
         self.didCompletion(AGMPixelBuffer.pixelBuffer, videoFrame.timeStamp, videoFrame.rotation);

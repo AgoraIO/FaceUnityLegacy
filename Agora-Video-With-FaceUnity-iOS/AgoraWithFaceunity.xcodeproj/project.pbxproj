@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0909357223A9DCAC009507BF /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0909356F23A9DCAB009507BF /* libcrypto.a */; };
+		0909357323A9DCAC009507BF /* AgoraRtcEngineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0909357023A9DCAC009507BF /* AgoraRtcEngineKit.framework */; };
+		0909357423A9DCAC009507BF /* AgoraRtcCryptoLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0909357123A9DCAC009507BF /* AgoraRtcCryptoLoader.framework */; };
+		09780BB123BDD92300069C0A /* AGMCapturer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09780BAF23BDD92200069C0A /* AGMCapturer.framework */; };
+		09780BB223BDD92300069C0A /* AGMBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09780BB023BDD92300069C0A /* AGMBase.framework */; };
 		09807C402396555600E34D1B /* AGMFaceUnityFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 09807C3F2396555600E34D1B /* AGMFaceUnityFilter.m */; };
 		0F02C1F120550936006EF198 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F020550936006EF198 /* MainViewController.m */; };
 		0F02C1F420550948006EF198 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F02C1F320550948006EF198 /* RoomViewController.m */; };
@@ -177,6 +182,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0909356F23A9DCAB009507BF /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		0909357023A9DCAC009507BF /* AgoraRtcEngineKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtcEngineKit.framework; sourceTree = "<group>"; };
+		0909357123A9DCAC009507BF /* AgoraRtcCryptoLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtcCryptoLoader.framework; sourceTree = "<group>"; };
+		09780BAF23BDD92200069C0A /* AGMCapturer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AGMCapturer.framework; sourceTree = "<group>"; };
+		09780BB023BDD92300069C0A /* AGMBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AGMBase.framework; sourceTree = "<group>"; };
 		09807C3E2396555600E34D1B /* AGMFaceUnityFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGMFaceUnityFilter.h; sourceTree = "<group>"; };
 		09807C3F2396555600E34D1B /* AGMFaceUnityFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGMFaceUnityFilter.m; sourceTree = "<group>"; };
 		0F02C1EF20550936006EF198 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -333,7 +343,6 @@
 		0FDB7FF920DA3C8E005D9C58 /* jingongmen_zh_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = jingongmen_zh_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFA20DA3C8E005D9C58 /* sea_lm_fu.bundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = sea_lm_fu.bundle; sourceTree = "<group>"; };
 		0FDB7FFB20DA3C8E005D9C58 /* xiandai_ztt_fu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiandai_ztt_fu.png; sourceTree = "<group>"; };
-		0FDB807A20DA3CB7005D9C58 /* authpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authpack.h; path = Faceunity/authpack.h; sourceTree = "<group>"; };
 		0FDB807C20DA4633005D9C58 /* FULiveCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FULiveCell.h; sourceTree = "<group>"; };
 		0FDB807D20DA4633005D9C58 /* FULiveCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FULiveCell.m; sourceTree = "<group>"; };
 		0FDB807F20DA466C005D9C58 /* FULiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FULiveModel.m; sourceTree = "<group>"; };
@@ -368,12 +377,17 @@
 				0F02C1F920561D0D006EF198 /* AVFoundation.framework in Frameworks */,
 				0F02C1F820561D04006EF198 /* CoreTelephony.framework in Frameworks */,
 				0F02C1F620561CF6006EF198 /* CoreMedia.framework in Frameworks */,
+				0909357323A9DCAC009507BF /* AgoraRtcEngineKit.framework in Frameworks */,
 				0F02C1F720561CF6006EF198 /* CoreMotion.framework in Frameworks */,
 				0F29C6F420527E50000F8159 /* libresolv.tbd in Frameworks */,
 				0FDB80AD20DA51F7005D9C58 /* libnama.a in Frameworks */,
+				09780BB123BDD92300069C0A /* AGMCapturer.framework in Frameworks */,
+				0909357223A9DCAC009507BF /* libcrypto.a in Frameworks */,
+				09780BB223BDD92300069C0A /* AGMBase.framework in Frameworks */,
 				0F29C6E420527DF4000F8159 /* SystemConfiguration.framework in Frameworks */,
 				0F29C6E220527D4A000F8159 /* AgoraRtcEngineKit.framework in Frameworks */,
 				0F29C6DA205271C1000F8159 /* Accelerate.framework in Frameworks */,
+				0909357423A9DCAC009507BF /* AgoraRtcCryptoLoader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,10 +461,15 @@
 		0F29C6D8205271C0000F8159 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				09780BB023BDD92300069C0A /* AGMBase.framework */,
+				09780BAF23BDD92200069C0A /* AGMCapturer.framework */,
 				707BDE562269BD950040211C /* CoreML.framework */,
 				2FBF73032224F3940054BAEE /* libc++.tbd */,
 				0F29C6F320527E50000F8159 /* libresolv.tbd */,
 				0F29C6F120527E45000F8159 /* libc++.1.tbd */,
+				0909357123A9DCAC009507BF /* AgoraRtcCryptoLoader.framework */,
+				0909357023A9DCAC009507BF /* AgoraRtcEngineKit.framework */,
+				0909356F23A9DCAB009507BF /* libcrypto.a */,
 				0F29C6EF20527E3A000F8159 /* AudioToolbox.framework */,
 				0F29C6ED20527E2F000F8159 /* VideoToolbox.framework */,
 				0F29C6EB20527E23000F8159 /* AVFoundation.framework */,
