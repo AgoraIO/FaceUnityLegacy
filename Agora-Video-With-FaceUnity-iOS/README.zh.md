@@ -26,11 +26,9 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/Intera
 
 由于在使用美颜的时候需要使用第三方采集，请特别参考[自定义设备API](https://docs.agora.io/cn/Interactive%20Broadcast/raw_data_video_android?platform=Android)  或者 [自采集API](https://docs.agora.io/cn/Interactive%20Broadcast/raw_data_video_android?platform=Android)
 
-## Agora 模块化 SDK
+## 如何使用 Agora 模块化 SDK的采集功能
 
-**Agora Module is an Agora SDK component for iOS.**  
-
-## Features
+## 支持的功能
 - [x] 	Capturer
 	- [x] Camera Capturer
 		- [x] Support for front and rear camera switching
@@ -53,16 +51,14 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/Intera
 		- [x] Support fit、hidden zoom mode
 
 
-
   
-## Installation
+## 如何使用
 
-#### Manually
+#### 导入方式
 
-1. If you are using the capturer module，Go to SDK Downloads, download the AgoraModule_Base and AgoraModule_Capturer module SDK. 
-2. Copy the AGMBase.framework、AGMCapturer.framework file in the libs folder to the project folder.
-3. In Xcode, go to the TARGETS > Project Name > Build Phases > Link Binary with Libraries menu, and click + to add the following frameworks and libraries. To add the AGMBase.framework、AGMCapturer.framework  file, remember to click Add Other... after clicking +.
-4. Link with required frameworks:
+1. 如果使用采集模块，需要下载 AgoraModule_Base 和 AgoraModule_Capturer 这两个 SDK. 
+2. 把 AGMBase.framework、AGMCapturer.framework 这两个库拖入工程里面.
+3. 依赖的系统库:
      * UIKit.framework
      * Foundation.framework
      * AVFoundation.framework
@@ -71,7 +67,7 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/Intera
      * libz.framework
      * libstdc++.framework
 
-#### SDK Downloads
+#### SDK 下载
 [AgoraModule_Base_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Base_iOS-1.1.0.zip)
 
 [AgoraModule_Capturer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Capturer_iOS-1.1.0.zip)
@@ -79,7 +75,7 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/Intera
 [AgoraModule_Renderer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Renderer_iOS-1.1.0.zip)
                                
                            
-#### Add project permissions
+#### 添加权限
 Add the following permissions in the info.plist file for device access according to your needs:
 
 | Key      |    Type | Value  |
@@ -88,11 +84,11 @@ Add the following permissions in the info.plist file for device access according
 | Privacy - Camera Usage Description	     |   String |  To access the camera, such as for a video call.|
         
 
-## Usage example 
+## 代码示例 
 
 #### Objective-C
 
-##### How to use Capturer
+##### 如何使用采集器
 
 ```objc
 AGMCapturerVideoConfig *videoConfig = [AGMCapturerVideoConfig defaultConfig];
@@ -102,12 +98,12 @@ self.cameraCapturer = [[AGMCameraCapturer alloc] initWithConfig:videoConfig];
 [self.cameraCapturer start];
 ```
 
-##### How to use build-in filter
+##### 如何使用内置滤镜，暂时没有内置滤镜功能
 ```objc
 self.filter = [[AGMFilter alloc] init];
 ```
 
-##### How to use renderer
+##### 如何使用渲染器
 ```objc
 self.preview = [[UIView alloc] initWithFrame:self.view.bounds];
 [self.view insertSubview:self.preview atIndex:0];
@@ -120,7 +116,7 @@ self.videoRenderer.preView = self.preview;
 
 ```
 
-##### Associate the modules
+##### 模块之间连接
 
 ```objc
 
@@ -129,9 +125,9 @@ self.videoRenderer.preView = self.preview;
 
 ```
 
-##### Custom Filter
+##### 自定义滤镜模块
 
-Create a class that inherits form AGMVideoSource and implements the AGMVideoSink protocol, Implement the onFrame: method to handle the videoframe .
+创建一个继承 AGMVideoSource 并实现了 AGMVideoSink 协议的类，在 onFrame: 代理方法里面处理视频帧数据。
 
 ```objc
 
