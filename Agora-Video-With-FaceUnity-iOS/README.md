@@ -28,9 +28,7 @@ Agora function implementation please refer to [Agora Document](https://docs.agor
 Due to the need to use third-party capture when using beauty function, please refer to [Customized Media Source API](https://docs.agora.io/en/Interactive%20Broadcast/raw_data_video_android?platform=Android)  or [Configuring the External Data API](https://docs.agora.io/en/Interactive%20Broadcast/raw_data_video_android?platform=Android)
 
 
-## Agora Module SDK
-
-**Agora Module is an Agora SDK component for iOS.**  
+## How to use the Agora Module capturer function.
 
 ## Features
 - [x] 	Capturer
