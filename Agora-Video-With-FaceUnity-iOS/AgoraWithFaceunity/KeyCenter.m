@@ -10,6 +10,6 @@
 
 @implementation KeyCenter
 + (NSString *)AppId {
-    return <#Your AppID#>;
+    return <#Your App Id#>;
 }
 @end

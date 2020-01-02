@@ -18,13 +18,146 @@ Faceunity
 - 切换采集模式
 - 切换前置摄像头和后置摄像头
 
-本项目采用了 Faceunity 提供的视频采集，美颜，本地渲染等视频前处理功能，使用了 Agora 提供的声音采集，编码，传输，解码和远端渲染功能。
+本项目采用了 Faceunity 提供的视频美颜前处理功能，使用了 Agora 提供的声音采集，编码，传输，解码和渲染功能，使用了 Agora Module 提供的视频采集功能。
 
 Faceunity 美颜功能实现请参考 [Faceunity 官方文档](http://www.faceunity.com/docs_develop/#/markdown/integrate/introduction)
 
 Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/Interactive%20Broadcast/API%20Reference/oc/docs/headers/Agora-Objective-C-API-Overview.html)
 
 由于在使用美颜的时候需要使用第三方采集，请特别参考[自定义设备API](https://docs.agora.io/cn/Interactive%20Broadcast/raw_data_video_android?platform=Android)  或者 [自采集API](https://docs.agora.io/cn/Interactive%20Broadcast/raw_data_video_android?platform=Android)
+
+## 如何使用 Agora 模块化 SDK的采集功能
+
+## 支持的功能
+- [x] 	Capturer
+	- [x] Camera Capturer
+		- [x] Support for front and rear camera switching
+		- [x] Support for dynamic resolution switching
+		- [x] Support I420, NV12, BGRA pixel format output
+		- [x] Support Exposure, ISO
+		- [ ] Support ZoomScale
+		- [ ] Support Torch
+		- [ ] Support watermark
+	- [x] Audio Capturer
+		- [x] Support single and double channel
+		- [x] Support Mute
+	- [x]  Video Frame Adapter (For processing the video frame direction required by different modules)
+		- [x] Support VideoOutputOrientationModeAdaptative for RTC function
+		- [x] Support ...FixedLandscape and ...FixedLandscape for CDN live streaming
+- [x] Renderer
+	- [x] gles
+		- [x] Support glContext Shared
+		- [x] Support mirror
+		- [x] Support fit、hidden zoom mode
+
+
+  
+## 如何使用
+
+#### 导入方式
+
+1. 如果使用采集模块，需要下载 AgoraModule_Base 和 AgoraModule_Capturer 这两个 SDK. 
+2. 把 AGMBase.framework、AGMCapturer.framework 这两个库拖入工程里面.
+3. 依赖的系统库:
+     * UIKit.framework
+     * Foundation.framework
+     * AVFoundation.framework
+     * VideoToolbox.framework
+     * AudioToolbox.framework
+     * libz.framework
+     * libstdc++.framework
+
+#### SDK 下载
+[AgoraModule_Base_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Base_iOS-1.1.0.zip)
+
+[AgoraModule_Capturer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Capturer_iOS-1.1.0.zip)
+
+[AgoraModule_Renderer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Renderer_iOS-1.1.0.zip)
+                               
+                           
+#### 添加权限
+Add the following permissions in the info.plist file for device access according to your needs:
+
+| Key      |    Type | Value  |
+| :-------- | --------:| :--: |
+| Privacy - Microphone Usage Description	  | String |  To access the microphone, such as for a video call.|
+| Privacy - Camera Usage Description	     |   String |  To access the camera, such as for a video call.|
+        
+
+## 代码示例 
+
+#### Objective-C
+
+##### 如何使用采集器
+
+```objc
+AGMCapturerVideoConfig *videoConfig = [AGMCapturerVideoConfig defaultConfig];
+videoConfig.videoSize = CGSizeMake(720, 1280);
+videoConfig.sessionPreset = AGMCaptureSessionPreset720x1280;
+self.cameraCapturer = [[AGMCameraCapturer alloc] initWithConfig:videoConfig];
+[self.cameraCapturer start];
+```
+
+##### 如何使用内置滤镜，暂时没有内置滤镜功能
+```objc
+self.filter = [[AGMFilter alloc] init];
+```
+
+##### 如何使用渲染器
+```objc
+self.preview = [[UIView alloc] initWithFrame:self.view.bounds];
+[self.view insertSubview:self.preview atIndex:0];
+    
+AGMRendererConfig *rendererConfig = [AGMRendererConfig defaultConfig];
+self.videoRenderer = [[AGMVideoRenderer alloc] initWithConfig:rendererConfig];
+self.videoRenderer.preView = self.preview;
+[self.videoRenderer start];    
+
+
+```
+
+##### 模块之间连接
+
+```objc
+
+[self.cameraCapturer addVideoSink:self.filter];
+[self.filter addVideoSink:self.videoRenderer];
+
+```
+
+##### 自定义滤镜模块
+
+创建一个继承 AGMVideoSource 并实现了 AGMVideoSink 协议的类，在 onFrame: 代理方法里面处理视频帧数据。
+
+```objc
+
+#import <AGMBase/AGMBase.h>
+
+interface AGMSenceTimeFilter : AGMVideoSource <AGMVideoSink>
+
+@end
+
+#import "AGMSenceTimeFilter.h"
+
+@implementation AGMSenceTimeFilter
+
+- (void)onFrame:(AGMVideoFrame *)videoFrame
+{
+#pragma mark Write the filter processing.
+    
+    
+#pragma mark When you're done, pass it to the next sink.
+    if (self.allSinks.count) {
+        for (id<AGMVideoSink> sink in self.allSinks) {
+            [sink onFrame:videoFrame];
+        }
+    }
+}
+
+@end
+
+```
+
 
 ## 运行示例程序
 首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 KeyCenter.m

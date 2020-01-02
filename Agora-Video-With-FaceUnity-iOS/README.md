@@ -19,13 +19,149 @@ Faceunity
 - Switch camera
 
 
-This project uses the video pre-processing functions provided by Faceunity such as video capture, beauty, and local rendering, and uses Agora's functions of voice collection, encoding, transmission, decoding, and remote rendering.
+This project adopts the video beauty pre-processing function provided by Faceunity, Uses the audio collection, encoding, transmission, decoding and rendering functions provided by Agora's, and uses the video collection function provided by Agora Module.
 
 Faceunity beauty function please refer to. [Faceunity Document](http://www.faceunity.com/docs_develop_en/#/)
 
 Agora function implementation please refer to [Agora Document](https://docs.agora.io/en/Interactive%20Broadcast/API%20Reference/oc/docs/headers/Agora-Objective-C-API-Overview.html)
 
 Due to the need to use third-party capture when using beauty function, please refer to [Customized Media Source API](https://docs.agora.io/en/Interactive%20Broadcast/raw_data_video_android?platform=Android)  or [Configuring the External Data API](https://docs.agora.io/en/Interactive%20Broadcast/raw_data_video_android?platform=Android)
+
+
+## How to use the Agora Module capturer function.
+
+## Features
+- [x] 	Capturer
+	- [x] Camera Capturer
+		- [x] Support for front and rear camera switching
+		- [x] Support for dynamic resolution switching
+		- [x] Support I420, NV12, BGRA pixel format output
+		- [x] Support Exposure, ISO
+		- [ ] Support ZoomScale
+		- [ ] Support Torch
+		- [ ] Support watermark
+	- [x] Audio Capturer
+		- [x] Support single and double channel
+		- [x] Support Mute
+	- [x]  Video Frame Adapter (For processing the video frame direction required by different modules)
+		- [x] Support VideoOutputOrientationModeAdaptative for RTC function
+		- [x] Support ...FixedLandscape and ...FixedLandscape for CDN live streaming
+- [x] Renderer
+	- [x] gles
+		- [x] Support glContext Shared
+		- [x] Support mirror
+		- [x] Support fit、hidden zoom mode
+
+
+
+  
+## Installation
+
+#### Manually
+
+1. If you are using the capturer module，Go to SDK Downloads, download the AgoraModule_Base and AgoraModule_Capturer module SDK. 
+2. Copy the AGMBase.framework、AGMCapturer.framework file in the libs folder to the project folder.
+3. In Xcode, go to the TARGETS > Project Name > Build Phases > Link Binary with Libraries menu, and click + to add the following frameworks and libraries. To add the AGMBase.framework、AGMCapturer.framework  file, remember to click Add Other... after clicking +.
+4. Link with required frameworks:
+     * UIKit.framework
+     * Foundation.framework
+     * AVFoundation.framework
+     * VideoToolbox.framework
+     * AudioToolbox.framework
+     * libz.framework
+     * libstdc++.framework
+
+#### SDK Downloads
+[AgoraModule_Base_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Base_iOS-1.1.0.zip)
+
+[AgoraModule_Capturer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Capturer_iOS-1.1.0.zip)
+
+[AgoraModule_Renderer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Renderer_iOS-1.1.0.zip)
+                               
+                           
+#### Add project permissions
+Add the following permissions in the info.plist file for device access according to your needs:
+
+| Key      |    Type | Value  |
+| :-------- | --------:| :--: |
+| Privacy - Microphone Usage Description	  | String |  To access the microphone, such as for a video call.|
+| Privacy - Camera Usage Description	     |   String |  To access the camera, such as for a video call.|
+        
+
+## Usage example 
+
+#### Objective-C
+
+##### How to use Capturer
+
+```objc
+AGMCapturerVideoConfig *videoConfig = [AGMCapturerVideoConfig defaultConfig];
+videoConfig.videoSize = CGSizeMake(720, 1280);
+videoConfig.sessionPreset = AGMCaptureSessionPreset720x1280;
+self.cameraCapturer = [[AGMCameraCapturer alloc] initWithConfig:videoConfig];
+[self.cameraCapturer start];
+```
+
+##### How to use build-in filter
+```objc
+self.filter = [[AGMFilter alloc] init];
+```
+
+##### How to use renderer
+```objc
+self.preview = [[UIView alloc] initWithFrame:self.view.bounds];
+[self.view insertSubview:self.preview atIndex:0];
+    
+AGMRendererConfig *rendererConfig = [AGMRendererConfig defaultConfig];
+self.videoRenderer = [[AGMVideoRenderer alloc] initWithConfig:rendererConfig];
+self.videoRenderer.preView = self.preview;
+[self.videoRenderer start];    
+
+
+```
+
+##### Associate the modules
+
+```objc
+
+[self.cameraCapturer addVideoSink:self.filter];
+[self.filter addVideoSink:self.videoRenderer];
+
+```
+
+##### Custom Filter
+
+Create a class that inherits form AGMVideoSource and implements the AGMVideoSink protocol, Implement the onFrame: method to handle the videoframe .
+
+```objc
+
+#import <AGMBase/AGMBase.h>
+
+interface AGMSenceTimeFilter : AGMVideoSource <AGMVideoSink>
+
+@end
+
+#import "AGMSenceTimeFilter.h"
+
+@implementation AGMSenceTimeFilter
+
+- (void)onFrame:(AGMVideoFrame *)videoFrame
+{
+#pragma mark Write the filter processing.
+    
+    
+#pragma mark When you're done, pass it to the next sink.
+    if (self.allSinks.count) {
+        for (id<AGMVideoSink> sink in self.allSinks) {
+            [sink onFrame:videoFrame];
+        }
+    }
+}
+
+@end
+
+```
+
 
 ## Running the App
 First, create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID. Update "KeyCenter.m" with your App ID. 

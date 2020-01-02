@@ -11,6 +11,9 @@
 #import <AVFoundation/AVFoundation.h>
 
 @class FULiveModel ;
+
+@protocol Connector;
+
 @interface FUManager : NSObject
 
 @property (nonatomic, assign)               BOOL enableGesture;/** gesture recognition, default is NO*/
@@ -45,6 +48,9 @@
 @property (nonatomic, strong)               NSString *selectedItem;     /**current item name */
 
 @property (nonatomic, assign) BOOL performance ;
+
+@property(nonatomic, weak) id<Connector> connector;
+
 + (FUManager *)shareManager;
 
 // set default beauty params

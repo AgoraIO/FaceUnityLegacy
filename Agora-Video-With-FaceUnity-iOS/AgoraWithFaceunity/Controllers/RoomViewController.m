@@ -7,9 +7,7 @@
 //
 
 #import "RoomViewController.h"
-#import "FUCamera.h"
 #import "FUManager.h"
-#import "FUOpenGLView.h"
 #import "FULiveCell.h"
 #import "FULiveModel.h"
 #import "FUItemsView.h"
@@ -18,11 +16,13 @@
 #import <FUAPIDemoBar/FUAPIDemoBar.h>
 #import <AgoraRtcEngineKit/AgoraRtcEngineKit.h>
 
-@interface RoomViewController ()<FUAPIDemoBarDelegate, FUCameraDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate> {
+#import <AGMBase/AGMBase.h>
+#import <AGMCapturer/AGMCapturer.h>
+#import "AGMFaceUnityFilter.h"
+
+@interface RoomViewController ()<FUAPIDemoBarDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate> {
     BOOL faceBeautyMode;
 }
-
-@property (nonatomic, strong) FUCamera *mCamera;   //Faceunity Camera
 
 @property (weak, nonatomic) IBOutlet UIView *containView;
 
@@ -48,6 +48,7 @@
 
 @property (nonatomic, strong) FULiveModel *model;
 
+
 #pragma Agora
 @property (nonatomic, strong) AgoraRtcEngineKit *agoraKit;    //Agora Engine
 
@@ -63,6 +64,15 @@
 
 @property (nonatomic, assign) BOOL isMuted;
 
+@property (nonatomic, assign) BOOL useFUCamera;
+
+#pragma Capturer
+@property (nonatomic, strong) AGMCameraCapturer *cameraCapturer;
+@property (nonatomic, strong) AGMFaceUnityFilter *faceUnityFilter;
+@property (nonatomic, strong) AGMCapturerVideoConfig *videoConfig;
+
+@property (nonatomic, strong) UIView *preview;
+
 @end
 
 @implementation RoomViewController
@@ -77,7 +87,7 @@
     [super viewDidLoad];
     
     [self addObserver];
-    
+        
     CGRect frame = self.itemsView.frame ;
     frame.origin = CGPointMake(0, self.view.frame.size.height) ;
     frame.size = CGSizeMake(self.view.frame.size.width, frame.size.height) ;
@@ -85,11 +95,93 @@
     self.itemsView.delegate = self ;
     [self.view addSubview:self.itemsView];
     
+    [self initCapturer];
     [self loadAgoraKit];
+    
+}
+
+- (void)initCapturer {
+#pragma mark Capturer
+{
+    self.videoConfig = [AGMCapturerVideoConfig defaultConfig];
+    self.videoConfig.videoSize = CGSizeMake(480, 640);
+    self.videoConfig.sessionPreset = AGMCaptureSessionPreset480x640;
+    self.videoConfig.outputPixelFormat = AGMVideoPixelFormatNV12;
+    self.videoConfig.fps = 15;
+    self.cameraCapturer = [[AGMCameraCapturer alloc] initWithConfig:self.videoConfig];
+    
+#pragma mark Filter
+    self.faceUnityFilter = [[AGMFaceUnityFilter alloc] init];
+
+#pragma mark Connect
+    [self.cameraCapturer addVideoSink:self.faceUnityFilter];
+    
+#pragma mark push pixelBuffer
+    __weak typeof(self) weakSelf = self;
+    self.faceUnityFilter.didCompletion = ^(CVPixelBufferRef  _Nonnull pixelBuffer, CMTime timeStamp, AGMVideoRotation rotation) {
+        
+        
+        CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+
+        CFAbsoluteTime startRenderTime = CFAbsoluteTimeGetCurrent();
+
+        [[FUManager shareManager] renderItemsToPixelBuffer:pixelBuffer];
+        
+        CFAbsoluteTime renderTime = (CFAbsoluteTimeGetCurrent() - startRenderTime);
+
+        if (weakSelf.model.type == FULiveModelTypeMusicFilter) {
+            [[FUManager shareManager] musicFilterSetMusicTime];
+        }
+
+        CFAbsoluteTime frameTime = (CFAbsoluteTimeGetCurrent() - startTime);
+
+        int frameWidth = (int)CVPixelBufferGetWidth(pixelBuffer);
+        int frameHeight = (int)CVPixelBufferGetHeight(pixelBuffer);
+
+        CGSize frameSize;
+        if (CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_32BGRA) {
+            frameSize = CGSizeMake(CVPixelBufferGetBytesPerRow(pixelBuffer) / 4, CVPixelBufferGetHeight(pixelBuffer));
+        }else{
+            frameSize = CGSizeMake(CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
+        }
+
+        NSString *ratioStr = [NSString stringWithFormat:@"%dX%d", frameWidth, frameHeight];
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            weakSelf.noTrackLabel.hidden = [[FUManager shareManager] isTracking];
+
+            CGFloat fps = 1.0 / frameTime ;
+//            if (fps > 30) {
+//                fps = 30 ;
+//            }
+            weakSelf.buglyLabel.text = [NSString stringWithFormat:@"resolution:\n %@\nfps: %.0f \nrender time:\n %.0fms", ratioStr, fps, renderTime * 1000.0];
+
+        });
+
+        // push pixelBuffer to agora server
+        [weakSelf.consumer consumePixelBuffer:pixelBuffer withTimestamp:timeStamp rotation:AgoraVideoRotation90];
+        
+    };
+}
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            break;
+
+        default:
+            break;
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -186,10 +278,6 @@
     [self updateToolBarWith:model];
 }
 
-- (void)dealloc {
-    NSLog(@"dealloc");
-}
-
 #pragma mark - Agora Engine
 /**
 * load Agora Engine && Join Channel
@@ -197,7 +285,7 @@
 - (void)loadAgoraKit {
     self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:[KeyCenter AppId] delegate:self];
     [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
-    [self.agoraKit setVideoEncoderConfiguration:[[AgoraVideoEncoderConfiguration alloc]initWithSize:AgoraVideoDimension640x360
+    [self.agoraKit setVideoEncoderConfiguration:[[AgoraVideoEncoderConfiguration alloc]initWithSize:AgoraVideoDimension640x480
                                                                                           frameRate:AgoraVideoFrameRateFps15
                                                                                             bitrate:AgoraVideoBitrateStandard
                                                                                     orientationMode:AgoraVideoOutputOrientationModeAdaptative]];
@@ -205,7 +293,6 @@
     [self.agoraKit setClientRole:AgoraClientRoleBroadcaster];
     [self.agoraKit enableVideo];
     [self.agoraKit setVideoSource:self];
-    
     [self.agoraKit enableWebSdkInteroperability:YES];
 
     [self setupLocalView];
@@ -217,34 +304,35 @@
     [self.agoraKit joinChannelByToken:nil channelId:self.channelName info:nil uid:0 joinSuccess:nil];
 }
 
-- (void) setupLocalView {
-    UIView *renderView = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.containView insertSubview:renderView atIndex:0];
+- (void)setupLocalView {
+    [self.containView layoutIfNeeded];
+    self.preview = [[UIView alloc] initWithFrame:self.containView.bounds];
+//    self.videoRnderer.preView = self.preview;
+
+    [self.containView insertSubview:self.preview atIndex:0];
     if (self.localCanvas == nil) {
         self.localCanvas = [[AgoraRtcVideoCanvas alloc] init];
     }
-    self.localCanvas.view = renderView;
+    self.localCanvas.view = self.preview;
     self.localCanvas.renderMode = AgoraVideoRenderModeHidden;
+    // set render view
     [self.agoraKit setupLocalVideo:self.localCanvas];
-    self.localRenderView = renderView;
+    self.localRenderView = self.preview;
+    [self.agoraKit setLocalVideoMirrorMode:AgoraVideoMirrorModeAuto];
+    
 }
 
 #pragma mark - Agora Video Source Protocol
-
 - (BOOL)shouldInitialize {
     return YES;
 }
 
 - (void)shouldStart {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.mCamera startCapture];
-    });
+    [self.cameraCapturer start];
 }
 
 - (void)shouldStop {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.mCamera stopCapture];
-    });
+    [self.cameraCapturer stop];
 }
 
 - (void)shouldDispose {
@@ -295,6 +383,7 @@
     }
 }
 
+#pragma mark - Action
 - (void)dismissTipLabel {
     self.tipLabel.hidden = YES;
 }
@@ -304,32 +393,16 @@
 }
 
 /**
- *  The default camera is front camera, and the default capture format is BGRA.
- *
- *  @return FUCamera
- */
-- (FUCamera *)mCamera {
-    if (!_mCamera) {
-        _mCamera = [[FUCamera alloc] init];
-        _mCamera.delegate = self;
-    }
-    return _mCamera;
-}
-
-/**
  *  Faceunity Tool Bar
  *  Init FUAPIDemoBar，Set beauty parameters
  */
 -(void)setDemoBar:(FUAPIDemoBar *)demoBar {
-    
     _demoBar = demoBar;
-    
     _demoBar.performance = [FUManager shareManager].performance;
-    
-    [self demoBarSetBeautyDefultParams];
+    [self demoBAGMetBeautyDefultParams];
 }
 
-- (void)demoBarSetBeautyDefultParams {
+- (void)demoBAGMetBeautyDefultParams {
     _demoBar.delegate = nil ;
     _demoBar.skinDetect = [FUManager shareManager].skinDetectEnable;
     _demoBar.heavyBlur = [FUManager shareManager].blurShape ;
@@ -421,10 +494,9 @@
 
 - (IBAction)leaveBtnClick:(UIButton *)sender {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.mCamera stopCapture];
-    dispatch_async(self.mCamera.videoCaptureQueue, ^{
-        [[FUManager shareManager] destoryItems];
-    });
+//    [self.captureManager stopCapture];
+    [self.cameraCapturer stop];
+    [[FUManager shareManager] destoryItems];
     [self.agoraKit leaveChannel:nil];
     [self.agoraKit stopPreview];
     [self.agoraKit setVideoSource:nil];
@@ -435,17 +507,21 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)changeCaptureFormat:(UISegmentedControl *)sender {
-    _mCamera.captureFormat = _mCamera.captureFormat == kCVPixelFormatType_32BGRA ? kCVPixelFormatType_420YpCbCr8BiPlanarFullRange : kCVPixelFormatType_32BGRA;
+- (IBAction)changeSizeBtnDidClicked:(UIButton *)sender {
+
 }
 
 - (IBAction)switchCameraBtnClick:(UIButton *)sender {
-    [_mCamera changeCameraInputDeviceisFront:!_mCamera.isFrontCamera];
-    
+    [self.cameraCapturer switchCamera];
     //Change camera need to call below function
     [self.agoraKit switchCamera];
     [[FUManager shareManager] onCameraChange];
     [self setCaptureVideoOrientation];
+//    if (self.cameraCapturer.captureDevicePosition == AVCaptureDevicePositionBack) {
+//        [self.agoraKit setLocalVideoMirrorMode:AgoraVideoMirrorModeDisabled];
+//    } else {
+//        [self.agoraKit setLocalVideoMirrorMode:AgoraVideoMirrorModeEnabled];
+//    }
 }
 
 - (IBAction)muteBtnClick:(UIButton *)sender {
@@ -461,22 +537,22 @@
 - (void)setCaptureVideoOrientation {
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 
-    switch (orientation) {
-        case UIInterfaceOrientationPortrait:
-            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortrait];
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
-            break;
-        default:
-            break;
-    }
+//    switch (orientation) {
+//        case UIInterfaceOrientationPortrait:
+//            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortrait];
+//            break;
+//        case UIInterfaceOrientationPortraitUpsideDown:
+//            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+//            break;
+//        case UIInterfaceOrientationLandscapeLeft:
+//            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeLeft];
+//            break;
+//        case UIInterfaceOrientationLandscapeRight:
+//            [self.mCamera setCaptureVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 #pragma mark --- FUItemsViewDelegate
@@ -587,60 +663,12 @@
     [FUManager shareManager].blurShape = sender.selected ? 1 : 0 ;
     [FUManager shareManager].faceShape = sender.selected ? 3 : 4;;
     
-    [self demoBarSetBeautyDefultParams];
+    [self demoBAGMetBeautyDefultParams];
 }
 
-#pragma mark - FUCameraDelegate
-- (void)didOutputVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer {
-    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
-    
-    CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)CMSampleBufferGetImageBuffer(sampleBuffer) ;
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    
-    CFAbsoluteTime startRenderTime = CFAbsoluteTimeGetCurrent();
-    
-    //render the items to pixelbuffer
-    [[FUManager shareManager] renderItemsToPixelBuffer:pixelBuffer];
-    
-    CFAbsoluteTime renderTime = (CFAbsoluteTimeGetCurrent() - startRenderTime);
-    
-    if (self.model.type == FULiveModelTypeMusicFilter) {
-        [[FUManager shareManager] musicFilterSetMusicTime];
-    }
-    
-    CFAbsoluteTime frameTime = (CFAbsoluteTimeGetCurrent() - startTime);
-    
-    int frameWidth = (int)CVPixelBufferGetWidth(pixelBuffer);
-    int frameHeight = (int)CVPixelBufferGetHeight(pixelBuffer);
-    
-    CGSize frameSize;
-    if (CVPixelBufferGetPixelFormatType(pixelBuffer) == kCVPixelFormatType_32BGRA) {
-        frameSize = CGSizeMake(CVPixelBufferGetBytesPerRow(pixelBuffer) / 4, CVPixelBufferGetHeight(pixelBuffer));
-    }else{
-        frameSize = CGSizeMake(CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
-    }
-    
-    NSString *ratioStr = [NSString stringWithFormat:@"%dX%d", frameWidth, frameHeight];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        /**判断是否检测到人脸*/
-        self.noTrackLabel.hidden = [[FUManager shareManager] isTracking];
-        
-        CGFloat fps = 1.0 / frameTime ;
-        if (fps > 30) {
-            fps = 30 ;
-        }
-        self.buglyLabel.text = [NSString stringWithFormat:@"resolution:\n %@\nfps: %.0f \nrender time:\n %.0fms", ratioStr, fps, renderTime * 1000.0];
-        
-        // 根据人脸中心点实时调节摄像头曝光参数及聚焦参数
-        CGPoint center = [[FUManager shareManager] getFaceCenterInFrameSize:frameSize];;
-        self.mCamera.exposurePoint = CGPointMake(center.y,self.mCamera.isFrontCamera ? center.x:1-center.x);
-    });
-    
-    // push video frame to agora
-    [self.consumer consumePixelBuffer:pixelBuffer withTimestamp:CMSampleBufferGetPresentationTimeStamp(sampleBuffer) rotation:AgoraVideoRotationNone];
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-}
 
+
+#pragma mark - UITableViewDelegate
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     FULiveCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FULiveCell" forIndexPath:indexPath];
     cell.model = (FULiveModel *)[[FUManager shareManager].dataSource objectAtIndex:indexPath.row];
@@ -662,7 +690,6 @@
 }
 
 #pragma mark --- Observer
-
 - (void)addObserver{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
