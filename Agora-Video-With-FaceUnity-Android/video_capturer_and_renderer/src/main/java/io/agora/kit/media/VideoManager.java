@@ -4,7 +4,6 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
-import io.agora.rtc.RtcEngine;
 import io.agora.kit.media.capture.VideoCapture;
 import io.agora.kit.media.capture.VideoCaptureFactory;
 import io.agora.kit.media.capture.VideoCaptureFrame;
@@ -13,6 +12,7 @@ import io.agora.kit.media.constant.Constant;
 import io.agora.kit.media.render.VideoRender;
 import io.agora.kit.media.transmit.VideoSource;
 import io.agora.kit.media.transmit.VideoTransmitter;
+import io.agora.rtc.RtcEngine;
 
 public class VideoManager {
     private static final String TAG = VideoManager.class.getSimpleName();
@@ -186,5 +186,13 @@ public class VideoManager {
         } else {
             Log.w(TAG, "not attached to engine, no need to detach");
         }
+    }
+
+    public int getFacing() {
+        return mFacing;
+    }
+
+    public int getCameraOrientation() {
+        return mVideoCapture.getCameraNativeOrientation();
     }
 }

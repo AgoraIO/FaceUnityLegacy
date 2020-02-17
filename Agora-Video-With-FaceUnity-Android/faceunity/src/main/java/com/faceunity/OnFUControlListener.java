@@ -2,11 +2,6 @@ package com.faceunity;
 
 
 import com.faceunity.entity.Effect;
-import com.faceunity.entity.LivePhoto;
-import com.faceunity.entity.MakeupItem;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * FURenderer与界面之间的交互接口
@@ -157,77 +152,4 @@ public interface OnFUControlListener {
      * @param level
      */
     void onCheekVSelected(float level);
-
-    /**
-     * 切换海报模板
-     *
-     * @param tempWidth
-     * @param tempHeight
-     * @param temp
-     * @param landmark
-     */
-    void onPosterTemplateSelected(int tempWidth, int tempHeight, byte[] temp, float[] landmark);
-
-    /**
-     * 海报换脸输入照片
-     *
-     * @param inputWidth
-     * @param inputHeight
-     * @param input
-     * @param landmark
-     */
-    void onPosterInputPhoto(int inputWidth, int inputHeight, byte[] input, float[] landmark);
-
-    /**
-     * 设置风格滤镜
-     *
-     * @param style
-     */
-    void onCartoonFilterSelected(int style);
-
-    /**
-     * 调节多个妆容（轻美妆，质感美颜）
-     *
-     * @param makeupItems
-     */
-    void onLightMakeupBatchSelected(List<MakeupItem> makeupItems);
-
-    /**
-     * 妆容总体调节（轻美妆，质感美颜）
-     *
-     * @param level
-     */
-    void onLightMakeupOverallLevelChanged(float level);
-
-    /**
-     * 设置表情动图的点位和图像数据，用来驱动图像
-     *
-     * @param livePhoto
-     */
-    void setLivePhoto(LivePhoto livePhoto);
-
-    /**
-     * 选择美妆妆容
-     *
-     * @param paramMap
-     * @param removePrevious
-     */
-    void selectMakeupItem(Map<String, Object> paramMap, boolean removePrevious);
-
-    /**
-     * 调节美妆妆容强度
-     *
-     * @param name
-     * @param density
-     */
-    void setMakeupItemIntensity(String name, double density);
-
-    /**
-     * 设置美妆妆容颜色
-     *
-     * @param name
-     * @param colors RGBA color
-     */
-    void setMakeupItemColor(String name, double[] colors);
-
 }

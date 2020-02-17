@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -20,24 +19,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.faceunity.OnFUControlListener;
-import com.faceunity.entity.FaceMakeup;
 import com.faceunity.entity.Filter;
-import com.faceunity.entity.MakeupItem;
-import io.agora.rtcwithfu.R;
 import com.faceunity.fulivedemo.entity.BeautyParameterModel;
-import com.faceunity.fulivedemo.entity.FaceMakeupEnum;
 import com.faceunity.fulivedemo.entity.FilterEnum;
 import com.faceunity.fulivedemo.ui.BeautyBox;
 import com.faceunity.fulivedemo.ui.BeautyBoxGroup;
 import com.faceunity.fulivedemo.ui.CheckGroup;
-import com.faceunity.fulivedemo.ui.adapter.BaseRecyclerAdapter;
-import com.faceunity.fulivedemo.ui.adapter.VHSpaceItemDecoration;
 import com.faceunity.fulivedemo.ui.dialog.BaseDialogFragment;
 import com.faceunity.fulivedemo.ui.dialog.ConfirmDialogFragment;
 import com.faceunity.fulivedemo.ui.seekbar.DiscreteSeekBar;
 import com.faceunity.fulivedemo.utils.OnMultiClickListener;
 
 import java.util.List;
+
+import io.agora.rtcwithfu.R;
 
 import static com.faceunity.fulivedemo.entity.BeautyParameterModel.STR_FILTER_LEVEL;
 import static com.faceunity.fulivedemo.entity.BeautyParameterModel.getValue;
@@ -56,7 +51,6 @@ public class BeautyControlView extends FrameLayout {
     private Context mContext;
 
     private OnFUControlListener mOnFUControlListener;
-    private RecyclerView mRvMakeupItems;
 
     public void setOnFUControlListener(@NonNull OnFUControlListener onFUControlListener) {
         mOnFUControlListener = onFUControlListener;
@@ -81,10 +75,10 @@ public class BeautyControlView extends FrameLayout {
     private List<Filter> mFilters;
 
     private DiscreteSeekBar mBeautySeekBar;
-    private FaceMakeupAdapter mFaceMakeupAdapter;
     private RelativeLayout mFaceShapeLayout;
     private boolean isShown;
-    private boolean mFirstShowLightMakeup = true;
+    // 默认选中第三个粉嫩
+    private int mFilterPositionSelect = 2;
 
     public BeautyControlView(Context context) {
         this(context, null);
@@ -93,9 +87,6 @@ public class BeautyControlView extends FrameLayout {
     public BeautyControlView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
-
-    // 默认选中第三个粉嫩
-    private int mFilterPositionSelect = 2;
 
     public BeautyControlView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -117,7 +108,6 @@ public class BeautyControlView extends FrameLayout {
         initViewSkinBeauty();
         initViewFaceShape();
         initViewFilterRecycler();
-        initMakeupView();
         initViewTop();
     }
 
@@ -126,19 +116,6 @@ public class BeautyControlView extends FrameLayout {
         updateViewFaceShape();
         updateViewFilterRecycler();
         hideBottomLayoutAnimator();
-    }
-
-    private void initMakeupView() {
-        mRvMakeupItems = findViewById(R.id.rv_face_makeup);
-        mRvMakeupItems.setHasFixedSize(true);
-        ((SimpleItemAnimator) mRvMakeupItems.getItemAnimator()).setSupportsChangeAnimations(false);
-        mRvMakeupItems.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        mRvMakeupItems.addItemDecoration(new VHSpaceItemDecoration(0, getResources().getDimensionPixelSize(R.dimen.x15)));
-        mFaceMakeupAdapter = new FaceMakeupAdapter(FaceMakeupEnum.getBeautyFaceMakeup());
-        OnFaceMakeupClickListener onMpItemClickListener = new OnFaceMakeupClickListener();
-        mFaceMakeupAdapter.setOnItemClickListener(onMpItemClickListener);
-        mRvMakeupItems.setAdapter(mFaceMakeupAdapter);
-        mFaceMakeupAdapter.setItemSelected(0);
     }
 
     @Override
@@ -393,29 +370,6 @@ public class BeautyControlView extends FrameLayout {
                     checkFaceShapeChanged();
                 } else if (checkedCheckBoxId == R.id.beauty_radio_filter) {
                     mFilterRecyclerAdapter.setFilterLevels(valueF);
-                } else if (checkedCheckBoxId == R.id.beauty_radio_face_beauty) {
-                    // 整体妆容调节
-                    float level = 1.0f * value / 100;
-                    FaceMakeup faceMakeup = mFaceMakeupAdapter.getSelectedItems().valueAt(0);
-                    String name = getResources().getString(faceMakeup.getNameId());
-                    BeautyParameterModel.sBatchMakeupLevel.put(name, level);
-                    List<MakeupItem> makeupItems = faceMakeup.getMakeupItems();
-                    /* 数学公式
-                     * 0.4        0.7
-                     * strength  level
-                     * --> strength = 0.4 * level / 0.7
-                     *   if level = 1.0, then strength = 0.57
-                     *   if level = 0.2, then strength = 0.11
-                     *   so, float strength = item.defaultLevel * level / DEFAULT_BATCH_MAKEUP_LEVEL
-                     * */
-                    if (makeupItems != null) {
-                        for (MakeupItem makeupItem : makeupItems) {
-                            float lev = makeupItem.getDefaultLevel() * level / FaceMakeupEnum.MAKEUP_OVERALL_LEVEL.get(faceMakeup.getNameId());
-                            makeupItem.setLevel(lev);
-                        }
-                    }
-                    mOnFUControlListener.onLightMakeupOverallLevelChanged(level);
-                    mOnFUControlListener.onFilterLevelSelected(level);
                 }
             }
         });
@@ -438,7 +392,6 @@ public class BeautyControlView extends FrameLayout {
         mSkinBeautySelect.setVisibility(GONE);
         mFlFaceShapeItems.setVisibility(GONE);
         mFilterRecyclerView.setVisibility(GONE);
-        mRvMakeupItems.setVisibility(GONE);
 
         mFaceShapeLayout.setVisibility(GONE);
         mBeautySeekBar.setVisibility(GONE);
@@ -455,27 +408,6 @@ public class BeautyControlView extends FrameLayout {
         } else if (viewId == R.id.beauty_radio_filter) {
             mFilterRecyclerView.setVisibility(VISIBLE);
             mFilterRecyclerAdapter.setFilterProgress();
-        } else if (viewId == R.id.beauty_radio_face_beauty) {
-            mRvMakeupItems.setVisibility(VISIBLE);
-            mBeautySeekBar.setVisibility(INVISIBLE);
-            // 首次选中第一个桃花妆
-            if (mFirstShowLightMakeup) {
-                mFirstShowLightMakeup = false;
-                mFaceMakeupAdapter.setItemSelected(1);
-                new OnFaceMakeupClickListener().onItemClick(mFaceMakeupAdapter, null, 1);
-            }
-            FaceMakeup faceMakeup = mFaceMakeupAdapter.getSelectedItems().valueAt(0);
-            if (faceMakeup != null) {
-                String name = getResources().getString(faceMakeup.getNameId());
-                Float level = BeautyParameterModel.sBatchMakeupLevel.get(name);
-                if (level == null) {
-                    level = FaceMakeupEnum.MAKEUP_OVERALL_LEVEL.get(faceMakeup.getNameId());
-                    BeautyParameterModel.sBatchMakeupLevel.put(name, level);
-                }
-                if (level != null) {
-                    seekToSeekBar(level);
-                }
-            }
         }
     }
 
@@ -651,85 +583,6 @@ public class BeautyControlView extends FrameLayout {
                 filterImg = (ImageView) itemView.findViewById(R.id.control_recycler_img);
                 filterName = (TextView) itemView.findViewById(R.id.control_recycler_text);
             }
-        }
-    }
-
-    // ----------- 新添加的美妆组合，也叫质感美颜
-
-    // 美妆列表点击事件
-    private class OnFaceMakeupClickListener implements BaseRecyclerAdapter.OnItemClickListener<FaceMakeup> {
-
-        @Override
-        public void onItemClick(BaseRecyclerAdapter<FaceMakeup> adapter, View view, int position) {
-            FaceMakeup faceMakeup = adapter.getItem(position);
-            if (position == 0) {
-                // 卸妆
-                mBeautySeekBar.setVisibility(View.INVISIBLE);
-//                Filter origin = mFilters.get(0);
-//                mOnFUControlListener.onFilterNameSelected(origin);
-//                setFilterLevel(origin.filterName(), 0);
-                int old = mFilterPositionSelect;
-                mFilterPositionSelect = -1;
-                mFilterRecyclerAdapter.notifyItemChanged(old);
-                mOnFUControlListener.onLightMakeupBatchSelected(faceMakeup.getMakeupItems());
-            } else {
-                // 效果妆容
-                mBeautySeekBar.setVisibility(View.VISIBLE);
-                String name = getResources().getString(faceMakeup.getNameId());
-                Float level = BeautyParameterModel.sBatchMakeupLevel.get(name);
-                boolean used = true;
-                if (level == null) {
-                    used = false;
-                    level = FaceMakeupEnum.MAKEUP_OVERALL_LEVEL.get(faceMakeup.getNameId());
-                    BeautyParameterModel.sBatchMakeupLevel.put(name, level);
-                }
-                seekToSeekBar(level);
-                mOnFUControlListener.onLightMakeupBatchSelected(faceMakeup.getMakeupItems());
-                mOnFUControlListener.onLightMakeupOverallLevelChanged(level);
-
-                Pair<Filter, Float> filterFloatPair = FaceMakeupEnum.MAKEUP_FILTERS.get(faceMakeup.getNameId());
-                if (filterFloatPair != null) {
-                    // 滤镜调整到对应的位置，没有就不做
-                    Filter filter = filterFloatPair.first;
-                    int i = mFilterRecyclerAdapter.indexOf(filter);
-                    if (i >= 0) {
-                        mFilterPositionSelect = i;
-                        mFilterRecyclerAdapter.notifyItemChanged(i);
-                        mFilterRecyclerView.scrollToPosition(i);
-                    } else {
-                        int old = mFilterPositionSelect;
-                        mFilterPositionSelect = -1;
-                        mFilterRecyclerAdapter.notifyItemChanged(old);
-                    }
-                    mOnFUControlListener.onFilterNameSelected(filter.filterName());
-                    Float filterLevel = used ? level : filterFloatPair.second;
-                    sFilter = filter;
-                    String filterName = filter.filterName();
-                    sFilterLevel.put(STR_FILTER_LEVEL + filterName, filterLevel);
-                    setFilterLevel(filterName, filterLevel);
-                }
-            }
-        }
-    }
-
-    // 妆容组合适配器
-    private class FaceMakeupAdapter extends BaseRecyclerAdapter<FaceMakeup> {
-
-        FaceMakeupAdapter(@NonNull List<FaceMakeup> data) {
-            super(data, R.layout.layout_rv_makeup);
-        }
-
-        @Override
-        protected void bindViewHolder(BaseViewHolder viewHolder, FaceMakeup item) {
-            viewHolder.setText(R.id.tv_makeup, getResources().getString(item.getNameId()))
-                    .setImageResource(R.id.iv_makeup, item.getIconId());
-        }
-
-        @Override
-        protected void handleSelectedState(BaseViewHolder viewHolder, FaceMakeup data, boolean selected) {
-            ((TextView) viewHolder.getViewById(R.id.tv_makeup)).setTextColor(selected ?
-                    getResources().getColor(R.color.main_color) : getResources().getColor(R.color.colorWhite));
-            viewHolder.setBackground(R.id.iv_makeup, selected ? R.drawable.control_filter_select : 0);
         }
     }
 

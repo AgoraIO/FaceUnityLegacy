@@ -19,6 +19,7 @@ import com.faceunity.encoder.MediaEncoder;
 import com.faceunity.encoder.MediaMuxerWrapper;
 import com.faceunity.encoder.MediaVideoEncoder;
 import com.faceunity.fulivedemo.ui.adapter.EffectRecyclerAdapter;
+import com.faceunity.fulivedemo.utils.CameraUtils;
 import com.faceunity.fulivedemo.utils.ToastUtil;
 import com.faceunity.gles.core.GlUtil;
 import com.faceunity.utils.Constant;
@@ -27,16 +28,16 @@ import com.faceunity.utils.MiscUtil;
 import java.io.File;
 import java.io.IOException;
 
+import io.agora.kit.media.VideoManager;
+import io.agora.kit.media.capture.VideoCaptureFrame;
+import io.agora.kit.media.connector.SinkConnector;
 import io.agora.rtc.mediaio.AgoraTextureView;
 import io.agora.rtc.mediaio.MediaIO;
-import io.agora.rtc.video.VideoEncoderConfiguration; // 2.3.0 and later
+import io.agora.rtc.video.VideoEncoderConfiguration;
 import io.agora.rtcwithfu.Constants;
 import io.agora.rtcwithfu.R;
 import io.agora.rtcwithfu.RtcEngineEventHandler;
 import io.agora.rtcwithfu.view.EffectPanel;
-import io.agora.kit.media.VideoManager;
-import io.agora.kit.media.capture.VideoCaptureFrame;
-import io.agora.kit.media.connector.SinkConnector;
 
 /**
  * This activity demonstrates how to make FU and Agora RTC SDK work together
@@ -119,9 +120,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         // determined when initializing the effect panel
         mFURenderer = new FURenderer
                 .Builder(this)
-                .maxFaces(4)
-                .createEGLContext(false)
-                .setNeedFaceBeauty(true)
+                .inputImageOrientation(CameraUtils.getFrontCameraOrientation())
                 .setOnFUDebugListener(new FURenderer.OnFUDebugListener() {
                     @Override
                     public void onFpsChange(double fps, double renderTime) {
@@ -272,8 +271,13 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
         mVideoManager.stopCapture();
         mVideoManager.deallocate();
 
-        mFURenderer.onSurfaceDestroyed();
-        mFUInit = false;
+        mGLSurfaceViewLocal.queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                mFURenderer.onSurfaceDestroyed();
+                mFUInit = false;
+            }
+        });
     }
 
     @Override
@@ -389,8 +393,13 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
             mVideoManager.deallocate();
 
-            mFURenderer.onSurfaceDestroyed();
-            mFUInit = false;
+            mGLSurfaceViewLocal.queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    mFURenderer.onSurfaceDestroyed();
+                    mFUInit = false;
+                }
+            });
 
             System.gc();
         }
@@ -405,8 +414,8 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
                     @Override
                     public void run() {
                         if (!mFUInit) {
-                            mFUInit = true;
                             mFURenderer.onSurfaceCreated();
+                            mFUInit = true;
                         }
                     }
                 });
@@ -420,11 +429,9 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
 
     @Override
     protected void onCameraChangeRequested() {
-
         // TODO Reset options when camera changed
-//      mFURenderer.onCameraChange();
-
         mVideoManager.switchCamera();
+        mFURenderer.onCameraChange(mVideoManager.getFacing(), mVideoManager.getCameraOrientation());
     }
 
     @Override
