@@ -6,12 +6,10 @@ import android.text.TextUtils;
  * 本demo中道具的实体类
  * Created by tujh on 2018/2/7.
  */
-
 public class Effect {
     public static final int EFFECT_TYPE_NONE = 0;
     public static final int EFFECT_TYPE_NORMAL = 1;
     public static final int EFFECT_TYPE_AR = 2;
-    public static final int EFFECT_TYPE_FACE_CHANGE = 3;
     public static final int EFFECT_TYPE_EXPRESSION = 4;
     public static final int EFFECT_TYPE_BACKGROUND = 5;
     public static final int EFFECT_TYPE_GESTURE = 6;

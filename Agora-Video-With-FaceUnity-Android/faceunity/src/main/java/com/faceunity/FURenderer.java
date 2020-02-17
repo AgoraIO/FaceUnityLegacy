@@ -894,6 +894,7 @@ public class FURenderer implements OnFUControlListener {
                 @Override
                 public void run() {
                     if (mItemsArray[ITEM_ARRAYS_EFFECT_ABIMOJI_3D_INDEX] > 0) {
+                        Log.d(TAG, "destroy animoji3D item");
                         faceunity.fuDestroyItem(mItemsArray[ITEM_ARRAYS_EFFECT_ABIMOJI_3D_INDEX]);
                         mItemsArray[ITEM_ARRAYS_EFFECT_ABIMOJI_3D_INDEX] = 0;
                     }

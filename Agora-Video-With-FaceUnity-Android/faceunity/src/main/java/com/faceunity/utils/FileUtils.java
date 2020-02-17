@@ -17,7 +17,7 @@ import java.security.MessageDigest;
 import java.util.UUID;
 
 /**
- * @author LiuQiang on 2018.08.30
+ * @author Richie on 2018.08.30
  */
 public class FileUtils {
     private static final String TAG = "FileUtils";
