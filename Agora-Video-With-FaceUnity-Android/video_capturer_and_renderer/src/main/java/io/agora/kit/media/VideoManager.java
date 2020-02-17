@@ -188,7 +188,7 @@ public class VideoManager {
         }
     }
 
-    public int getFacing() {
+    public int getCameraFacing() {
         return mFacing;
     }
 

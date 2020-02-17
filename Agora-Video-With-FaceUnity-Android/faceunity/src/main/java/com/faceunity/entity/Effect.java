@@ -15,16 +15,10 @@ public class Effect {
     public static final int EFFECT_TYPE_EXPRESSION = 4;
     public static final int EFFECT_TYPE_BACKGROUND = 5;
     public static final int EFFECT_TYPE_GESTURE = 6;
-    public static final int EFFECT_TYPE_PORTRAIT_LIGHT = 7;
     public static final int EFFECT_TYPE_ANIMOJI = 8;
     public static final int EFFECT_TYPE_PORTRAIT_DRIVE = 9;
     public static final int EFFECT_TYPE_FACE_WARP = 10;
     public static final int EFFECT_TYPE_MUSIC_FILTER = 11;
-    public static final int EFFECT_TYPE_HAIR_NORMAL = 12;
-    public static final int EFFECT_TYPE_POSTER_FACE = 13;
-    public static final int EFFECT_TYPE_HAIR_GRADIENT = 14;
-    public static final int EFFECT_TYPE_LIVE_PHOTO = 15;
-    public static final int EFFECT_TYPE_AVATAR = 16;
 
     private String bundleName;
     private int resId;

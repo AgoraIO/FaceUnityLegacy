@@ -250,8 +250,6 @@ public class EffectPanel {
                 return Effect.EFFECT_TYPE_FACE_WARP;
             case R.string.home_function_name_music_filter:
                 return Effect.EFFECT_TYPE_MUSIC_FILTER;
-            case R.string.home_function_name_hair:
-                return Effect.EFFECT_TYPE_HAIR_NORMAL;
             default:
                 return Effect.EFFECT_TYPE_NORMAL;
         }
@@ -261,14 +259,11 @@ public class EffectPanel {
         if (functionName == R.string.home_function_name_beauty) {
             renderer.setDefaultEffect(null);
 //            renderer.setNeedFaceBeauty(false);
-        } else if (functionName == R.string.home_function_name_makeup) {
-            renderer.setDefaultEffect(null);
-//            renderer.setNeedFaceBeauty(true);
         } else {
             int effectType = toEffectType(functionName);
             List<Effect> effectList = EffectEnum.getEffectsByEffectType(effectType);
             renderer.setDefaultEffect(effectList.size() > 1 ? effectList.get(1) : null);
-//            renderer.setNeedAnimoji3D(functionName == R.string.home_function_name_animoji);
+            renderer.setNeedAnimoji3D(functionName == R.string.home_function_name_animoji);
 //            renderer.setNeedFaceBeauty(functionName != R.string.home_function_name_animoji &&
 //                    functionType != R.string.home_function_name_portrait_drive);
         }

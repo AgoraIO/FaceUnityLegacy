@@ -268,6 +268,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // TODO: 2020-02-17 maybe ANR @Agora team
         mVideoManager.stopCapture();
         mVideoManager.deallocate();
 
@@ -431,7 +432,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     protected void onCameraChangeRequested() {
         // TODO Reset options when camera changed
         mVideoManager.switchCamera();
-        mFURenderer.onCameraChange(mVideoManager.getFacing(), mVideoManager.getCameraOrientation());
+        mFURenderer.onCameraChange(mVideoManager.getCameraFacing(), mVideoManager.getCameraOrientation());
     }
 
     @Override

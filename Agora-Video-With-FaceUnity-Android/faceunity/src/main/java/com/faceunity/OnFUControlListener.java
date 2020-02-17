@@ -37,24 +37,6 @@ public interface OnFUControlListener {
     void onFilterNameSelected(String filterName);
 
     /**
-     * 美发颜色
-     *
-     * @param type
-     * @param hairColorIndex 美发颜色
-     * @param hairColorLevel 美发颜色强度
-     */
-    void onHairSelected(int type, int hairColorIndex, float hairColorLevel);
-
-    /**
-     * 调整美发强度
-     *
-     * @param type
-     * @param hairColorIndex
-     * @param hairColorLevel
-     */
-    void onHairLevelSelected(int type, int hairColorIndex, float hairColorLevel);
-
-    /**
      * 精准磨皮
      *
      * @param isOpen 是否开启精准磨皮（0关闭 1开启）

@@ -103,26 +103,7 @@ public enum EffectEnum {
      * 音乐滤镜
      */
     Effect_douyin_old("douyin_01", R.drawable.douyin_old, "musicfilter/douyin_01.bundle", 4, Effect.EFFECT_TYPE_MUSIC_FILTER, 0),
-    Effect_douyin("douyin_02", R.drawable.douyin, "musicfilter/douyin_02.bundle", 4, Effect.EFFECT_TYPE_MUSIC_FILTER, 0),
-    /**
-     * 渐变美发
-     */
-    Hair_Gradient_01("Gradient_Hair_01", R.drawable.icon_gradualchangehair_01, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_02("Gradient_Hair_02", R.drawable.icon_gradualchangehair_02, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_04("Gradient_Hair_03", R.drawable.icon_gradualchangehair_03, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_05("Gradient_Hair_04", R.drawable.icon_gradualchangehair_04, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_06("Gradient_Hair_05", R.drawable.icon_gradualchangehair_05, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    /**
-     * 普通美发
-     */
-    Hair_01("Hair_01", R.drawable.icon_beautymakeup_hairsalon_01, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_02("Hair_02", R.drawable.icon_beautymakeup_hairsalon_02, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_03("Hair_03", R.drawable.icon_beautymakeup_hairsalon_03, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_04("Hair_04", R.drawable.icon_beautymakeup_hairsalon_04, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_05("Hair_05", R.drawable.icon_beautymakeup_hairsalon_05, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_06("Hair_06", R.drawable.icon_beautymakeup_hairsalon_06, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_07("Hair_07", R.drawable.icon_beautymakeup_hairsalon_07, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_08("Hair_08", R.drawable.icon_beautymakeup_hairsalon_08, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0);
+    Effect_douyin("douyin_02", R.drawable.douyin, "musicfilter/douyin_02.bundle", 4, Effect.EFFECT_TYPE_MUSIC_FILTER, 0);
 
     private String bundleName;
     private int resId;
