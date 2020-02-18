@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
 
-import io.agora.rtcwithfu.R;
 import com.faceunity.fulivedemo.ui.seekbar.internal.PopupIndicator;
 import com.faceunity.fulivedemo.ui.seekbar.internal.compat.AnimatorCompat;
 import com.faceunity.fulivedemo.ui.seekbar.internal.compat.SeekBarCompat;
@@ -32,6 +31,8 @@ import com.faceunity.fulivedemo.ui.seekbar.internal.drawable.TrackRectDrawable;
 
 import java.util.Formatter;
 import java.util.Locale;
+
+import io.agora.rtcwithfu.R;
 
 public class DiscreteSeekBar extends View {
     private static final String TAG = DiscreteSeekBar.class.getSimpleName();

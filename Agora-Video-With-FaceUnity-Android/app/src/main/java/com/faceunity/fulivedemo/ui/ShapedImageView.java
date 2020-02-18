@@ -15,12 +15,12 @@ import android.graphics.drawable.shapes.Shape;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
-import io.agora.rtcwithfu.R;
-
 import java.util.Arrays;
 
+import io.agora.rtcwithfu.R;
+
 /**
- * @author LiuQiang on 2018.08.29
+ * @author Richie on 2018.08.29
  * Android Rounded, Circle, Path ImageView
  * url: https://github.com/gavinliu/ShapedImageView
  */

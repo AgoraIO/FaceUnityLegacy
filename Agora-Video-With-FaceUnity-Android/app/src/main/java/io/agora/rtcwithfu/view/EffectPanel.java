@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.faceunity.FURenderer;
 import com.faceunity.entity.Effect;
@@ -28,7 +29,6 @@ public class EffectPanel {
             "9-0",                    // Beauty
             "6-0",                    // Sticker
             "16-0",                   // Animoji
-            //"1048576-0",              // Hair
             "96-0",                   // AR Mask
             "2048-0",                 // Expression
             "131072-0",               // Douyin
@@ -42,7 +42,6 @@ public class EffectPanel {
             Effect.EFFECT_TYPE_NONE,
             Effect.EFFECT_TYPE_NORMAL,
             Effect.EFFECT_TYPE_ANIMOJI,
-            //Effect.EFFECT_TYPE_NONE,
             Effect.EFFECT_TYPE_AR,
             Effect.EFFECT_TYPE_EXPRESSION,
             Effect.EFFECT_TYPE_MUSIC_FILTER,
@@ -56,7 +55,6 @@ public class EffectPanel {
             R.string.home_function_name_beauty,
             R.string.home_function_name_normal,
             R.string.home_function_name_animoji,
-            //R.string.home_function_name_hair,
             R.string.home_function_name_ar,
             R.string.home_function_name_expression,
             R.string.home_function_name_music_filter,
@@ -77,6 +75,7 @@ public class EffectPanel {
     private EffectRecyclerAdapter.OnDescriptionChangeListener mDescriptionListener;
 
     private FURenderer mFURenderer;
+    private EffectRecyclerAdapter mEffectRecyclerAdapter;
 
     public EffectPanel(View container, @NonNull FURenderer renderer,
                        EffectRecyclerAdapter.OnDescriptionChangeListener listener) {
@@ -208,7 +207,7 @@ public class EffectPanel {
         control.setOnDescriptionShowListener(new BeautyControlView.OnDescriptionShowListener() {
             @Override
             public void onDescriptionShowListener(int str) {
-                //showDescription(str, 1000);
+                Toast.makeText(mContext, "str:" + str, Toast.LENGTH_SHORT).show();
             }
         });
         control.onResume();
@@ -221,10 +220,13 @@ public class EffectPanel {
                 LinearLayoutManager.HORIZONTAL, false);
         list.setLayoutManager(manager);
 
-        EffectRecyclerAdapter adapter = new EffectRecyclerAdapter(
+        if (mEffectRecyclerAdapter != null) {
+            mEffectRecyclerAdapter.stopMusic();
+        }
+        mEffectRecyclerAdapter = new EffectRecyclerAdapter(
                 mContext, effectType, mFURenderer);
-        adapter.setOnDescriptionChangeListener(mDescriptionListener);
-        list.setAdapter(adapter);
+        mEffectRecyclerAdapter.setOnDescriptionChangeListener(mDescriptionListener);
+        list.setAdapter(mEffectRecyclerAdapter);
 
         mEffectPanel.addView(list, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);

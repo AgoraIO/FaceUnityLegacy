@@ -17,14 +17,13 @@ public enum EffectEnum {
     /**
      * 道具贴纸
      */
-    Effect_bling("bling", R.drawable.bling, "normal/bling.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_fengya_ztt_fu("fengya_ztt_fu", R.drawable.fengya_ztt_fu, "normal/fengya_ztt_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_hudie_lm_fu("hudie_lm_fu", R.drawable.hudie_lm_fu, "normal/hudie_lm_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_touhua_ztt_fu("touhua_ztt_fu", R.drawable.touhua_ztt_fu, "normal/touhua_ztt_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_juanhuzi_lm_fu("juanhuzi_lm_fu", R.drawable.juanhuzi_lm_fu, "normal/juanhuzi_lm_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_mask_hat("mask_hat", R.drawable.mask_hat, "normal/mask_hat.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_yazui("yazui", R.drawable.yazui, "normal/yazui.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_yuguan("yuguan", R.drawable.yuguan, "normal/yuguan.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_sdlu("sdlu", R.drawable.sdlu, "normal/sdlu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_daisypig("daisypig", R.drawable.daisypig, "normal/daisypig.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_fashi("fashi", R.drawable.fashi, "normal/fashi.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_chri1("chri1", R.drawable.chri1, "normal/chri1.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_xueqiu_lm_fu("xueqiu_lm_fu", R.drawable.xueqiu_lm_fu, "normal/xueqiu_lm_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_wobushi("wobushi", R.drawable.wobushi, "normal/wobushi.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_gaoshiqing("gaoshiqing", R.drawable.gaoshiqing, "normal/gaoshiqing.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
     /**
      * AR面具
      */

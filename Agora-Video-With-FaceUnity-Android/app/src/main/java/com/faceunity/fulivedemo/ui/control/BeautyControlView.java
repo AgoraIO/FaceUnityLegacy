@@ -242,7 +242,7 @@ public class BeautyControlView extends FrameLayout {
         mIvRecoverFaceShpe.setOnClickListener(new OnMultiClickListener() {
             @Override
             protected void onMultiClick(View v) {
-                ConfirmDialogFragment confirmDialogFragment = ConfirmDialogFragment.newInstance(mContext.getString(R.string.dialog_reset_avatar_model), new BaseDialogFragment.OnClickListener() {
+                ConfirmDialogFragment confirmDialogFragment = ConfirmDialogFragment.newInstance(mContext.getString(R.string.dialog_reset_param), new BaseDialogFragment.OnClickListener() {
                     @Override
                     public void onConfirm() {
                         // recover params

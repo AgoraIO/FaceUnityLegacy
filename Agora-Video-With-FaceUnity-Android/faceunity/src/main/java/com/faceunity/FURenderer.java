@@ -942,7 +942,6 @@ public class FURenderer implements OnFUControlListener {
 
     @Override
     public void onFilterNameSelected(String filterName) {
-        Log.d(TAG, "onFilterNameSelected: " + filterName);
         mFilterName = filterName;
         mIsNeedUpdateFaceBeauty = true;
     }
@@ -1136,11 +1135,6 @@ public class FURenderer implements OnFUControlListener {
          * @param what
          */
         void onBundleLoadComplete(int what);
-    }
-
-    @IntDef(value = {HAIR_NORMAL, HAIR_GRADIENT})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface HairType {
     }
 
     /**

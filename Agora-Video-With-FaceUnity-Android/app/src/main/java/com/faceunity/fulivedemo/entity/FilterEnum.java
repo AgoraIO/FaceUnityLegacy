@@ -1,9 +1,10 @@
 package com.faceunity.fulivedemo.entity;
 
 import com.faceunity.entity.Filter;
-import io.agora.rtcwithfu.R;
 
 import java.util.ArrayList;
+
+import io.agora.rtcwithfu.R;
 
 /**
  * Created by tujh on 2018/1/30.
