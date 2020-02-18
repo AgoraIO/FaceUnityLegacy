@@ -1,5 +1,5 @@
 #pragma once
-#include "../Agorasdk/include/IAgoraMediaEngine.h"
+#include "../AgoraSDK/include/IAgoraMediaEngine.h"
 
 class CExtendVideoFrameObserver :
 	public agora::media::IVideoFrameObserver

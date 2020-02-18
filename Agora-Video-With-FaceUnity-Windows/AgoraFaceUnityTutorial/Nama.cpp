@@ -89,6 +89,9 @@ Nama::~Nama()
 	{
 		fuDestroyAllItems();//Note: 切忌使用一个已经destroy的item
 		fuOnDeviceLost();//Note: 这个调用销毁nama创建的OpenGL资源
+
+		fuDestroyLibData();
+		m_hasSetup = false;
 	}		
 	//fuSetup整个程序只需要运行一次，销毁某个子窗口时只需要调用上述两个函数。 
 	//Tips:如果其他窗口还会用这些资源，那么资源创建应该在父窗口。程序运行期间一直持有这些资源.
@@ -144,7 +147,7 @@ void Nama::Init(const int width, const int height)
 			std::cout << "Error:缺少数据文件。" << g_fuDataDir + g_v3Data << std::endl;
 			exit(2);
 		}		
-		fuSetup(reinterpret_cast<float*>(&v3data[0]), NULL, g_auth_package, sizeof(g_auth_package));
+		fuSetup(reinterpret_cast<float*>(&v3data[0]), v3data.size(), NULL, g_auth_package, sizeof(g_auth_package));
 
 		std::vector<char> anim_model_data;
 		if (false == LoadBundle(g_fuDataDir + g_anim_model, anim_model_data))

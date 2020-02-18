@@ -45,6 +45,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\AgoraSDK\include;..\ThridParty\DirectShow\Include;..\ThridParty\GL1;..\openssl\include;..\FaceUnitySDK\include;libYUV</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);..\AgoraSDK\lib;..\ThridParty\DirectShow\Lib\X86;..\ThridParty\GL1;..\openssl\lib;..\FaceUnitySDK\Win32;libYUV\Debug</LibraryPath>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -74,6 +75,11 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>if exist ..\AgoraSDK (copy ..\AgoraSDK\dll\*.dll ..\$(Configuration)\)
+copy ..\openssl\dll\*.dll ..\$(Configuration)\
+copy ..\FaceUnitySDK\Win32\*.dll ..\$(Configuration)\</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -102,6 +108,11 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>if exist ..\sdk (copy ..\sdk\dll\*.dll ..\$(Configuration)\)
+copy ..\openssl\dll\*.dll ..\$(Configuration)\
+copy ..\FaceUnitySDK\Win32\*.dll ..\$(Configuration)\</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

@@ -266,7 +266,7 @@ void CAgoraFaceUnityTutorialDlg::OnBnClickedButtonJoinchannel()
 		m_lpAgoraObject->SetChannelProfile(TRUE);
 		m_lpAgoraObject->SetClientRole(CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER);
 	
-		int nVideoIndex = (int)VIDEO_PROFILE_480P;// because m_FaceNama.Init use 640 and 480
+		int nVideoIndex = (int)VIDEO_PROFILE_LANDSCAPE_480P;// because m_FaceNama.Init use 640 and 480
 		m_lpAgoraObject->SetVideoProfile(nVideoIndex, FALSE);//640*480 15 500
 		m_lpAgoraObject->EnableExtendVideoCapture(TRUE, &m_ExtendVideoObserver);
 
