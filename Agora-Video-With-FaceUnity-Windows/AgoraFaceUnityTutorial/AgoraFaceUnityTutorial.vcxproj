@@ -109,7 +109,7 @@ copy ..\FaceUnitySDK\Win32\*.dll ..\$(Configuration)\</Command>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>if exist ..\sdk (copy ..\sdk\dll\*.dll ..\$(Configuration)\)
+      <Command>if exist ..\AgoraSDK (copy ..\AgoraSDK\dll\*.dll ..\$(Configuration)\)
 copy ..\openssl\dll\*.dll ..\$(Configuration)\
 copy ..\FaceUnitySDK\Win32\*.dll ..\$(Configuration)\</Command>
     </PostBuildEvent>
