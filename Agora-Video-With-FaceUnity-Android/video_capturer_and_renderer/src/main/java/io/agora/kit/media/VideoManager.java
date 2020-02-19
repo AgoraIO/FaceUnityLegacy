@@ -1,6 +1,7 @@
 package io.agora.kit.media;
 
 import android.content.Context;
+import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
@@ -189,7 +190,9 @@ public class VideoManager {
     }
 
     public int getCameraFacing() {
-        return mFacing;
+        int facing = mFacing == Constant.CAMERA_FACING_BACK ? Camera.CameraInfo.CAMERA_FACING_BACK
+                : Camera.CameraInfo.CAMERA_FACING_FRONT;
+        return facing;
     }
 
     public int getCameraOrientation() {

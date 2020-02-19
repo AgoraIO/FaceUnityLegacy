@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,8 +20,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -97,9 +94,6 @@ public class FURenderer implements OnFUControlListener {
     // 句柄数组
     private int[] mItemsArray = new int[ITEM_ARRAYS_COUNT];
 
-    // 头发
-    public static final int HAIR_NORMAL = 1;
-    public static final int HAIR_GRADIENT = 2;
     private Handler mFuItemHandler;
 
     private boolean isNeedFaceBeauty = true;
@@ -112,13 +106,8 @@ public class FURenderer implements OnFUControlListener {
     private volatile boolean mIsNeedUpdateFaceBeauty = true;
 
     private int mInputImageOrientation = 270;
-    private int mInputPropOrientation = 270; // 道具方向（针对全屏道具）
-    private int mIsInputImage = 0; // 输入的是否是图片
     private int mCurrentCameraType = Camera.CameraInfo.CAMERA_FACING_FRONT;
     private int mMaxFaces = 4; // 同时识别的最大人脸数
-    // 美发参数
-    private float mHairColorStrength = 0.6f;
-    private int mHairColorType = HAIR_GRADIENT;
 
     private float[] landmarksData = new float[150];
     private float[] expressionData = new float[46];
@@ -128,22 +117,14 @@ public class FURenderer implements OnFUControlListener {
     private float[] faceRectData = new float[4];
 
     private List<Runnable> mEventQueue;
-    private int mHairColorIndex = 0;
     private static boolean sIsInited;
-    private int mDefaultOrientation = 90;
     private OnBundleLoadCompleteListener mOnBundleLoadCompleteListener;
 
-    private boolean mIsLoadAiBgSeg;
     private boolean mIsLoadAiFaceLandmark75 = false;
-    private boolean mIsLoadAiFaceLandmark209;
-    private boolean mIsLoadAiFaceLandmark239;
-    private boolean mIsLoadAiGesture;
-    private boolean mIsLoadAiHairSeg;
-    private boolean mIsLoadAiHumanPose;
     /* 设备方向 */
-    private volatile int mDeviceOrientation = 90;
+    private int mDeviceOrientation = 90;
     /* 人脸识别方向 */
-    private volatile int mRotationMode = faceunity.FU_ROTATION_MODE_90;
+    private int mRotationMode = faceunity.FU_ROTATION_MODE_90;
 
     /**
      * 创建及初始化 Faceunity 相应的资源
@@ -180,7 +161,9 @@ public class FURenderer implements OnFUControlListener {
         if (isNeedFaceBeauty) {
             mFuItemHandler.sendEmptyMessage(ITEM_ARRAYS_FACE_BEAUTY_INDEX);
         }
-
+        if (isNeedAnimoji3D) {
+            mFuItemHandler.sendEmptyMessage(ITEM_ARRAYS_EFFECT_ABIMOJI_3D_INDEX);
+        }
         if (mIsLoadAiFaceLandmark75) {
             mFuItemHandler.post(new Runnable() {
                 @Override
@@ -188,58 +171,6 @@ public class FURenderer implements OnFUControlListener {
                     loadAiModel(mContext, AI_MODEL_ASSETS_DIR + "ai_facelandmarks75.bundle", faceunity.FUAITYPE_FACELANDMARKS75);
                 }
             });
-        }
-        if (mIsLoadAiFaceLandmark209) {
-            mFuItemHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadAiModel(mContext, AI_MODEL_ASSETS_DIR + "ai_facelandmarks209.bundle", faceunity.FUAITYPE_FACELANDMARKS209);
-                }
-            });
-        }
-        if (mIsLoadAiFaceLandmark239) {
-            mFuItemHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadAiModel(mContext, AI_MODEL_ASSETS_DIR + "ai_facelandmarks239.bundle", faceunity.FUAITYPE_FACELANDMARKS239);
-                }
-            });
-        }
-        if (mIsLoadAiHumanPose) {
-            mFuItemHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadAiModel(mContext, AI_MODEL_ASSETS_DIR + "ai_humanpose.bundle", faceunity.FUAITYPE_HUMANPOSE2D);
-                }
-            });
-        }
-        if (mIsLoadAiBgSeg) {
-            mFuItemHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadAiModel(mContext, AI_MODEL_ASSETS_DIR + "ai_bgseg.bundle", faceunity.FUAITYPE_BACKGROUNDSEGMENTATION);
-                }
-            });
-        }
-        if (mIsLoadAiHairSeg) {
-            mFuItemHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadAiModel(mContext, AI_MODEL_ASSETS_DIR + "ai_hairseg.bundle", faceunity.FUAITYPE_HAIRSEGMENTATION);
-                }
-            });
-        }
-        if (mIsLoadAiGesture) {
-            mFuItemHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loadAiModel(mContext, AI_MODEL_ASSETS_DIR + "ai_gesture.bundle", faceunity.FUAITYPE_HANDGESTURE);
-                }
-            });
-        }
-
-        if (isNeedAnimoji3D) {
-            mFuItemHandler.sendEmptyMessage(ITEM_ARRAYS_EFFECT_ABIMOJI_3D_INDEX);
         }
 
         // 异步加载默认道具，放在加载 animoji 3D 和动漫滤镜之后
@@ -833,15 +764,15 @@ public class FURenderer implements OnFUControlListener {
     public void onCameraChange(final int currentCameraType, final int inputImageOrientation) {
         Log.d(TAG, "onCameraChange() called with: currentCameraType = [" + currentCameraType
                 + "], inputImageOrientation = [" + inputImageOrientation + "]");
-        if (mCurrentCameraType == currentCameraType && mInputImageOrientation == inputImageOrientation)
+        if (mCurrentCameraType == currentCameraType && mInputImageOrientation == inputImageOrientation) {
             return;
+        }
         queueEvent(new Runnable() {
             @Override
             public void run() {
                 mFrameId = 0;
                 mCurrentCameraType = currentCameraType;
                 mInputImageOrientation = inputImageOrientation;
-                mInputPropOrientation = inputImageOrientation;
                 faceunity.fuOnCameraChange();
                 mRotationMode = calculateRotationMode();
                 faceunity.fuSetDefaultRotationMode(mRotationMode);
@@ -856,29 +787,30 @@ public class FURenderer implements OnFUControlListener {
      * @param rotation
      */
     public void setTrackOrientation(final int rotation) {
-        if (mDefaultOrientation != rotation) {
-            queueEvent(new Runnable() {
-                @Override
-                public void run() {
-                    mDefaultOrientation = rotation;
-                    /* 要设置的人脸朝向，取值范围为 0-3，分别对应人脸相对于图像数据旋转0度、90度、180度、270度。
-                     * Android 前置摄像头一般设置参数 1，后置摄像头一般设置参数 3。部分手机存在例外 */
-                    faceunity.fuSetDefaultOrientation(mDefaultOrientation / 90);
-                    mRotationMode = calculateRotationMode();
-                    // 背景分割 Animoji 表情识别 人像驱动 手势识别，转动手机时，重置人脸识别
-                    if (mDefaultEffect != null && (mDefaultEffect.effectType() == Effect.EFFECT_TYPE_BACKGROUND
-                            || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_ANIMOJI
-                            || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_EXPRESSION
-                            || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_GESTURE
-                            || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_PORTRAIT_DRIVE)) {
-                        faceunity.fuOnCameraChange();
-                    }
-                    if (mItemsArray[ITEM_ARRAYS_EFFECT_INDEX] > 0) {
-                        faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_EFFECT_INDEX], "rotMode", mRotationMode);
-                    }
-                }
-            });
+        if (mDeviceOrientation == rotation) {
+            return;
         }
+        queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                mDeviceOrientation = rotation;
+                // 背景分割 Animoji 表情识别 人像驱动 手势识别，转动手机时，重置人脸识别
+                if (mDefaultEffect != null && (mDefaultEffect.effectType() == Effect.EFFECT_TYPE_BACKGROUND
+                        || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_ANIMOJI
+                        || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_EXPRESSION
+                        || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_GESTURE
+                        || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_PORTRAIT_DRIVE)) {
+                    faceunity.fuOnCameraChange();
+                }
+                mRotationMode = calculateRotationMode();
+                faceunity.fuSetDefaultRotationMode(mRotationMode);
+                Log.d(TAG, "setTrackOrientation: " + rotation + ", rotationMode:" + mRotationMode);
+                if (mItemsArray[ITEM_ARRAYS_EFFECT_INDEX] > 0) {
+                    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_EFFECT_INDEX], "rotMode", mRotationMode);
+                    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_EFFECT_INDEX], "rotationMode", mRotationMode);
+                }
+            }
+        });
     }
 
     public void setDefaultEffect(Effect defaultEffect) {
@@ -916,10 +848,11 @@ public class FURenderer implements OnFUControlListener {
     }
 
     @Override
-    public void onEffectSelected(Effect effectItemName) {
-        mDefaultEffect = effectItemName;
-        if (mDefaultEffect == null)
+    public void onEffectSelected(Effect effect) {
+        if (effect == null) {
             return;
+        }
+        mDefaultEffect = effect;
         if (mFuItemHandler == null) {
             queueEvent(new Runnable() {
                 @Override
@@ -1110,8 +1043,9 @@ public class FURenderer implements OnFUControlListener {
     }
 
     private void benchmarkFPS() {
-        if (!mNeedBenchmark)
+        if (!mNeedBenchmark) {
             return;
+        }
         if (++mCurrentFrameCnt == TIME) {
             mCurrentFrameCnt = 0;
             long tmp = System.nanoTime();
@@ -1143,14 +1077,11 @@ public class FURenderer implements OnFUControlListener {
      * @param itemHandle
      */
     private void updateEffectItemParams(Effect effect, final int itemHandle) {
-        if (effect == null || itemHandle == 0)
+        if (effect == null || itemHandle <= 0) {
             return;
-        if (mIsInputImage == 1) {
-            faceunity.fuItemSetParam(itemHandle, "isAndroid", 0.0);
-        } else {
-            faceunity.fuItemSetParam(itemHandle, "isAndroid", 1.0);
         }
-
+        faceunity.fuItemSetParam(itemHandle, "isAndroid", 1.0);
+        mRotationMode = calculateRotationMode();
         int effectType = effect.effectType();
         if (effectType == Effect.EFFECT_TYPE_NORMAL) {
             // rotationAngle 参数是用于旋转普通道具
@@ -1266,8 +1197,6 @@ public class FURenderer implements OnFUControlListener {
         private int inputTextureType = 0;
         private int inputImageFormat = 0;
         private int inputImageRotation = 270;
-        private int inputPropRotation = 270;
-        private int isInputImage = 0;
         private boolean isNeedAnimoji3D = false;
         private boolean isNeedFaceBeauty = true;
         private int currentCameraType = Camera.CameraInfo.CAMERA_FACING_FRONT;
@@ -1299,18 +1228,6 @@ public class FURenderer implements OnFUControlListener {
          */
         public Builder defaultEffect(Effect defaultEffect) {
             this.defaultEffect = defaultEffect;
-            return this;
-        }
-
-
-        /**
-         * 输入的是否是图片
-         *
-         * @param isIputImage
-         * @return
-         */
-        public Builder inputIsImage(int isIputImage) {
-            this.isInputImage = isIputImage;
             return this;
         }
 
@@ -1357,17 +1274,6 @@ public class FURenderer implements OnFUControlListener {
          */
         public Builder inputImageOrientation(int inputImageRotation) {
             this.inputImageRotation = inputImageRotation;
-            return this;
-        }
-
-        /**
-         * 道具方向
-         *
-         * @param inputPropRotation
-         * @return
-         */
-        public Builder inputPropOrientation(int inputPropRotation) {
-            this.inputPropRotation = inputPropRotation;
             return this;
         }
 
@@ -1455,8 +1361,6 @@ public class FURenderer implements OnFUControlListener {
             fuRenderer.mInputTextureType = inputTextureType;
             fuRenderer.mInputImageFormat = inputImageFormat;
             fuRenderer.mInputImageOrientation = inputImageRotation;
-            fuRenderer.mInputPropOrientation = inputPropRotation;
-            fuRenderer.mIsInputImage = isInputImage;
             fuRenderer.mDefaultEffect = defaultEffect;
             fuRenderer.isNeedAnimoji3D = isNeedAnimoji3D;
             fuRenderer.isNeedFaceBeauty = isNeedFaceBeauty;

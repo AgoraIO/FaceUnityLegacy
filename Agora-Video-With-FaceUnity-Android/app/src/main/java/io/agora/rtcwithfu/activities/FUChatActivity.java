@@ -1,6 +1,11 @@
 package io.agora.rtcwithfu.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.opengl.EGL14;
 import android.opengl.GLSurfaceView;
@@ -45,7 +50,7 @@ import io.agora.rtcwithfu.view.EffectPanel;
  * The FU activity which possesses remote video chatting ability.
  */
 @SuppressWarnings("deprecation")
-public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHandler {
+public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHandler, SensorEventListener {
 
     private final static String TAG = FUChatActivity.class.getSimpleName();
 
@@ -82,6 +87,9 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     private int mImageWidth;
     private int mImageHeight;
 
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+
     private SinkConnector<VideoCaptureFrame> mEffectHandler = new SinkConnector<VideoCaptureFrame>() {
         @Override
         public int onDataAvailable(VideoCaptureFrame data) {
@@ -100,8 +108,11 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUIAndEvent();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
+    @Override
     protected void initUIAndEvent() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -258,11 +269,13 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     @Override
     protected void onResume() {
         super.onResume();
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -495,7 +508,9 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     protected void sendRecordingData(int texId, final float[] tex_matrix, final long timeStamp) {
         if (mVideoEncoder != null) {
             mVideoEncoder.frameAvailableSoon(texId, tex_matrix, GlUtil.IDENTITY_MATRIX);
-            if (mVideoRecordingStartTime == 0) mVideoRecordingStartTime = timeStamp;
+            if (mVideoRecordingStartTime == 0) {
+                mVideoRecordingStartTime = timeStamp;
+            }
         }
     }
 
@@ -523,4 +538,25 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
             }
         }
     };
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+            if (Math.abs(x) > 3 || Math.abs(y) > 3) {
+                if (Math.abs(x) > Math.abs(y)) {
+                    mFURenderer.setTrackOrientation(x > 0 ? 0 : 180);
+                } else {
+                    mFURenderer.setTrackOrientation(y > 0 ? 90 : 270);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
