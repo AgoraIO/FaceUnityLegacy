@@ -553,6 +553,24 @@ public class FURenderer implements OnFUControlListener {
         return rotMode;
     }
 
+    private int calculateRotModeLegacy() {
+        int mode;
+        if (mInputImageOrientation == 270) {
+            if (mCurrentCameraType == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                mode = mDeviceOrientation / 90;
+            } else {
+                mode = (mDeviceOrientation - 180) / 90;
+            }
+        } else {
+            if (mCurrentCameraType == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                mode = (mDeviceOrientation + 180) / 90;
+            } else {
+                mode = mDeviceOrientation / 90;
+            }
+        }
+        return mode;
+    }
+
     /**
      * 获取 landmark 点位
      *
@@ -794,6 +812,7 @@ public class FURenderer implements OnFUControlListener {
             @Override
             public void run() {
                 mDeviceOrientation = rotation;
+                mRotationMode = calculateRotationMode();
                 // 背景分割 Animoji 表情识别 人像驱动 手势识别，转动手机时，重置人脸识别
                 if (mDefaultEffect != null && (mDefaultEffect.effectType() == Effect.EFFECT_TYPE_BACKGROUND
                         || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_ANIMOJI
@@ -801,14 +820,10 @@ public class FURenderer implements OnFUControlListener {
                         || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_GESTURE
                         || mDefaultEffect.effectType() == Effect.EFFECT_TYPE_PORTRAIT_DRIVE)) {
                     faceunity.fuOnCameraChange();
+                    setEffectRotationMode(mDefaultEffect, mItemsArray[ITEM_ARRAYS_EFFECT_INDEX]);
                 }
-                mRotationMode = calculateRotationMode();
                 faceunity.fuSetDefaultRotationMode(mRotationMode);
                 Log.d(TAG, "setTrackOrientation: " + rotation + ", rotationMode:" + mRotationMode);
-                if (mItemsArray[ITEM_ARRAYS_EFFECT_INDEX] > 0) {
-                    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_EFFECT_INDEX], "rotMode", mRotationMode);
-                    faceunity.fuItemSetParam(mItemsArray[ITEM_ARRAYS_EFFECT_INDEX], "rotationMode", mRotationMode);
-                }
             }
         });
     }
@@ -1104,9 +1119,8 @@ public class FURenderer implements OnFUControlListener {
             faceunity.fuItemSetParam(itemHandle, "loc_y_flip", back);
             faceunity.fuItemSetParam(itemHandle, "loc_x_flip", back);
         }
-        faceunity.fuItemSetParam(itemHandle, "rotMode", mRotationMode);
-        faceunity.fuItemSetParam(itemHandle, "rotationMode", mRotationMode);
 
+        setEffectRotationMode(effect, itemHandle);
         if (effectType == Effect.EFFECT_TYPE_ANIMOJI) {
             // 镜像跟踪（位移和旋转）
             faceunity.fuItemSetParam(itemHandle, "isFlipTrack", back);
@@ -1116,6 +1130,17 @@ public class FURenderer implements OnFUControlListener {
             faceunity.fuItemSetParam(itemHandle, "{\"thing\":\"<global>\",\"param\":\"follow\"}", 1);
         }
         setMaxFaces(effect.maxFace());
+    }
+
+    private void setEffectRotationMode(Effect effect, int itemHandle) {
+        int rotMode;
+        if (effect.effectType() == Effect.EFFECT_TYPE_GESTURE && effect.bundleName().startsWith("ctrl")) {
+            rotMode = calculateRotModeLegacy();
+        } else {
+            rotMode = mRotationMode;
+        }
+        faceunity.fuItemSetParam(itemHandle, "rotMode", rotMode);
+        faceunity.fuItemSetParam(itemHandle, "rotationMode", rotMode);
     }
 
     // --------------------------------------------------------------------------------------------

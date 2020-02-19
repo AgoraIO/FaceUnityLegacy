@@ -116,7 +116,7 @@ public class EffectPanel {
     }
 
     private class EffectTypeAdapter extends RecyclerView.Adapter<EffectTypeAdapter.ItemViewHolder> {
-        private int mSelectedPosition = 0;
+        private int mSelectedPosition = -1;
 
         @Override
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
