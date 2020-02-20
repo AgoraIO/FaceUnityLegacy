@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Agora with FU</string>
-    <string name="agora_app_id"><#YOUR APP ID#></string>
+    <string name="agora_app_id">a65012a07b1445c08e5b716db9de5f76</string>
 
     <string name="home_function_name_beauty">Beautification</string>
     <string name="home_function_name_animoji">Animoji</string>
@@ -191,7 +191,7 @@
     <string name="avatar_down_lip_thickness">Down lip thickness</string>
     <string name="avatar_lip_width">Lip width</string>
     <string name="model_empty_tip">No model has been created</string>
-    <string name="dialog_reset_avatar_model">Reset all parameters to default?</string>
+    <string name="dialog_reset_param">Reset all parameters to default?</string>
     <string name="avatar_face_customize">Custom</string>
     <string name="avatar_save_succeed">Save succeed</string>
     <string name="live_photo_btn_save_point">Save points</string>

@@ -1,9 +1,10 @@
 package com.faceunity.fulivedemo.entity;
 
 import com.faceunity.entity.Effect;
-import io.agora.rtcwithfu.R;
 
 import java.util.ArrayList;
+
+import io.agora.rtcwithfu.R;
 
 /**
  * Created by tujh on 2018/1/30.
@@ -16,14 +17,13 @@ public enum EffectEnum {
     /**
      * 道具贴纸
      */
-    Effect_bling("bling", R.drawable.bling, "normal/bling.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_fengya_ztt_fu("fengya_ztt_fu", R.drawable.fengya_ztt_fu, "normal/fengya_ztt_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_hudie_lm_fu("hudie_lm_fu", R.drawable.hudie_lm_fu, "normal/hudie_lm_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_touhua_ztt_fu("touhua_ztt_fu", R.drawable.touhua_ztt_fu, "normal/touhua_ztt_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_juanhuzi_lm_fu("juanhuzi_lm_fu", R.drawable.juanhuzi_lm_fu, "normal/juanhuzi_lm_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_mask_hat("mask_hat", R.drawable.mask_hat, "normal/mask_hat.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_yazui("yazui", R.drawable.yazui, "normal/yazui.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
-    Effect_yuguan("yuguan", R.drawable.yuguan, "normal/yuguan.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_sdlu("sdlu", R.drawable.sdlu, "normal/sdlu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_daisypig("daisypig", R.drawable.daisypig, "normal/daisypig.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_fashi("fashi", R.drawable.fashi, "normal/fashi.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_chri1("chri1", R.drawable.chri1, "normal/chri1.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_xueqiu_lm_fu("xueqiu_lm_fu", R.drawable.xueqiu_lm_fu, "normal/xueqiu_lm_fu.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_wobushi("wobushi", R.drawable.wobushi, "normal/wobushi.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
+    Effect_gaoshiqing("gaoshiqing", R.drawable.gaoshiqing, "normal/gaoshiqing.bundle", 4, Effect.EFFECT_TYPE_NORMAL, 0),
     /**
      * AR面具
      */
@@ -36,16 +36,6 @@ public enum EffectEnum {
     Effect_baozi("baozi", R.drawable.baozi, "ar/baozi.bundle", 4, Effect.EFFECT_TYPE_AR, 0),
     Effect_tiger("tiger", R.drawable.tiger, "ar/tiger.bundle", 4, Effect.EFFECT_TYPE_AR, 0),
     Effect_xiongmao("xiongmao", R.drawable.xiongmao, "ar/xiongmao.bundle", 4, Effect.EFFECT_TYPE_AR, 0),
-    /**
-     * 换脸
-     */
-    Effect_mask_liudehua("mask_liudehua", R.drawable.mask_liudehua, "change/mask_liudehua.bundle", 4, Effect.EFFECT_TYPE_FACE_CHANGE, 0),
-    Effect_mask_linzhiling("mask_linzhiling", R.drawable.mask_linzhiling, "change/mask_linzhiling.bundle", 4, Effect.EFFECT_TYPE_FACE_CHANGE, 0),
-    Effect_mask_luhan("mask_luhan", R.drawable.mask_luhan, "change/mask_luhan.bundle", 4, Effect.EFFECT_TYPE_FACE_CHANGE, 0),
-    Effect_mask_guocaijie("mask_guocaijie", R.drawable.mask_guocaijie, "change/mask_guocaijie.bundle", 4, Effect.EFFECT_TYPE_FACE_CHANGE, 0),
-    Effect_mask_huangxiaoming("mask_huangxiaoming", R.drawable.mask_huangxiaoming, "change/mask_huangxiaoming.bundle", 4, Effect.EFFECT_TYPE_FACE_CHANGE, 0),
-    Effect_mask_matianyu("mask_matianyu", R.drawable.mask_matianyu, "change/mask_matianyu.bundle", 4, Effect.EFFECT_TYPE_FACE_CHANGE, 0),
-    Effect_mask_tongliya("mask_tongliya", R.drawable.mask_tongliya, "change/mask_tongliya.bundle", 4, Effect.EFFECT_TYPE_FACE_CHANGE, 0),
     /**
      * 表情识别
      */
@@ -73,7 +63,6 @@ public enum EffectEnum {
     Effect_fu_lm_koreaheart("fu_lm_koreaheart", R.drawable.fu_lm_koreaheart, "gesture/ssd_thread_korheart.bundle", 4, Effect.EFFECT_TYPE_GESTURE, R.string.fu_lm_koreaheart),
     Effect_ssd_thread_six("ssd_thread_six", R.drawable.ssd_thread_six, "gesture/ssd_thread_six.bundle", 4, Effect.EFFECT_TYPE_GESTURE, R.string.ssd_thread_six),
     Effect_ssd_thread_cute("ssd_thread_cute", R.drawable.ssd_thread_cute, "gesture/ssd_thread_cute.bundle", 4, Effect.EFFECT_TYPE_GESTURE, R.string.ssd_thread_cute),
-    Effect_ssd_thread_thumb("ssd_thread_thumb", R.drawable.ssd_thread_thumb, "gesture/ssd_thread_thumb.bundle", 4, Effect.EFFECT_TYPE_GESTURE, R.string.ssd_thread_thumb),
     /**
      * Animoji
      */
@@ -102,31 +91,7 @@ public enum EffectEnum {
      * 音乐滤镜
      */
     Effect_douyin_old("douyin_01", R.drawable.douyin_old, "musicfilter/douyin_01.bundle", 4, Effect.EFFECT_TYPE_MUSIC_FILTER, 0),
-    Effect_douyin("douyin_02", R.drawable.douyin, "musicfilter/douyin_02.bundle", 4, Effect.EFFECT_TYPE_MUSIC_FILTER, 0),
-    /**
-     * 渐变美发
-     */
-    Hair_Gradient_01("Gradient_Hair_01", R.drawable.icon_gradualchangehair_01, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_02("Gradient_Hair_02", R.drawable.icon_gradualchangehair_02, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_04("Gradient_Hair_03", R.drawable.icon_gradualchangehair_03, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_05("Gradient_Hair_04", R.drawable.icon_gradualchangehair_04, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    Hair_Gradient_06("Gradient_Hair_05", R.drawable.icon_gradualchangehair_05, "hair/hair_gradient.bundle", 4, Effect.EFFECT_TYPE_HAIR_GRADIENT, 0),
-    /**
-     * 普通美发
-     */
-    Hair_01("Hair_01", R.drawable.icon_beautymakeup_hairsalon_01, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_02("Hair_02", R.drawable.icon_beautymakeup_hairsalon_02, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_03("Hair_03", R.drawable.icon_beautymakeup_hairsalon_03, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_04("Hair_04", R.drawable.icon_beautymakeup_hairsalon_04, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_05("Hair_05", R.drawable.icon_beautymakeup_hairsalon_05, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_06("Hair_06", R.drawable.icon_beautymakeup_hairsalon_06, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_07("Hair_07", R.drawable.icon_beautymakeup_hairsalon_07, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-    Hair_08("Hair_08", R.drawable.icon_beautymakeup_hairsalon_08, "hair/hair_normal.bundle", 4, Effect.EFFECT_TYPE_HAIR_NORMAL, 0),
-
-    /**
-     * Avatar
-     */
-    AVATAR_MALE("avatar_male", 0, "avatar_male.bundle", 1, Effect.EFFECT_TYPE_AVATAR, 0);
+    Effect_douyin("douyin_02", R.drawable.douyin, "musicfilter/douyin_02.bundle", 4, Effect.EFFECT_TYPE_MUSIC_FILTER, 0);
 
     private String bundleName;
     private int resId;

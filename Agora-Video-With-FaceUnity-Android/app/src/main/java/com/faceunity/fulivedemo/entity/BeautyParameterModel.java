@@ -2,11 +2,12 @@ package com.faceunity.fulivedemo.entity;
 
 
 import com.faceunity.entity.Filter;
-import io.agora.rtcwithfu.R;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.agora.rtcwithfu.R;
 
 /**
  * 美颜参数SharedPreferences记录,目前仅以保存数据，可改造为以SharedPreferences保存数据

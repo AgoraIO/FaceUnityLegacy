@@ -101,6 +101,10 @@ public abstract class VideoCapture implements SinkConnector<Integer> {
         mMirror = mirror;
     }
 
+    public int getCameraNativeOrientation() {
+        return mCameraNativeOrientation;
+    }
+
     protected final int getDisplayRotation() {
         int result;
         if (mInvertDeviceOrientationReadings) {

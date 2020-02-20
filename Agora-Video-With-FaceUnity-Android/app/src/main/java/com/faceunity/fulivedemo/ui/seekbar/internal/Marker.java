@@ -15,9 +15,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import io.agora.rtcwithfu.R;
 import com.faceunity.fulivedemo.ui.seekbar.internal.compat.SeekBarCompat;
 import com.faceunity.fulivedemo.ui.seekbar.internal.drawable.MarkerDrawable;
+
+import io.agora.rtcwithfu.R;
 
 
 /**
