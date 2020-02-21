@@ -19,12 +19,15 @@
 #import <AGMBase/AGMBase.h>
 #import <AGMCapturer/AGMCapturer.h>
 #import "AGMFaceUnityFilter.h"
+#import "FUCamera.h"
 
-@interface RoomViewController ()<FUAPIDemoBarDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate> {
+@interface RoomViewController ()<FUAPIDemoBarDelegate, FUItemsViewDelegate, AgoraRtcEngineDelegate, AgoraVideoSourceProtocol, UITableViewDataSource, UITableViewDelegate,FUCameraDelegate> {
     BOOL faceBeautyMode;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *containView;
+
+@property (strong, nonatomic) FUCamera *mCamera ;
 
 @property (weak, nonatomic) IBOutlet FUAPIDemoBar *demoBar;    //Tool Bar
 @property (strong, nonatomic) IBOutlet FUItemsView *itemsView;
@@ -79,6 +82,8 @@
 
 @synthesize consumer;
 
+
+#pragma mark -  Loading
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
@@ -110,12 +115,19 @@
     self.videoConfig.fps = 15;
     self.cameraCapturer = [[AGMCameraCapturer alloc] initWithConfig:self.videoConfig];
     
+    AGMVideoFrameAdapter *videoFrameAdapter = [[AGMVideoFrameAdapter alloc] init];
+    videoFrameAdapter.orientationMode = AGMVideoOutputOrientationModeFixedPortrait;
+    videoFrameAdapter.isMirror = YES;
+//    videoFrameAdapter.sinkDelegate = self;
+    [self.cameraCapturer addVideoSink:videoFrameAdapter];
+    
+    
 #pragma mark Filter
     self.faceUnityFilter = [[AGMFaceUnityFilter alloc] init];
 
 #pragma mark Connect
-    [self.cameraCapturer addVideoSink:self.faceUnityFilter];
-    
+//    [self.cameraCapturer addVideoSink:self.faceUnityFilter];
+    [videoFrameAdapter addVideoSink:self.faceUnityFilter];
 #pragma mark push pixelBuffer
     __weak typeof(self) weakSelf = self;
     self.faceUnityFilter.didCompletion = ^(CVPixelBufferRef  _Nonnull pixelBuffer, CMTime timeStamp, AGMVideoRotation rotation) {
@@ -148,7 +160,13 @@
         NSString *ratioStr = [NSString stringWithFormat:@"%dX%d", frameWidth, frameHeight];
         dispatch_async(dispatch_get_main_queue(), ^{
 
-            weakSelf.noTrackLabel.hidden = [[FUManager shareManager] isTracking];
+            //加载了人脸检测道具才会，检测人脸
+            if ([[FUManager shareManager] isHaveTrackFaceItemsRendering]) {
+                weakSelf.noTrackLabel.hidden = [[FUManager shareManager] isTracking];
+            }else{
+                weakSelf.noTrackLabel.hidden = YES;
+            }
+            
 
             CGFloat fps = 1.0 / frameTime ;
 //            if (fps > 30) {
@@ -159,7 +177,7 @@
         });
 
         // push pixelBuffer to agora server
-        [weakSelf.consumer consumePixelBuffer:pixelBuffer withTimestamp:timeStamp rotation:AgoraVideoRotation90];
+        [weakSelf.consumer consumePixelBuffer:pixelBuffer withTimestamp:timeStamp rotation:AgoraVideoRotationNone];
         
     };
 }
@@ -226,7 +244,7 @@
         [self hiddenButtonsWith:YES];
         [self hiddenItemsView:YES];
         
-        [[FUManager shareManager] loadFilter];
+        [[FUManager shareManager] loadFilterLandmarksType:FUAITYPE_FACELANDMARKS75];
         
         [self hiddenToolBarWith:NO];
         
@@ -241,16 +259,10 @@
         
         self.itemsView.selectedItem = selectItem ;
         
-        [[FUManager shareManager] loadItem: selectItem];
-        [[FUManager shareManager] loadFilter];
-        
-        if (self.model.type == FULiveModelTypePortraitDrive) {
-            
-            [[FUManager shareManager] set3DFlipH];
-        }else if (self.model.type == FULiveModelTypeGestureRecognition) {
-            
-            [[FUManager shareManager] setLoc_xy_flip];
-        }
+//        [[FUManager shareManager] loadItem: selectItem];
+        [self itemsViewDidSelectedItem:selectItem];
+        [[FUManager shareManager] loadFilterLandmarksType:FUAITYPE_FACEPROCESSOR];
+
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -278,6 +290,7 @@
     [self updateToolBarWith:model];
 }
 
+
 #pragma mark - Agora Engine
 /**
 * load Agora Engine && Join Channel
@@ -294,7 +307,7 @@
     [self.agoraKit enableVideo];
     [self.agoraKit setVideoSource:self];
     [self.agoraKit enableWebSdkInteroperability:YES];
-
+    
     [self setupLocalView];
     [self.agoraKit startPreview];
     
@@ -318,7 +331,7 @@
     // set render view
     [self.agoraKit setupLocalVideo:self.localCanvas];
     self.localRenderView = self.preview;
-    [self.agoraKit setLocalVideoMirrorMode:AgoraVideoMirrorModeAuto];
+    [self.agoraKit setLocalVideoMirrorMode:AgoraVideoMirrorModeDisabled];
     
 }
 
@@ -577,6 +590,8 @@
         if (![item isEqualToString:@"noitem"]) {
             [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"];
         }
+    }else{
+        [[FUMusicPlayer sharePlayer] stop];
     }
     
     
@@ -700,6 +715,10 @@
     if (self.model.type == FULiveModelTypeMusicFilter) {
         [[FUMusicPlayer sharePlayer] pause] ;
     }
+        if (self.navigationController.visibleViewController == self) {
+             [self.mCamera stopCapture];
+     //        self.mCamera = nil;
+         }
 }
 
 - (void)willEnterForeground {
@@ -712,6 +731,10 @@
     if (self.model.type == FULiveModelTypeMusicFilter && ![[FUManager shareManager].selectedItem isEqualToString:@"noitem"]) {
         [[FUMusicPlayer sharePlayer] playMusic:@"douyin.mp3"] ;
     }
+    
+       if (self.navigationController.visibleViewController == self) {
+         [self.mCamera startCapture];
+     }
 }
 
 @end
