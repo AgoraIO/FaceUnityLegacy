@@ -7,7 +7,6 @@
 //
 
 #import "FUManager.h"
-#import "FURenderer.h"
 #import "authpack.h"
 #import "FULiveModel.h"
 #import <sys/utsname.h>
@@ -27,6 +26,8 @@
 
 @property (nonatomic, strong) CMMotionManager *motionManager;
 @property (nonatomic) int deviceOrientation;
+/* 带屏幕方向的道具 */
+@property (nonatomic, strong)NSArray *deviceOrientationItems;
 @end
 
 static FUManager *shareManager = NULL;
@@ -51,19 +52,14 @@ static FUManager *shareManager = NULL;
         
         [[FURenderer shareRenderer] setupWithDataPath:path authPackage:&g_auth_package authSize:sizeof(g_auth_package) shouldCreateContext:YES];
         
-        NSData *animModelData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"anim_model.bundle" ofType:nil]];
-        int res0 = fuLoadAnimModel((void *)animModelData.bytes, (int)animModelData.length);
-        NSLog(@"fuLoadAnimModel %@",res0 == 0 ? @"failure":@"success" );
-        
-        NSData *arModelData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ardata_ex.bundle" ofType:nil]];
-        
-        
-        int res1 = fuLoadExtendedARData((void *)arModelData.bytes, (int)arModelData.length);
-        
-        NSLog(@"fuLoadExtendedARData %@",res1 == 0 ? @"failure":@"success" );
-        
         [self setBeautyDefaultParameters];
         
+        
+        // 加载ai bundle
+        [self loadAIModle];
+        
+        //animoji 添加抗锯齿，不用animoji不需要添加
+        [self loadAnimojiFaxxBundle];
         NSLog(@"faceunitySDK version:%@",[FURenderer getVersion]);
         
         hintDic = @{
@@ -90,6 +86,9 @@ static FUManager *shareManager = NULL;
         
         [self loadItemDataSource];
         
+        /* 带屏幕方向的道具 */
+        self.deviceOrientationItems = @[@"ctrl_rain",@"ctrl_snow",@"ctrl_flower",@"ssd_thread_six",@"wobushi",@"gaoshiqing"];
+        
         // init motion manager
         self.motionManager = [[CMMotionManager alloc] init];
         self.motionManager.accelerometerUpdateInterval = 0.5;// refresh every 1 second
@@ -108,6 +107,25 @@ static FUManager *shareManager = NULL;
     
     return self;
 }
+
+
+-(void)loadAIModle{
+    NSData *ai_bgseg = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ai_bgseg.bundle" ofType:nil]];
+    [FURenderer loadAIModelFromPackage:(void *)ai_bgseg.bytes size:(int)ai_bgseg.length aitype:FUAITYPE_BACKGROUNDSEGMENTATION];
+    
+    NSData *ai_facelandmarks75 = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ai_facelandmarks75.bundle" ofType:nil]];
+    [FURenderer loadAIModelFromPackage:(void *)ai_facelandmarks75.bytes size:(int)ai_facelandmarks75.length aitype:FUAITYPE_FACELANDMARKS75];
+
+    NSData *ai_gesture = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ai_gesture.bundle" ofType:nil]];
+    [FURenderer loadAIModelFromPackage:(void *)ai_gesture.bytes size:(int)ai_gesture.length aitype:FUAITYPE_HANDGESTURE];
+    NSData *ai_hairseg = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ai_hairseg.bundle" ofType:nil]];
+    [FURenderer loadAIModelFromPackage:(void *)ai_hairseg.bytes size:(int)ai_hairseg.length aitype:FUAITYPE_HAIRSEGMENTATION];
+
+    NSData *ai_face_processor = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ai_face_processor.bundle" ofType:nil]];
+    [FURenderer loadAIModelFromPackage:(void *)ai_face_processor.bytes size:(int)ai_face_processor.length aitype:FUAITYPE_FACEPROCESSOR];
+    
+}
+
 
 /** Judging authority based on certificate
  *  with permissions are ranked first,  without permissions behind
@@ -225,7 +243,7 @@ static FUManager *shareManager = NULL;
     [self loadItem:self.selectedItem];
     
     /** load default beauty item*/
-    [self loadFilter];
+    [self loadFilterLandmarksType:FUAITYPE_FACELANDMARKS75];
 }
 
 - (void)setEnableGesture:(BOOL)enableGesture
@@ -350,13 +368,24 @@ static FUManager *shareManager = NULL;
         
         // set 3D FlipH
         BOOL isPortraitDrive = [itemName hasPrefix:@"picasso_e"];
-        if (isPortraitDrive) {
+        BOOL isAnimoji = [itemName hasSuffix:@"_Animoji"];
+        
+        if (isPortraitDrive || isAnimoji) {
+            [FURenderer itemSetParam:itemHandle withName:@"{\"thing\":\"<global>\",\"param\":\"follow\"}" value:@(1)];
             [FURenderer itemSetParam:itemHandle withName:@"is3DFlipH" value:@(1)];
             [FURenderer itemSetParam:itemHandle withName:@"isFlipExpr" value:@(1)];
+            [FURenderer itemSetParam:itemHandle withName:@"isFlipTrack" value:@(1)];
+            [FURenderer itemSetParam:itemHandle withName:@"isFlipLight" value:@(1)];
         }
         
         if ([itemName isEqualToString:@"luhantongkuan_ztt_fu"]) {
             [FURenderer itemSetParam:itemHandle withName:@"flip_action" value:@(1)];
+        }
+        
+        if ([self.deviceOrientationItems containsObject:itemName]) {//带重力感应道具
+            [FURenderer itemSetParam:itemHandle withName:@"rotMode" value:@(self.deviceOrientation)];
+
+        }else{
         }
         /** put the handle wo just created in items[1]*/
         items[1] = itemHandle;
@@ -375,11 +404,12 @@ static FUManager *shareManager = NULL;
 }
 
 /** load filter bundle */
-- (void)loadFilter
+- (void)loadFilterLandmarksType:(FUAITYPE)landmarksType
 {
     if (items[0] == 0) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"face_beautification.bundle" ofType:nil];
         items[0] = [FURenderer itemWithContentsOfFile:path];
+        [FURenderer itemSetParam:items[0] withName:@"landmarks_type" value:@(landmarksType)];
     }
 }
 
@@ -428,7 +458,7 @@ static FUManager *shareManager = NULL;
 - (CVPixelBufferRef)renderItemsToPixelBuffer:(CVPixelBufferRef)pixelBuffer
 {
     // set the orientation based on motion when there is no faces
-    if (![FURenderer isTracking]) {
+//    if (![FURenderer isTracking]) {
         
         CMAcceleration acceleration = self.motionManager.accelerometerData.acceleration ;
         
@@ -446,9 +476,15 @@ static FUManager *shareManager = NULL;
         if (self.deviceOrientation != orientation) {
             self.deviceOrientation = orientation ;
             
-            fuSetDefaultOrientation(self.deviceOrientation) ;
+            //针对带重力道具
+            [FURenderer itemSetParam:items[1] withName:@"rotMode" value:@(self.deviceOrientation)];
+            /* 手势识别里 666 道具，带有全屏元素 */
+            [FURenderer itemSetParam:items[1] withName:@"rotationMode" value:@(self.deviceOrientation)];
+            
+            fuSetDefaultOrientation(self.deviceOrientation);
+            fuSetDefaultRotationMode(self.deviceOrientation);
         }
-    }
+//    }
     
     [self setBeautyParams];
     
@@ -623,7 +659,16 @@ static FUManager *shareManager = NULL;
     
     if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
     if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
+    
     return platform;
+}
+
+
+-(BOOL)isHaveTrackFaceItemsRendering{
+    if (items[0] || items[1]) {
+        return YES;
+    }
+    return NO;
 }
 
 //- (void)didOutputFrame:(VideoFrame *)frame {

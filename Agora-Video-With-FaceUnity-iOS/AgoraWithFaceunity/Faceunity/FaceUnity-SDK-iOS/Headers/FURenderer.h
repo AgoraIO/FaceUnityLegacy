@@ -22,6 +22,39 @@ typedef enum {
     FUFormatRGBATexture = FU_FORMAT_RGBA_TEXTURE,
 } FUFormat;
 
+typedef enum {
+    FURotationMode0 = FU_ROTATION_MODE_0,
+    FURotationMode90 = FU_ROTATION_MODE_90,
+    FURotationMode180 = FU_ROTATION_MODE_180,
+    FURotationMode270 = FU_ROTATION_MODE_270,
+} FURotationMode;
+
+@interface FURotatedImage : NSObject
+
+@property void* mData;
+@property int mWidth;
+@property int mHeight;
+
+-(instancetype)init;
+
+@end;
+
+@interface FUAvatarInfo : NSObject{
+@public
+    float landmarks[150];
+    float identity[75];
+    float expression[56];
+    float translation[3];
+    float rotation[4];
+    float rotationMode[1];
+    float pupilPos[2];
+    int isValid;
+    
+    TAvatarInfo info;
+}
+
+@end
+
 @interface FURenderer : NSObject
 
 /**
@@ -32,16 +65,24 @@ typedef enum {
 + (FURenderer *)shareRenderer;
 
 /**
+  context切换
+ */
+- (void)setBackCurrentContext;
+- (void)setUpCurrentContext;
+
+/**
  初始化接口1:
      - 初始化 SDK，并对 SDK 进行授权，在调用其他接口前必须要先进行初始化。
      - 使用该接口进行初始化的话，需要在代码中配置 EAGLContext 环境，并且保证我们的接口是在同一个 EAGLContext 下调用的
  
  @param data v3.bundle 对应的二进制数据地址
+ @param dataSize v3.bundle 数据的字节数
  @param ardata 该参数已舍弃，传 NULL 即可
  @param package 密钥数组，必须配置好密钥，SDK 才能正常工作
  @param size 密钥数组大小
+ @return 初始化结果，为0则初始化失败，大于0则初始化成功
  */
-- (void)setupWithData:(void *)data ardata:(void *)ardata authPackage:(void *)package authSize:(int)size;
+- (int)setupWithData:(void *)data dataSize:(int)dataSize ardata:(void *)ardata authPackage:(void *)package authSize:(int)size;
 
 /**
  初始化接口2：
@@ -49,12 +90,14 @@ typedef enum {
      - 与 初始化接口1 相比此接口新增 shouldCreate 参数，如果传入YES我们将在内部创建并持有一个 EAGLContext，无需外部再创建 EAGLContext 环境。
  
  @param data v3.bundle 对应的二进制数据地址
+ @param dataSize v3.bundle 数据的字节数
  @param ardata 该参数已废弃，传 NULL 即可
  @param package 密钥数组，必须配置好密钥，SDK 才能正常工作
  @param size 密钥数组大小
  @param shouldCreate 如果设置为 YES，我们会在内部创建并持有一个 EAGLContext，此时必须使用OC层接口
+ @return 初始化结果，为0则初始化失败，大于0则初始化成功
  */
-- (void)setupWithData:(void *)data ardata:(void *)ardata authPackage:(void *)package authSize:(int)size shouldCreateContext:(BOOL)shouldCreate;
+- (int)setupWithData:(void *)data dataSize:(int)dataSize ardata:(void *)ardata authPackage:(void *)package authSize:(int)size shouldCreateContext:(BOOL)shouldCreate;
 
 /**
  初始化接口3：
@@ -65,8 +108,25 @@ typedef enum {
  @param package 密钥数组，必须配置好密钥，SDK 才能正常工作
  @param size 密钥数组大小
  @param shouldCreate  如果设置为 YES，我们会在内部创建并持有一个 EAGLContext，此时必须使用OC层接口
+ @return 初始化结果，为0则初始化失败，大于0则初始化成功
  */
-- (void)setupWithDataPath:(NSString *)v3path authPackage:(void *)package authSize:(int)size shouldCreateContext:(BOOL)shouldCreate;
+- (int)setupWithDataPath:(NSString *)v3path authPackage:(void *)package authSize:(int)size shouldCreateContext:(BOOL)shouldCreate;
+
+
+/**
+ 初始化接口4：
+
+ - 初始化SDK，采用离线鉴权方式
+ 
+ @param v3path v3.bundle 对应的文件路径
+ @param offLinePath offLineBundle.bundle 离线鉴权包路径
+ @param package 密钥数组，必须配置好密钥，SDK 才能正常工作
+ @param size 密钥数组大小
+ @param shouldCreate  如果设置为 YES，我们会在内部创建并持有一个 EAGLContext，此时必须使用OC层接口
+ @return 第一次鉴权成功后的文件
+ */
+
+- (NSData *)setupLocalWithV3Path:(NSString *)v3path offLinePath:(NSString *)offLinePath authPackage:(void *)package authSize:(int)size shouldCreateContext:(BOOL)shouldCreate;
 
 /**
  视频处理接口1：
@@ -76,7 +136,7 @@ typedef enum {
  @param frameid 当前处理的视频帧序数，每次处理完对其进行加 1 操作，不加 1 将无法驱动道具中的特效动画
  @param items 包含多个道具句柄的 int 数组，包括普通道具、美颜道具、手势道具等
  @param itemCount 句柄数组中包含的句柄个数
- @return 被处理过的的图像数据，与传入的 pixelBuffer 为同一pixelBuffer
+ @return 被处理过的的图像数据，返回 nil 视频处理失败
  */
 - (CVPixelBufferRef)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount;
 
@@ -90,7 +150,7 @@ typedef enum {
  @param items 包含多个道具句柄的 int 数组
  @param itemCount 句柄数组中包含的句柄个数
  @param flip 道具镜像使能，如果设置为 YES 可以将道具做镜像操作
- @return 被处理过的的图像数据，与传入的 pixelBuffer 为同一个 pixelBuffer
+ @return 被处理过的的图像数据，返回 nil 视频处理失败
  */
 - (CVPixelBufferRef)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount flipx:(BOOL)flip;
 
@@ -105,9 +165,10 @@ typedef enum {
  @param itemCount 句柄数组中包含的句柄个数
  @param flip 道具镜像使能，如果设置为 YES 可以将道具做镜像操作
  @param customSize 自定义输出的分辨率，目前仅支持BGRA格式
- @return 被处理过的的图像数据，与传入的 pixelBuffer 为同一个 pixelBuffer
+ @return 被处理过的的图像数据，返回 nil 视频处理失败
  */
-- (CVPixelBufferRef)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize;
+
+- (CVPixelBufferRef)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口4：
@@ -117,9 +178,9 @@ typedef enum {
  @param frameid 当前处理的视频帧序数，每次处理完对其进行加 1 操作，不加 1 将无法驱动道具中的特效动画
  @param items 包含多个道具句柄的 int 数组，包括普通道具、美颜道具、手势道具等
  @param itemCount 句柄数组中包含的句柄个数
- @return 被处理过的的图像数据，与传入的 pixelBuffer 不是同一个 pixelBuffer
+ @return 被处理过的的图像数据，返回 nil 视频处理失败
  */
-- (CVPixelBufferRef)renderToInternalPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount;
+- (CVPixelBufferRef)renderToInternalPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口5：
@@ -133,7 +194,7 @@ typedef enum {
  @param itemCount 句柄数组中包含的句柄个数
  @return 被处理过的的图像数据
  */
-- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount;
+- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口6：
@@ -148,7 +209,7 @@ typedef enum {
  @param flip 道具镜像使能，如果设置为 YES 可以将道具做镜像操作
  @return 被处理过的的图像数据
  */
-- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip;
+- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口7：
@@ -164,7 +225,7 @@ typedef enum {
  @param customSize 自定义输出的分辨率，目前仅支持BGRA格式
  @return 被处理过的的图像数据
  */
-- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize;
+- (FUOutput)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer bgraTexture:(GLuint)textureHandle withFrameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip customSize:(CGSize)customSize NS_AVAILABLE_IOS(8_0);
 
 /**
  视频处理接口8：
@@ -172,7 +233,7 @@ typedef enum {
  
  @param pixelBuffer 图像数据，支持的格式为：BGRA、YUV420SP
  @param item 美颜道具句柄
- @return 被处理过的的图像数据
+ @return 被处理过的的图像数据 返回 nil 视频处理失败
  */
 - (CVPixelBufferRef)beautifyPixelBuffer:(CVPixelBufferRef)pixelBuffer withBeautyItem:(int)item;
 
@@ -228,11 +289,24 @@ typedef enum {
         masks中的每一位与items中的每一位道具一一对应。使用方法为：要使某一个道具画在检测到的第一张人脸上，
         对应的int值为 "2的0次方"，画在第二张人脸上对应的int值为 “2的1次方”，第三张人脸对应的int值为 “2的2次方”，
         以此类推。例：masks = {pow(2,0),pow(2,1),pow(2,2)....},值得注意的是美颜道具对应的int值为 0。
- @return 被处理过的的图像数据，与传入的 pixelBuffer 为同一个 pixelBuffer
+ @return 被处理过的的图像数据，返回 nil 视频处理失败
  */
 - (CVPixelBufferRef)renderPixelBuffer:(CVPixelBufferRef)pixelBuffer withFrameId:(int)frameid items:(int*)items itemCount:(int)itemCount flipx:(BOOL)flip masks:(void*)masks;
 
 - (int)renderItems:(void *)inPtr inFormat:(FUFormat)inFormat outPtr:(void *)outPtr outFormat:(FUFormat)outFormat width:(int)width height:(int)height frameId:(int)frameid items:(int *)items itemCount:(int)itemCount flipx:(BOOL)flip;
+
+- (int)renderBundles:(void *)inPtr inFormat:(FUFormat)inFormat outPtr:(void *)outPtr outFormat:(FUFormat)outFormat width:(int)width height:(int)height frameId:(int)frameid items:(int *)items itemCount:(int)itemCount;
+
+- (int)renderBundlesSplitView:(void *)inPtr inFormat:(FUFormat)inFormat outPtr:(void *)outPtr outFormat:(FUFormat)outFormat width:(int)width height:(int)height frameId:(int)frameid items:(int *)items itemCount:(int)itemCount splitViewInfoPtr:(TSplitViewInfo*)splitViewInfoPtr;
+
+- (void)setInputCameraMatrix:(int)flip_x flip_y:(int)flip_y rotate_mode:(int)rotate_mode;
+
+- (void)setOutputResolution:(int)w h:(int)h;
+
+/*
+ @return 1代表成功，0代表失败
+*/
+- (int)rotateImage:(FURotatedImage*)outImage inPtr:(void *)inPtr inFormat:(FUFormat)inFormat width:(int)width height:(int)height rotationMode:(FURotationMode)rotationMode flipX:(BOOL)flipX flipY:(BOOL)flipY;
 
 /**
  resize视频图像，目前仅支持BGRA格式的pixelBuffer
@@ -241,7 +315,7 @@ typedef enum {
  @param resizeSize resizeSize
  @return resizeSize之后的pixelBuffer
  */
-- (CVPixelBufferRef)resizePixelBuffer:(CVPixelBufferRef)pixelBuffer resizeSize:(CGSize)resizeSize;
+- (CVPixelBufferRef)resizePixelBuffer:(CVPixelBufferRef)pixelBuffer resizeSize:(CGSize)resizeSize NS_AVAILABLE_IOS(8_0);
 
 /**
  通过texture获取指定大小与格式的pixelBuffer
@@ -252,7 +326,7 @@ typedef enum {
  @param outputFormat 输出的pixelBuffer的格式，接受的参数有两个，分别为：FU_FORMAT_NV12_BUFFER、FU_FORMAT_BGRA_BUFFER
  @return 从texture获取到的指定大小与格式的pixelBuffer
  */
-- (CVPixelBufferRef)getPixelBufferFromTexture:(int)texture textureSize:(CGSize)textureSize outputSize:(CGSize)outPutSize outputFormat:(int)outputFormat;
+- (CVPixelBufferRef)getPixelBufferFromTexture:(int)texture textureSize:(CGSize)textureSize outputSize:(CGSize)outPutSize outputFormat:(int)outputFormat NS_AVAILABLE_IOS(8_0);
 
 /**
  切换摄像头时需调用的接口：
@@ -302,6 +376,29 @@ typedef enum {
 + (void)destroyAllItems;
 
 /**
+ 加载AI能力模型bundle
+ @param data AI能力模型二进制文件
+ @param size 文件大小
+ @param type AI能力类型,定义在FUAITYPE中
+ @return 加载成功返回1，否则返回0
+ */
++ (int)loadAIModelFromPackage:(void*)data size:(int)size aitype:(FUAITYPE)type;
+
+/**
+ 在不需要的时候，释放AI能力模型bundle
+ @param type AI能力类型,定义在FUAITYPE中
+ @return 释放成功返回1，否则返回0
+ */
++ (int)releaseAIModel:(FUAITYPE)type;
+
+/**
+ 获取AI能力模型是否加载。
+ @param type AI能力类型,定义在FUAITYPE中
+ @return 已加载返回1，否则返回0
+ */
++ (int)isAIModelLoaded:(FUAITYPE)type;
+
+/**
  为道具设置参数：
  
  @param item 道具句柄
@@ -321,6 +418,27 @@ typedef enum {
  @return 执行结果：返回 0 代表设置失败，大于 0 表示设置成功
  */
 + (int)itemSetParamdv:(int)item withName:(NSString *)name value:(double *)value length:(int)length;
+
+/**
+ 从道具中获取 double 数组：
+ 
+ @param item 道具句柄
+ @param name 参数名
+ @param value 参数值：double 数组
+ @param length 参数值：double 数组长度
+ @return 执行结果：返回获取的数组长度
+ */
++ (int)itemGetParamdv:(int)item withName:(NSString *)name buffer:(double *)buffer length:(int)length;
+/**
+ 从道具中获取 float 数组：
+ 
+ @param item 道具句柄
+ @param name 参数名
+ @param value 参数值：float 数组
+ @param length 参数值：float 数组长度
+ @return 执行结果：返回获取的数组长度
+ */
++ (int)itemGetParamfv:(int)item withName:(NSString *)name buffer:(float *)buffer length:(int)length;
 
 /**
  从道具中获取 double 型参数值：
@@ -344,6 +462,7 @@ typedef enum {
 
 + (int)itemGetParamu8v:(int)item withName:(NSString *)name buffer:(void *)buffer size:(int)size;
 
++ (int)itemSetParamu64:(int)item withName:(NSString *)name value:(unsigned long long)value;
 /**
  判断是否检测到人脸：
  
@@ -371,6 +490,8 @@ typedef enum {
  @return 检测到的人脸个数，返回 0 代表没有检测到人脸
  */
 + (int)trackFace:(int)inputFormat inputData:(void*)inputData width:(int)width height:(int)height;
+
++ (int)trackFaceWithTongue:(int)inputFormat inputData:(void*)inputData width:(int)width height:(int)height;
 
 /**
  获取人脸信息：
@@ -417,6 +538,13 @@ typedef enum {
 + (int)getFaceInfo:(int)faceId name:(NSString *)name pret:(float *)pret number:(int)number;
 
 /**
+ 获取正在跟踪人脸的标识符，用于在SDK外部对多人情况下的不同人脸进行区别。
+ @param faceId，人脸编号，表示识别到的第 x 张人脸，从0开始，到n-1,n为当前跟踪到的人脸数。
+ @return 人脸的标识符 [1,maxFaces]
+ */
++ (int)getFaceIdentifier:(int)faceId;
+
+/**
  将普通道具绑定到avatar道具：
      - 该接口主要应用于 P2A 项目中，将普通道具绑定到 avatar 道具上，从而实现道具间的数据共享；
      - 在视频处理时只需要传入 avatar 道具句柄，普通道具也会和 avatar 一起被绘制出来。
@@ -430,7 +558,7 @@ typedef enum {
  @param contractsCount contracts 数组中 contract 道具句柄的个数
  @return 被绑定到 avatar 道具上的普通道具个数
  */
-+ (int)avatarBindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount contracts:(int *)contracts contractsCount:(int)contractsCount;
++ (int)avatarBindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount contracts:(int *)contracts contractsCount:(int)contractsCount DEPRECATED_MSG_ATTRIBUTE("use bindItems:items:itemsCount: instead");
 
 /**
  将普通道具从avatar道具上解绑：
@@ -441,7 +569,7 @@ typedef enum {
  @param itemsCount 句柄数组包含的道具句柄个数
  @return 从 avatar 道具上解除绑定的普通道具个数
  */
-+ (int)avatarUnbindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount;
++ (int)avatarUnbindItems:(int)avatarItem items:(int *)items itemsCount:(int)itemsCount DEPRECATED_MSG_ATTRIBUTE("use unBindItems:items:itemsCount: instead");
 
 /**
  绑定道具：
@@ -453,6 +581,17 @@ typedef enum {
  @return 被绑定到目标道具上的普通道具个数
  */
 + (int)bindItems:(int)item items:(int*)items itemsCount:(int)itemsCount;
+
+/**
+ 解绑道具：
+ -  该接口可以将一些普通道具从某个目标道具上解绑
+ 
+ @param item 目标道具句柄
+ @param items 需要从目标道具上解除绑定的普通道具的句柄数组
+ @param itemsCount 句柄数组包含的道具句柄个数
+ @return 被绑定到目标道具上的普通道具个数
+ */
++ (int)unBindItems:(int)item items:(int *)items itemsCount:(int)itemsCount;
 
 /**
  解绑所有道具：
@@ -474,13 +613,83 @@ typedef enum {
 
 + (void)setFocalLengthScale:(float)scale;
 
-+ (int)loadExtendedARData:(void *)data size:(int)size;
++ (void)setDefaultRotationMode:(int)mode;
 
-+ (int)loadExtendedARDataWithDataPath:(NSString *)dataPath;
++ (void)setDeviceOrientation:(int)orientation;
 
-+ (int)loadAnimModel:(void *)model size:(int)size;
++ (int)getCurrentRotationMode;
 
-+ (int)loadAnimModelWithModelPath:(NSString *)modelPath;
++ (int)setMultiSamples:(int)samples;
 
-+ (void)setDefaultRotationMode:(float)mode;
++ (void)setAsyncTrackFaceEnable:(int)enable;
+
++ (void)setTongueTrackingEnable:(int)enable;
+ 
++ (int)loadTongueModel:(void*)model size:(int)size;
+
++ (void*)create3DBodyTracker:(void*)model size:(int)size;
+
++ (void)destroy3DBodyTracker:(void*)modelPtr;
+
++ (int)run3DBodyTracker:(void*)modelPtr humanHandle:(int)humanHandle inPtr:(void *)inPtr inFormat:(FUFormat)inFormat w:(int)w h:(int)h rotationMode:(int)rotationMode;
+
+/**
+new tracker
+**/
++ (void*)faceCaptureCreate:(void*)data size:(int)size;
+
++ (void)faceCaptureDestory:(void*)model;
+
++ (int)faceCaptureReset:(void*)model;
+
+/**
+ Run face capturing
+ 
+ @param manager_ptr_addr the pointer of the capture manager
+ @param img input image pointer, data type must be byte
+ @param w input image width
+ @param h input image height
+ @param fu_image_format FU_FORMAT_*_BUFFER
+ @param rotation_mode w.r.t to rotation the the camera view, 0=0^deg, 1=90^deg, 2=180^deg, 3=270^deg
+ @return whether the current frame is valid for tracking
+*/
++ (int)faceCaptureProcessFrame:(void*)model inPtr:(void *)inPtr inFormat:(FUFormat)inFormat w:(int)w h:(int)h rotationMode:(int)rotationMode;
+
+
+/*
+ @return 返回 1 代表获取成功，返回 0 代表获取失败
+*/
++ (int)faceCaptureGetResultLandmarks:(void*)model faceN:(int)faceN buffer:(float *)buffer length:(int)length;
+
++ (int)faceCaptureGetResultIdentity:(void*)model faceN:(int)faceN buffer:(float *)buffer length:(int)length;
+
++ (int)faceCaptureGetResultExpression:(void*)model faceN:(int)faceN buffer:(float *)buffer length:(int)length;
+
++ (int)faceCaptureGetResultRotation:(void*)model faceN:(int)faceN buffer:(float *)buffer length:(int)length;
+
++ (int)faceCaptureGetResultTranslation:(void*)model faceN:(int)faceN buffer:(float *)buffer length:(int)length;
+
++ (int)faceCapturGetResultTongueExp:(void*)model faceN:(int)faceN buffer:(float *)buffer length:(int)length;
+
+
+/*
+
+*/
++ (int)faceCaptureGetResultIsFace:(void*)model faceN:(int)faceN;
+
++ (int)faceCaptureGetResultFaceID:(void*)model faceN:(int)faceN;
+
++ (float)faceCaptureGetResultTongueScore:(void*)model faceN:(int)faceN;
+
++ (int)faceCaptureGetResultTongueClass:(void*)model faceN:(int)faceN;
+
++ (float)faceCaptureGetResultFocalLength:(void*)model;
+
++ (int)faceCaptureGetResultFaceNum:(void*)model;
+
+
+/**
+ 释放nama资源
+ */
++(void)namaLibDestroy;
 @end

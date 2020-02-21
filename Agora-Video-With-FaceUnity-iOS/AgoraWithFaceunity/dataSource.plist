@@ -20,29 +20,32 @@
 	</dict>
 	<dict>
 		<key>itemName</key>
-		<string>Animoji</string>
+		<string>道具贴纸</string>
 		<key>maxFace</key>
-		<integer>1</integer>
+		<integer>4</integer>
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
 		<integer>1</integer>
 		<key>modules</key>
 		<array>
-			<integer>16</integer>
+			<integer>2</integer>
+			<integer>4</integer>
 		</array>
 		<key>items</key>
 		<array>
-			<string>baimao_Animoji</string>
-			<string>chaiquan_Animoji</string>
-			<string>douniuquan_Animoji</string>
-			<string>kulutou_Animoji</string>
-			<string>maotouying_Animoji</string>
+			<string>sdlu</string>
+			<string>DaisyPig</string>
+			<string>fashi</string>
+			<string>chri1</string>
+			<string>xueqiu_lm_fu</string>
+			<string>wobushi</string>
+			<string>gaoshiqing</string>
 		</array>
 	</dict>
 	<dict>
 		<key>itemName</key>
-		<string>道具贴纸</string>
+		<string>Animoji</string>
 		<key>maxFace</key>
 		<integer>4</integer>
 		<key>enble</key>
@@ -51,18 +54,18 @@
 		<integer>2</integer>
 		<key>modules</key>
 		<array>
-			<integer>2</integer>
-			<integer>4</integer>
+			<integer>16</integer>
 		</array>
 		<key>items</key>
 		<array>
-			<string>fengya_ztt_fu</string>
-			<string>hudie_lm_fu</string>
-			<string>touhua_ztt_fu</string>
-			<string>juanhuzi_lm_fu</string>
-			<string>mask_hat</string>
-			<string>yazui</string>
-			<string>yuguan</string>
+			<string>qgirl_Animoji</string>
+			<string>frog_Animoji</string>
+			<string>huangya_Animoji</string>
+			<string>hetun_Animoji</string>
+			<string>douniuquan_Animoji</string>
+			<string>hashiqi_Animoji</string>
+			<string>baimao_Animoji</string>
+			<string>kuloutou_Animoji</string>
 		</array>
 	</dict>
 	<dict>
@@ -81,36 +84,15 @@
 		</array>
 		<key>items</key>
 		<array>
+			<string>bluebird</string>
+			<string>lanhudie</string>
+			<string>fenhudie</string>
+			<string>tiger_huang</string>
+			<string>tiger_bai</string>
 			<string>afd</string>
 			<string>baozi</string>
 			<string>tiger</string>
 			<string>xiongmao</string>
-			<string>armesh</string>
-			<string>armesh_ex</string>
-		</array>
-	</dict>
-	<dict>
-		<key>itemName</key>
-		<string>换脸</string>
-		<key>maxFace</key>
-		<integer>4</integer>
-		<key>enble</key>
-		<false/>
-		<key>itemType</key>
-		<integer>4</integer>
-		<key>modules</key>
-		<array>
-			<integer>128</integer>
-		</array>
-		<key>items</key>
-		<array>
-			<string>mask_liudehua</string>
-			<string>mask_linzhiling</string>
-			<string>mask_luhan</string>
-			<string>mask_guocaijie</string>
-			<string>mask_huangxiaoming</string>
-			<string>mask_matianyu</string>
-			<string>mask_tongliya</string>
 		</array>
 	</dict>
 	<dict>
@@ -121,7 +103,7 @@
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
-		<integer>5</integer>
+		<integer>4</integer>
 		<key>modules</key>
 		<array>
 			<integer>2048</integer>
@@ -145,15 +127,15 @@
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
-		<integer>6</integer>
+		<integer>5</integer>
 		<key>modules</key>
 		<array>
 			<integer>131072</integer>
 		</array>
 		<key>items</key>
 		<array>
-			<string>douyin_old</string>
-			<string>douyin</string>
+			<string>douyin_01</string>
+			<string>douyin_02</string>
 		</array>
 	</dict>
 	<dict>
@@ -164,19 +146,18 @@
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
-		<integer>7</integer>
+		<integer>6</integer>
 		<key>modules</key>
 		<array>
 			<integer>256</integer>
 		</array>
 		<key>items</key>
 		<array>
-			<string>chiji_lm_fu</string>
-			<string>ice_lm_fu</string>
-			<string>jingongmen_zh_fu</string>
-			<string>gufeng_zh_fu</string>
-			<string>men_ztt_fu</string>
-			<string>hez_ztt_fu</string>
+			<string>hez_ztt_fu_mp</string>
+			<string>gufeng_zh_fu_mp</string>
+			<string>xiandai_ztt_fu_mp</string>
+			<string>sea_lm_fu_mp</string>
+			<string>ice_lm_fu_mp</string>
 		</array>
 	</dict>
 	<dict>
@@ -187,18 +168,17 @@
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
-		<integer>8</integer>
+		<integer>7</integer>
 		<key>modules</key>
 		<array>
 			<integer>512</integer>
 		</array>
 		<key>items</key>
 		<array>
-			<string>fu_lm_koreaheart</string>
-			<string>fu_zh_baoquan</string>
-			<string>fu_zh_hezxiong</string>
-			<string>fu_ztt_live520</string>
-			<string>ssd_thread_thumb</string>
+			<string>ctrl_rain</string>
+			<string>ctrl_snow</string>
+			<string>ctrl_flower</string>
+			<string>ssd_thread_korheart</string>
 			<string>ssd_thread_six</string>
 			<string>ssd_thread_cute</string>
 		</array>
@@ -207,11 +187,11 @@
 		<key>itemName</key>
 		<string>哈哈镜</string>
 		<key>maxFace</key>
-		<integer>1</integer>
+		<integer>4</integer>
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
-		<integer>9</integer>
+		<integer>8</integer>
 		<key>modules</key>
 		<array>
 			<integer>65536</integer>
@@ -233,7 +213,7 @@
 		<key>enble</key>
 		<false/>
 		<key>itemType</key>
-		<integer>11</integer>
+		<integer>9</integer>
 		<key>modules</key>
 		<array>
 			<real>32768</real>

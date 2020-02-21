@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "FURenderer.h"
 
 @class FULiveModel ;
 
@@ -60,7 +61,7 @@
 - (void)loadItems;
 
 /** load beauty face item */
-- (void)loadFilter ;
+- (void)loadFilterLandmarksType:(FUAITYPE)landmarksType;
 
 /** destroy all items */
 - (void)destoryItems;
@@ -122,5 +123,8 @@
 /** get current device platforma**/
 - (NSString *)getPlatformtype ;
 
+
+/* isHaveItem in rendering */
+-(BOOL)isHaveTrackFaceItemsRendering;
 
 @end
