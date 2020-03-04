@@ -17,13 +17,12 @@ Agora FaceUnity Tutorial Windows sample app is built using **C++** language. It 
 - Agora Live Streaming
 - Faceunity Stickers, Filters, Beauty
 
-## Preparing the Developer Environment
+## Developer Environment Requirements
+* VC++ 2013(or higher)
+* win7(or higher)
+* SDK 2.9.0
 
-* Visual C++ 2013 or later
-* Windows 7 or later
-* Agora Video SDK 2.1.0 
-
-## Running the Sample App
+## Running the Sample Program
 
 1. Create a developer account at [Agora.io] (https://dashboard.agora.io/cn/signup/).
 2. Create your own test project and obtain an App ID.
@@ -44,5 +43,22 @@ Agora FaceUnity Tutorial Windows sample app is built using **C++** language. It 
 
 4. Use Visual Studio 2013 to open Agora-FaceUnity-Tutorial-Windows.sln. 
 
-Note: The default capturing parameter is 640x480, so the corresponding VideoSolutionIndex should be 40. If the camera does not support a resolution of 640x480, you need to change the capturing resolution and change the VideoSolutionIndex accordingly.
+**Note:**
+
+ The default capturing parameter is 640x480, so the corresponding VideoSolutionIndex should be 40. If the camera does not support a resolution of 640x480, you need to change the capturing resolution and change the VideoSolutionIndex accordingly.
+
+## Contact us
+
+- For potential issues, you may take a look at our [FAQ](https://docs.agora.io/en/faq) first
+- Dive into [Agora SDK Samples](https://github.com/AgoraIO) to see more tutorials
+- Would like to see how Agora SDK is used in more complicated real use case? Take a look at [Agora Use Case](https://github.com/AgoraIO-usecase)
+- Repositories managed by developer communities can be found at [Agora Community](https://github.com/AgoraIO-Community)
+- You can find full API document at [Document Center](https://docs.agora.io/en/)
+- If you encounter problems during integration, you can ask question in [Developer Forum](https://stackoverflow.com/questions/tagged/agora.io)
+- You can file bugs about this sample at [issue](https://github.com/AgoraIO/Agora-with-QT/issues)
+
+## License
+
+The MIT License (MIT)
+
 

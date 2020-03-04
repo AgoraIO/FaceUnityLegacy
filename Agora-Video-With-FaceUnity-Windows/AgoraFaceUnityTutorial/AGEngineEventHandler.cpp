@@ -32,6 +32,7 @@ void CAGEngineEventHandler::onJoinChannelSuccess(const char* channel, uid_t uid,
 
 void CAGEngineEventHandler::onRejoinChannelSuccess(const char* channel, uid_t uid, int elapsed)
 {
+	return;
 	LPAGE_REJOINCHANNEL_SUCCESS lpData = new AGE_REJOINCHANNEL_SUCCESS;
 
 	int nChannelLen = strlen(channel) + 1;
@@ -63,7 +64,7 @@ void CAGEngineEventHandler::onError(int err, const char* msg)
 	// attention: the pointer of msg maybe NULL!!!
 	if(msg != NULL) {
 		nMsgLen = strlen(msg) + 1;
-		lpData->msg = new char[nMsgLen];
+		lpData->msg = new char[nMsgLen];EID_AUDIO_QUALITY
 		strcpy_s(lpData->msg, nMsgLen, msg);
 	}
 	else
@@ -81,15 +82,6 @@ void CAGEngineEventHandler::onError(int err, const char* msg)
 
 void CAGEngineEventHandler::onAudioQuality(uid_t uid, int quality, unsigned short delay, unsigned short lost)
 {
-	LPAGE_AUDIO_QUALITY lpData = new AGE_AUDIO_QUALITY;
-
-	lpData->uid = uid;
-	lpData->quality = quality;
-	lpData->delay = delay;
-	lpData->lost = lost;
-
-	if(m_hMainWnd != NULL)
-		::PostMessage(m_hMainWnd, WM_MSGID(EID_AUDIO_QUALITY), (WPARAM)lpData, 0);
 }
 
 
@@ -123,8 +115,6 @@ void CAGEngineEventHandler::onRtcStats(const RtcStats& stat)
 
 	str = _T("stat");
 }
-
-
 
 void CAGEngineEventHandler::onAudioDeviceStateChanged(const char* deviceId, int deviceType, int deviceState)
 {

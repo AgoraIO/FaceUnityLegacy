@@ -56,7 +56,6 @@ END_MESSAGE_MAP()
 CAgoraFaceUnityTutorialDlg::CAgoraFaceUnityTutorialDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CAgoraFaceUnityTutorialDlg::IDD, pParent),
 	is_need_draw_landmarks(FALSE)
-	, m_ThreadData(NULL)
 	, m_bTerminated(TRUE)
 	, m_isJoinChannel(FALSE)
 {
@@ -116,6 +115,13 @@ BEGIN_MESSAGE_MAP(CAgoraFaceUnityTutorialDlg, CDialogEx)
 	ON_MESSAGE(WM_MSGID(EID_USER_OFFLINE), onUserOff)
 	ON_MESSAGE(WM_MSGID(EID_USER_MUTE_VIDEO), onUserMuteVideo)
 	ON_MESSAGE(WM_MSGID(EID_CONNECTION_LOST), onConnectionLost)
+
+	ON_MESSAGE(WM_MSGID(EID_VIDEO_DEVICE_STATE_CHANGED), onEIDonVideoDeviceStateChanged)
+	ON_MESSAGE(WM_MSGID(EID_AUDIO_DEVICE_STATE_CHANGED), onEIDAudioDeviceStateChanged)
+	ON_MESSAGE(WM_MSGID(EID_REMOTE_VIDEO_STAT), onEIDRemoteVideoStats)
+
+
+	
 	ON_BN_CLICKED(IDC_BUTTON_Sticker_0, &CAgoraFaceUnityTutorialDlg::OnBnClickedButtonSticker0)
 	ON_BN_CLICKED(IDC_BUTTON_Sticker_1, &CAgoraFaceUnityTutorialDlg::OnBnClickedButtonSticker1)
 	ON_BN_CLICKED(IDC_BUTTON_Sticker_2, &CAgoraFaceUnityTutorialDlg::OnBnClickedButtonSticker2)
@@ -459,12 +465,6 @@ inline void CAgoraFaceUnityTutorialDlg::uninitFaceUnity()
 
 	if (!m_bTerminated)
 		m_bTerminated = true;
-
-	DWORD dExitCode = 0;
-	TerminateThread(m_ThreadData,dExitCode);
-	CloseHandle(m_ThreadData);
-	m_ThreadData = nullptr;
-	
 	m_mediafile.close();
 }
 
@@ -473,6 +473,9 @@ LRESULT CAgoraFaceUnityTutorialDlg::onJoinChannelSuccess(WPARAM wParam, LPARAM l
 	m_isJoinChannel = true;
 	OutputDebugStringA(__FUNCTION__);
 	m_AgBtnJoinChannel.SetWindowText(_T("LeaveChannel"));
+	LPAGE_JOINCHANNEL_SUCCESS lpData = (LPAGE_JOINCHANNEL_SUCCESS)wParam;
+	delete[] lpData->channel;
+	delete lpData;
 	return TRUE;
 }
 
@@ -510,13 +513,19 @@ LRESULT CAgoraFaceUnityTutorialDlg::onLastMileQuality(WPARAM wParam, LPARAM lPar
 
 LRESULT CAgoraFaceUnityTutorialDlg::onFirstLocalVideoFrame(WPARAM wParam, LPARAM lParam)
 {
+	LPAGE_FIRST_LOCAL_VIDEO_FRAME lpData = (LPAGE_FIRST_LOCAL_VIDEO_FRAME)wParam;
+	delete lpData;
+	lpData = NULL;
 	OutputDebugStringA(__FUNCTION__);
 	return TRUE;
 }
 
 LRESULT CAgoraFaceUnityTutorialDlg::onFirstRemoteVideoDecoded(WPARAM wParam, LPARAM lParam)
 {
+	LPAGE_FIRST_REMOTE_VIDEO_DECODED lpData = (LPAGE_FIRST_REMOTE_VIDEO_DECODED)wParam;
 	OutputDebugStringA(__FUNCTION__);
+	delete lpData;
+	lpData = NULL;
 	return TRUE;
 }
 
@@ -528,18 +537,27 @@ LRESULT CAgoraFaceUnityTutorialDlg::onFirstRmoteVideoFrame(WPARAM wParam, LPARAM
 
 LRESULT CAgoraFaceUnityTutorialDlg::onUserJoined(WPARAM wParam, LPARAM lParam)
 {
+	LPAGE_USER_JOINED lpData = (LPAGE_USER_JOINED)wParam;
+	delete lpData;
+	lpData = NULL;
 	OutputDebugStringA(__FUNCTION__);
 	return TRUE;
 }
 
 LRESULT CAgoraFaceUnityTutorialDlg::onUserOff(WPARAM wParam, LPARAM lParam)
 {
+	LPAGE_USER_OFFLINE lpData = (LPAGE_USER_OFFLINE)wParam;
+	delete lpData;
+	lpData = NULL;
 	OutputDebugStringA(__FUNCTION__);
 	return TRUE;
 }
 
 LRESULT CAgoraFaceUnityTutorialDlg::onUserMuteVideo(WPARAM wParam, LPARAM lParam)
 {
+	LPAGE_USER_MUTE_VIDEO lpData = (LPAGE_USER_MUTE_VIDEO)wParam;
+	delete lpData;
+	lpData = NULL;
 	OutputDebugStringA(__FUNCTION__);
 	return TRUE;
 }
@@ -738,6 +756,7 @@ void CAgoraFaceUnityTutorialDlg::OnBnClickedCheckFilter()
 
 void CAgoraFaceUnityTutorialDlg::OnNMCustomdrawBeauty0(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	return;
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
 	// TODO:  在此添加控件通知处理程序代码
 	*pResult = 0;
@@ -749,6 +768,7 @@ void CAgoraFaceUnityTutorialDlg::OnNMCustomdrawBeauty0(NMHDR *pNMHDR, LRESULT *p
 
 void CAgoraFaceUnityTutorialDlg::OnNMCustomdrawBeauty1(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	return;
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
 	// TODO:  在此添加控件通知处理程序代码
 	*pResult = 0;
@@ -760,6 +780,7 @@ void CAgoraFaceUnityTutorialDlg::OnNMCustomdrawBeauty1(NMHDR *pNMHDR, LRESULT *p
 
 void CAgoraFaceUnityTutorialDlg::OnNMCustomdrawBeauty2(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	return;
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
 	// TODO:  在此添加控件通知处理程序代码
 	*pResult = 0;
@@ -767,3 +788,29 @@ void CAgoraFaceUnityTutorialDlg::OnNMCustomdrawBeauty2(NMHDR *pNMHDR, LRESULT *p
 	m_FaceNama.m_redLevel =  m_SliderBeautyRed.GetPos() / 100.0f;
 	m_FaceNama.UpdateBeauty();
 }
+
+
+LRESULT CAgoraFaceUnityTutorialDlg::onEIDRemoteVideoStats(WPARAM wParam, LPARAM lParam)
+{
+	LPAGE_REMOTE_VIDEO_STAT lpData = (LPAGE_REMOTE_VIDEO_STAT)wParam;
+	delete lpData;
+	lpData = NULL;
+	return 0;
+}
+
+LRESULT CAgoraFaceUnityTutorialDlg::onEIDAudioDeviceStateChanged(WPARAM wParam, LPARAM lParam)
+{
+	LPAGE_AUDIO_DEVICE_STATE_CHANGED lpData = (LPAGE_AUDIO_DEVICE_STATE_CHANGED)wParam;
+	delete lpData;
+	lpData = NULL;
+	return 0;
+}
+
+LRESULT CAgoraFaceUnityTutorialDlg::onEIDonVideoDeviceStateChanged(WPARAM wParam, LPARAM lParam)
+{
+	LPAGE_VIDEO_DEVICE_STATE_CHANGED lpData = (LPAGE_VIDEO_DEVICE_STATE_CHANGED)wParam;
+	delete lpData;
+	lpData = NULL;
+	return 0;
+}
+

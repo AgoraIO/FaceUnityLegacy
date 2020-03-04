@@ -84,6 +84,13 @@ protected:
 	LRESULT onUserMuteVideo(WPARAM wParam, LPARAM lParam);
 	LRESULT onConnectionLost(WPARAM wParam, LPARAM lParam);
 
+	LRESULT onEIDRemoteVideoStats(WPARAM wParam, LPARAM lParam);
+	LRESULT onEIDAudioDeviceStateChanged(WPARAM wParam, LPARAM lParam);
+	LRESULT onEIDonVideoDeviceStateChanged(WPARAM wParam, LPARAM lParam);
+
+	
+		
+		
 protected:
 
 	inline void initCtrl();
@@ -148,7 +155,7 @@ private:
 	CSliderCtrl m_SliderBeautyColor;
 	CSliderCtrl m_SliderBeautyRed;
 
-	HANDLE m_ThreadData;
+
 	CAgoraOpenGl m_openGl;
 	CFileIO m_mediafile;
 
