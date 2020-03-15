@@ -68,11 +68,9 @@ Agora 功能实现请参考 [Agora 官方文档](https://docs.agora.io/cn/Intera
      * libstdc++.framework
 
 #### SDK 下载
-[AgoraModule_Base_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Base_iOS-1.1.0.zip)
-
-[AgoraModule_Capturer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Capturer_iOS-1.1.0.zip)
-
-[AgoraModule_Renderer_iOS-1.1.0](https://download.agora.io/components/release/AgoraModule_Renderer_iOS-1.1.0.zip)
+[AgoraModule_Base_iOS-1.1.1](https://download.agora.io/components/release/AgoraModule_Base_iOS-1.1.1.zip)
+[AgoraModule_Capturer_iOS-1.1.1](https://download.agora.io/components/release/AgoraModule_Capturer_iOS-1.1.1.zip)
+[AgoraModule_Renderer_iOS-1.1.1](https://download.agora.io/components/release/AgoraModule_Renderer_iOS-1.1.1.zip)
                                
                            
 #### 添加权限
