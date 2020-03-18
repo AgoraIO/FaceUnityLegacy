@@ -115,19 +115,19 @@
     self.videoConfig.fps = 15;
     self.cameraCapturer = [[AGMCameraCapturer alloc] initWithConfig:self.videoConfig];
     
-    AGMVideoFrameAdapter *videoFrameAdapter = [[AGMVideoFrameAdapter alloc] init];
-    videoFrameAdapter.orientationMode = AGMVideoOutputOrientationModeFixedPortrait;
-    videoFrameAdapter.isMirror = YES;
-//    videoFrameAdapter.sinkDelegate = self;
-    [self.cameraCapturer addVideoSink:videoFrameAdapter];
+//    AGMVideoFrameAdapter *videoFrameAdapter = [[AGMVideoFrameAdapter alloc] init];
+//    videoFrameAdapter.orientationMode = AGMVideoOutputOrientationModeFixedPortrait;
+//    videoFrameAdapter.isMirror = YES;
+////    videoFrameAdapter.sinkDelegate = self;
+//    [self.cameraCapturer addVideoSink:videoFrameAdapter];
     
     
 #pragma mark Filter
     self.faceUnityFilter = [[AGMFaceUnityFilter alloc] init];
 
 #pragma mark Connect
-//    [self.cameraCapturer addVideoSink:self.faceUnityFilter];
-    [videoFrameAdapter addVideoSink:self.faceUnityFilter];
+    [self.cameraCapturer addVideoSink:self.faceUnityFilter];
+//    [videoFrameAdapter addVideoSink:self.faceUnityFilter];
 #pragma mark push pixelBuffer
     __weak typeof(self) weakSelf = self;
     self.faceUnityFilter.didCompletion = ^(CVPixelBufferRef  _Nonnull pixelBuffer, CMTime timeStamp, AGMVideoRotation rotation) {
@@ -177,7 +177,7 @@
         });
 
         // push pixelBuffer to agora server
-        [weakSelf.consumer consumePixelBuffer:pixelBuffer withTimestamp:timeStamp rotation:AgoraVideoRotationNone];
+        [weakSelf.consumer consumePixelBuffer:pixelBuffer withTimestamp:timeStamp rotation:AgoraVideoRotation90];
         
     };
 }
@@ -331,7 +331,7 @@
     // set render view
     [self.agoraKit setupLocalVideo:self.localCanvas];
     self.localRenderView = self.preview;
-    [self.agoraKit setLocalVideoMirrorMode:AgoraVideoMirrorModeDisabled];
+    [self.agoraKit setLocalVideoMirrorMode:AgoraVideoMirrorModeEnabled];
     
 }
 
