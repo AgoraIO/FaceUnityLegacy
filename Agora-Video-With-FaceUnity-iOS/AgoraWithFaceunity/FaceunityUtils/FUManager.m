@@ -463,15 +463,15 @@ static FUManager *shareManager = NULL;
         CMAcceleration acceleration = self.motionManager.accelerometerData.acceleration ;
         
         int orientation = 0;
-        if (acceleration.x >= 0.75) {
-            orientation = 3;
-        } else if (acceleration.x <= -0.75) {
-            orientation = 1;
-        } else if (acceleration.y <= -0.75) {
-            orientation = 0;
-        } else if (acceleration.y >= 0.75) {
-            orientation = 2;
-        }
+//        if (acceleration.x >= 0.75) {
+//            orientation = 3;
+//        } else if (acceleration.x <= -0.75) {
+//            orientation = 1;
+//        } else if (acceleration.y <= -0.75) {
+//            orientation = 0;
+//        } else if (acceleration.y >= 0.75) {
+//            orientation = 2;
+//        }
         
         if (self.deviceOrientation != orientation) {
             self.deviceOrientation = orientation ;
