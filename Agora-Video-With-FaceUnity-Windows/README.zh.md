@@ -14,6 +14,20 @@ Agora-FaceUnity-Tutorial-Windows 还支持 Android / IOS 平台，你可以查�
 - https://github.com/AgoraIO-Community/Agora-Video-With-FaceUnity-Android
 - https://github.com/AgoraIO-Community/Agora-Video-With-FaceUnity-IOS
 
+##准备Agora SDK
+1. [下载 Agora SDK](https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows(x86)_v3_0_0_FULL.zip)
+
+2. 加压文件，sdk拷贝到Agora-Video-With-FaceUnity-Windows下面，改名为Agorasdk
+
+##下载FaceUnity SDK/资源文件
+
+1. 下载 [FaceUnity SDK](https://github.com/AgoraIO/FaceUnity/releases/download/6.6.0/FaceUnitySDK-Windows.zip)
+2. 加压文件，改名为FaceUnitySDK，放到Agora-Video-With-FaceUnity-Windows下面。
+
+##下载其他依赖库
+1. 下载[windows依赖库](https://github.com/AgoraIO/FaceUnity/releases/download/6.6.0/windows-depencies.zip)
+2. 解压文件，把windows-depencies下面的openssl和Thirdparty拷贝到Agora-Video-With-FaceUnity-Windows下面
+
 ## 开发环境
 * VC++2013 或更高版本
 * WIN7 或更高版本
